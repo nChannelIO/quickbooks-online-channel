@@ -48,6 +48,9 @@ let InsertProductSimple = function (
   } else if (!channelProfile.productBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.productBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.productBusinessReferences)) {
+    invalidMsg = "channelProfile.productBusinessReferences is expected to be an array";
+    invalid = true;
   } else if (channelProfile.productBusinessReferences.length === 0) {
     invalid = true;
     invalidMsg = "channelProfile.productBusinessReferences is empty"

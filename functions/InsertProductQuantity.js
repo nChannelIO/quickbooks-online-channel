@@ -48,6 +48,9 @@ let InsertProductQuantity = function (
   } else if (!channelProfile.productQuantityBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.productQuantityBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.productQuantityBusinessReferences)) {
+    invalid = true;
+    invalidMsg = "channelProfile.productQuantityBusinessReferences is not an array"
   } else if (channelProfile.productQuantityBusinessReferences.length === 0) {
     invalid = true;
     invalidMsg = "channelProfile.productQuantityBusinessReferences is empty"

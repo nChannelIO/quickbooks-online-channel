@@ -26,12 +26,6 @@ let ExtractCustomerFromSalesOrder = function (
     let invalidMsg = "";
     let data = {};
 
-    // Check ncUtil
-    if (!ncUtil) {
-      invalid = true;
-      invalidMsg = "ExtractCustomerFromSalesOrder - Invalid Request: ncUtil was not passed into the function";
-    }
-
     // Check Payload
     if (payload) {
       if (!payload.doc) {

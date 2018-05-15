@@ -105,13 +105,8 @@ let GetProductQuantityFromQuery = function (
   }
 
   if (!invalid) {
-
-
     let minorVersion = "?minorversion=" + channelProfile.channelSettingsValues.minor_version;
-
     let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/query" + minorVersion;
-
-
     let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
 
     /*

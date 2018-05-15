@@ -48,6 +48,9 @@ let InsertCustomer = function (
   } else if (!channelProfile.customerBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.customerBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.customerBusinessReferences)) {
+    invalid = true;
+    invalidMsg = "channelProfile.customerBusinessReferences is not an array"
   } else if (channelProfile.customerBusinessReferences.length === 0) {
     invalid = true;
     invalidMsg = "channelProfile.customerBusinessReferences is empty"

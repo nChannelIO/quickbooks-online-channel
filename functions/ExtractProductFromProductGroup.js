@@ -26,12 +26,6 @@ let ExtractProductFromProductGroup = function (
     let invalidMsg = "";
     let data = {};
 
-    // Check ncUtil
-    if (!ncUtil) {
-      invalid = true;
-      invalidMsg = "ExtractProductFromProductGroup - Invalid Request: ncUtil was not passed into the function";
-    }
-
     // Check Payload
     if (payload) {
       if (!payload.doc) {

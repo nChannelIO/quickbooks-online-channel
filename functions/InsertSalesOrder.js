@@ -21,10 +21,7 @@ let InsertSalesOrder = function (
   let invalidMsg = "";
 
   // Check channelProfile properties
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "InsertSalesOrder - Invalid Request: ncUtil was not passed into the function";
-  } else if (!channelProfile) {
+  if (!channelProfile) {
     invalid = true;
     invalidMsg = "InsertSalesOrder - Invalid Request: channelProfile was not passed into the function";
   } else if (!channelProfile.channelAuthValues) {

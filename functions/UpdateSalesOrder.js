@@ -20,15 +20,6 @@ let UpdateSalesOrder = function (
   let invalid = false;
   let invalidMsg = "";
 
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  } else if (!ncUtil.request) {
-    invalid = true;
-    invalidMsg = "ncUtil.request was not provided"
-  }
-
   //If channelProfile does not contain channelSettingsValues, channelAuthValues or salesOrderBusinessReferences, the request can't be sent
   if (!channelProfile) {
     invalid = true;
