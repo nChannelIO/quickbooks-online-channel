@@ -52,7 +52,7 @@ let CheckForCustomer = function (
   } else if (!Array.isArray(channelProfile.customerBusinessReferences)) {
     invalidMsg = "Check For Customer - Invalid Request: channelProfile.customerBusinessReferences is expected to be an array";
     invalid = true;
-  } else if (channelProfile.customerBusinessReferences.length == 0) {
+  } else if (channelProfile.customerBusinessReferences.length === 0) {
     invalidMsg = "Check For Customer - Invalid Request: channelProfile.customerBusinessReferences does not have any values";
     invalid = true;
   }
@@ -75,14 +75,10 @@ let CheckForCustomer = function (
 
   if (!invalid) {
     try {
-
-
-      let url = "";
-
       // Create endpoint
       let minorVersion = "?minorversion=" + channelProfile.channelSettingsValues.minor_version;
       let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/query";
-      url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
+      let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
 
       // Lookup the businessReference
       let values = [];
@@ -103,13 +99,12 @@ let CheckForCustomer = function (
       let lookup = "&query=select * from Customer Where " + values.join(" AND ");
 
       // Set headers
-      let headers = {};
-      headers = {
+      let headers = {
         "Authorization": "Bearer " + channelProfile.channelAuthValues.access_token,
         "Accept": "application/json"
-      }
+      };
 
-      url += minorVersion + lookup
+      url += minorVersion + lookup;
 
       log("Using URL [" + url + "]");
 
@@ -130,7 +125,7 @@ let CheckForCustomer = function (
             let data = JSON.parse(JSON.stringify(body));
 
             // 200 Response
-            if (response.statusCode == 200) {
+            if (response.statusCode === 200) {
               data = JSON.parse(body);
               // _embedded.self is an array of customer data
               // One customer will return ncStatusCode = 200
@@ -139,7 +134,7 @@ let CheckForCustomer = function (
               // _embedded.self is only returned if there is customer data
               // If not present, return ncStatusCode = 204
               if (data.QueryResponse.Customer) {
-                if (data.QueryResponse.Customer && data.QueryResponse.Customer.length == 1) {
+                if (data.QueryResponse.Customer && data.QueryResponse.Customer.length === 1) {
                   let customer = data.QueryResponse.Customer[0];
                   out.ncStatusCode = 200;
                   out.payload.customerRemoteID = customer.Id;
@@ -151,13 +146,13 @@ let CheckForCustomer = function (
               } else {
                 out.ncStatusCode = 204;
               }
-            } else if (response.statusCode == 400) {
+            } else if (response.statusCode === 400) {
               out.ncStatusCode = 400;
               out.payload.error = {err: data};
-            } else if (response.statusCode == 429) {
+            } else if (response.statusCode === 429) {
               out.ncStatusCode = 429;
               out.payload.error = {err: data};
-            } else if (response.statusCode == 500) {
+            } else if (response.statusCode === 500) {
               out.ncStatusCode = 500;
               out.payload.error = {err: data};
             } else {
@@ -192,7 +187,7 @@ let CheckForCustomer = function (
     out.payload.error = {err: invalidMsg};
     callback(out);
   }
-}
+};
 
 function logError(msg) {
   console.log("[error] " + msg);

@@ -151,7 +151,7 @@ let GetProductPricingFromQuery = function (
     } else if (payload.doc.modifiedDateRange) {
       /*
        Add modified date ranges to the query
-       iQmetrix only supports exclusive compare operator so skew each by 1 ms to create an equivalent inclusive range
+       Quickbooks only supports exclusive compare operator so skew each by 1 ms to create an equivalent inclusive range
        */
       if (payload.doc.modifiedDateRange.startDateGMT) {
         filterParams.push("MetaData.LastUpdatedTime >= '" + payload.doc.modifiedDateRange.startDateGMT + "'");
@@ -189,10 +189,10 @@ let GetProductPricingFromQuery = function (
     log("Using URL [" + url + "]");
 
     // Add the authorization header
-    headers = {
+    let headers = {
       "Authorization": "Bearer " + channelProfile.channelAuthValues.access_token,
       "Accept": "application/json"
-    }
+    };
 
     /*
      Set URL and headers
@@ -221,7 +221,7 @@ let GetProductPricingFromQuery = function (
               for (let i = 0; i < data.QueryResponse.Item.length; i++) {
                 let product = {
                   Item: data.QueryResponse.Item[i]
-                }
+                };
                 docs.push({
                   doc: product,
                   productPricingRemoteID: product.Item.Id,

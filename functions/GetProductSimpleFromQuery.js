@@ -214,10 +214,10 @@ let GetProductSimpleFromQuery = function (
     log("Using URL [" + url + "]");
 
     // Add the authorization header
-    headers = {
+    let headers = {
       "Authorization": "Bearer " + channelProfile.channelAuthValues.access_token,
       "Accept": "application/json"
-    }
+    };
 
     /*
      Set URL and headers

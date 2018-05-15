@@ -78,7 +78,7 @@ let UpdateCustomer = function (
     // Create endpoint
     let minorVersion = "?minorversion=" + channelProfile.channelSettingsValues.minor_version;
     let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/customer";
-    url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
 
     // Set headers
     let headers = {
@@ -110,7 +110,7 @@ let UpdateCustomer = function (
             /* Quickbooks Online expects a SyncToken to be passed in with body of the update (i.e. "1")
                Querying for the customer will give us the most recent SyncToken that can be used with the update
                Not providing the SyncToken or using a previously used SyncToken will return an error
-               Quickbook will automatically increment the SyncToken on each update
+               Quickbooks will automatically increment the SyncToken on each update
             */
             let syncToken = parseInt(readData.Customer.SyncToken);
 
@@ -142,17 +142,17 @@ let UpdateCustomer = function (
                   let data = JSON.parse(JSON.stringify(body));
 
                   // If we have a customer object, set customer.payload.doc to be the customer document
-                  if (data && response.statusCode == 200) {
+                  if (data && response.statusCode === 200) {
                     out.payload = {
                       doc: data.Customer,
                       "customerBusinessReference": extractBusinessReference(channelProfile.customerBusinessReferences, data.Customer)
                     };
 
                     out.ncStatusCode = 200;
-                  } else if (response.statusCode == 429) {
+                  } else if (response.statusCode === 429) {
                     out.ncStatusCode = 429;
                     out.payload.error = data;
-                  } else if (response.statusCode == 500) {
+                  } else if (response.statusCode === 500) {
                     out.ncStatusCode = 500;
                     out.payload.error = data;
                   } else {
@@ -173,11 +173,11 @@ let UpdateCustomer = function (
                 callback(out);
               }
             });
-          } else if (response.statusCode == 429) {
+          } else if (response.statusCode === 429) {
             out.ncStatusCode = 429;
             out.payload.error = {err: read};
             callback(out);
-          } else if (response.statusCode == 500) {
+          } else if (response.statusCode === 500) {
             out.ncStatusCode = 500;
             out.payload.error = {err: read};
             callback(out);

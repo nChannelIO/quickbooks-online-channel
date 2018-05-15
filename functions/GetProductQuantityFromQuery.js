@@ -204,10 +204,10 @@ let GetProductQuantityFromQuery = function (
     log("Using URL [" + url + "]");
 
     // Add the authorization header
-    headers = {
+    let headers = {
       "Authorization": "Bearer " + channelProfile.channelAuthValues.access_token,
       "Accept": "application/json"
-    }
+    };
 
     /*
      Set URL and headers
@@ -236,7 +236,7 @@ let GetProductQuantityFromQuery = function (
               for (let i = 0; i < data.QueryResponse.Item.length; i++) {
                 let product = {
                   Item: data.QueryResponse.Item[i]
-                }
+                };
                 docs.push({
                   doc: product,
                   productQuantityRemoteID: product.Item.Id,

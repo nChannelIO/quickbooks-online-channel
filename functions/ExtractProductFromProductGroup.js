@@ -79,7 +79,7 @@ let ExtractProductFromProductGroup = function (
     callback(out);
   }
 
-}
+};
 
 function logError(msg) {
   console.log("[error] " + msg);

@@ -210,9 +210,9 @@ let UpdateSalesOrder = function (
 
                     // Get the SyncToken
                     /* Quickbooks Online expects a SyncToken to be passed in with body of the update (i.e. "1")
-                       Querying for the sales reciept will give us the most recent SyncToken that can be used with the update
+                       Querying for the sales receipt will give us the most recent SyncToken that can be used with the update
                        Not providing the SyncToken or using a previously used SyncToken will return an error
-                       Quickbook will automatically increment the SyncToken on each update
+                       Quickbooks will automatically increment the SyncToken on each update
                     */
                     let syncToken = parseInt(readData.SalesReceipt.SyncToken);
 
@@ -249,8 +249,8 @@ let UpdateSalesOrder = function (
                           // Parse data
                           let data = JSON.parse(JSON.stringify(body));
 
-                          // If we have a sales reciept object, set payload.doc to be the sales reciept document
-                          if (data && response.statusCode == 200) {
+                          // If we have a sales receipt object, set payload.doc to be the sales receipt document
+                          if (data && response.statusCode === 200) {
                             out.payload = {
                               doc: data.SalesReceipt,
                               "salesOrderRemoteID": data.SalesReceipt.Id,
@@ -258,10 +258,10 @@ let UpdateSalesOrder = function (
                             };
 
                             out.ncStatusCode = 200;
-                          } else if (response.statusCode == 429) {
+                          } else if (response.statusCode === 429) {
                             out.ncStatusCode = 429;
                             out.payload.error = data;
-                          } else if (response.statusCode == 500) {
+                          } else if (response.statusCode === 500) {
                             out.ncStatusCode = 500;
                             out.payload.error = data;
                           } else {

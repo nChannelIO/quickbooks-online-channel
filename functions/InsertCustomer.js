@@ -72,9 +72,7 @@ let InsertCustomer = function (
   if (!invalid) {
     let minorVersion = "?minorversion=" + channelProfile.channelSettingsValues.minor_version;
     let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/customer" + minorVersion;
-
-
-    url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
 
     /*
      Format url
@@ -110,7 +108,7 @@ let InsertCustomer = function (
           let data = body;
 
           // If we have a customer object, set out.payload.doc to be the customer document
-          if (data && response.statusCode == 200) {
+          if (data && response.statusCode === 200) {
             out.payload = {
               doc: data.Customer,
               "customerRemoteID": data.Customer.Id,
@@ -118,10 +116,10 @@ let InsertCustomer = function (
             };
 
             out.ncStatusCode = 201;
-          } else if (response.statusCode == 429) {
+          } else if (response.statusCode === 429) {
             out.ncStatusCode = 429;
             out.payload.error = data;
-          } else if (response.statusCode == 500) {
+          } else if (response.statusCode === 500) {
             out.ncStatusCode = 500;
             out.payload.error = data;
           } else {
