@@ -1,4 +1,4 @@
-let InsertProductSimple = function (ncUtil,
+let InsertProductPricing = function (ncUtil,
                                channelProfile,
                                flowContext,
                                payload,
@@ -23,7 +23,7 @@ let InsertProductSimple = function (ncUtil,
         invalidMsg = "ncUtil.request was not provided"
     }
 
-    //If channelProfile does not contain channelSettingsValues, channelAuthValues or productBusinessReferences, the request can't be sent
+    //If channelProfile does not contain channelSettingsValues, channelAuthValues or productPricingBusinessReferences, the request can't be sent
     if (!channelProfile) {
         invalid = true;
         invalidMsg = "channelProfile was not provided"
@@ -48,12 +48,12 @@ let InsertProductSimple = function (ncUtil,
     } else if (!channelProfile.channelAuthValues.realm_id) {
         invalid = true;
         invalidMsg = "channelProfile.channelAuthValues.realm_id was not provided"
-    } else if (!channelProfile.productBusinessReferences) {
+    } else if (!channelProfile.productPricingBusinessReferences) {
         invalid = true;
-        invalidMsg = "channelProfile.productBusinessReferences was not provided"
-    } else if (channelProfile.productBusinessReferences.length === 0) {
+        invalidMsg = "channelProfile.productPricingBusinessReferences was not provided"
+    } else if (channelProfile.productPricingBusinessReferences.length === 0) {
         invalid = true;
-        invalidMsg = "channelProfile.productBusinessReferences is empty"
+        invalidMsg = "channelProfile.productPricingBusinessReferences is empty"
     }
 
     if (!payload) {
@@ -110,19 +110,19 @@ let InsertProductSimple = function (ncUtil,
             request(options, function (error, response, body) {
                 if (!error) {
                     const extractBusinessReference = require('../../../../util/extractBusinessReference');
-                    log("Do InsertProduct Callback", ncUtil);
+                    log("Do InsertProductPricing Callback", ncUtil);
                     out.response.endpointStatusCode = response.statusCode;
                     out.response.endpointStatusMessage = response.statusMessage;
 
                     // Parse data
-                    let data = JSON.parse(JSON.stringify(body));
+                    let data = body;
 
                     // If we have a product object, set out.payload.doc to be the product document
                     if (data && response.statusCode == 200) {
                         out.payload = {
                             doc: data,
-                            "productRemoteID": data.Id,
-                            "productBusinessReference": extractBusinessReference(channelProfile.productBusinessReferences, data)
+                            "productPricingRemoteID": data.Id,
+                            "productPricingBusinessReference": extractBusinessReference(channelProfile.productPricingBusinessReferences, data)
                         };
 
                         out.ncStatusCode = 201;
@@ -139,14 +139,14 @@ let InsertProductSimple = function (ncUtil,
 
                     callback(out);
                 } else {
-                    logError("Do InsertProduct Callback error - " + error, ncUtil);
+                    logError("Do InsertProductPricing Callback error - " + error, ncUtil);
                     out.ncStatusCode = 500;
                     out.payload.error = {err: error};
                     callback(out);
                 }
             });
         } catch (err) {
-            logError("Exception occurred in InsertProduct - " + err, ncUtil);
+            logError("Exception occurred in InsertProductPricing - " + err, ncUtil);
             out.ncStatusCode = 500;
             out.payload.error = {err: err, stack: err.stackTrace};
             callback(out);
@@ -167,4 +167,4 @@ function log(msg, ncUtil) {
     console.log("[info] " + msg);
 }
 
-module.exports.InsertProductSimple = InsertProductSimple;
+module.exports.InsertProductPricing = InsertProductPricing;

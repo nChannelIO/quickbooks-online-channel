@@ -1,4 +1,4 @@
-let GetSalesOrderFromQuery = function(ncUtil,
+let GetProductPricingFromQuery = function(ncUtil,
     channelProfile,
     flowContext,
     payload,
@@ -24,7 +24,7 @@ let GetSalesOrderFromQuery = function(ncUtil,
         invalidMsg = "ncUtil.request was not provided"
     }
 
-    //If channelProfile does not contain channelSettingsValues, channelAuthValues or salesOrderBusinessReferences, the request can't be sent
+    //If channelProfile does not contain channelSettingsValues, channelAuthValues or productPricingBusinessReferences, the request can't be sent
     if (!channelProfile) {
         invalid = true;
         invalidMsg = "channelProfile was not provided"
@@ -49,15 +49,15 @@ let GetSalesOrderFromQuery = function(ncUtil,
     } else if (!channelProfile.channelAuthValues.realm_id) {
         invalid = true;
         invalidMsg = "channelProfile.channelAuthValues.realm_id was not provided"
-    } else if (!channelProfile.salesOrderBusinessReferences) {
+    } else if (!channelProfile.productPricingBusinessReferences) {
         invalid = true;
-        invalidMsg = "channelProfile.salesOrderBusinessReferences was not provided"
-    } else if (!Array.isArray(channelProfile.salesOrderBusinessReferences)) {
+        invalidMsg = "channelProfile.productPricingBusinessReferences was not provided"
+    } else if (!Array.isArray(channelProfile.productPricingBusinessReferences)) {
         invalid = true;
-        invalidMsg = "channelProfile.salesOrderBusinessReferences is not an array"
-    } else if (channelProfile.salesOrderBusinessReferences.length === 0) {
+        invalidMsg = "channelProfile.productPricingBusinessReferences is not an array"
+    } else if (channelProfile.productPricingBusinessReferences.length === 0) {
         invalid = true;
-        invalidMsg = "channelProfile.salesOrderBusinessReferences is empty"
+        invalidMsg = "channelProfile.productPricingBusinessReferences is empty"
     }
 
     //If a query document was not passed in, the request is invalid
@@ -122,21 +122,22 @@ let GetSalesOrderFromQuery = function(ncUtil,
         if (payload.doc.searchFields) {
             let fields = [];
             payload.doc.searchFields.forEach(function(searchField) {
-
-              // Check fields to get the base property to use in the query
-              if (searchField.searchField !== "MetaData.CreateTime" && searchField.searchField !== "MetaData.LastUpdatedTime") {
-                if (searchField.searchField === "CustomerRef.value") {
-                  searchField.searchField = "CustomerRef";
-                }
-              }
-
                 // Loop through each value
                 let values = [];
                 searchField.searchValues.forEach(function(searchValue) {
+                  if (searchField.searchField === "Active") {
+                    let value = (searchValue === "true");
+                    values.push(value);
+                  } else {
                     values.push("'" + searchValue + "'");
+                  }
                 });
 
-                fields.push(searchField.searchField + " IN (" + values.join(',') + ")");
+                if (searchField.searchField === "Active") {
+                  fields.push(searchField.searchField + " = " + values.join(''));
+                } else {
+                  fields.push(searchField.searchField + " IN (" + values.join(',') + ")");
+                }
             });
 
             filterParams.push(fields.join(' AND '));
@@ -155,6 +156,7 @@ let GetSalesOrderFromQuery = function(ncUtil,
         } else if (payload.doc.modifiedDateRange) {
             /*
              Add modified date ranges to the query
+             iQmetrix only supports exclusive compare operator so skew each by 1 ms to create an equivalent inclusive range
              */
             if (payload.doc.modifiedDateRange.startDateGMT) {
                 filterParams.push("MetaData.LastUpdatedTime >= '" + payload.doc.modifiedDateRange.startDateGMT + "'");
@@ -187,7 +189,7 @@ let GetSalesOrderFromQuery = function(ncUtil,
         /*
          Format the query parameters and append them to the url
          */
-        url += "&query=SELECT * FROM SalesReceipt WHERE " + queryParams.join(' ');
+        url += "&query=SELECT * FROM Item WHERE " + queryParams.join(' ');
 
         log("Using URL [" + url + "]", ncUtil);
 
@@ -210,7 +212,7 @@ let GetSalesOrderFromQuery = function(ncUtil,
         request(options, function(error, response, body) {
             try {
                 if (!error) {
-                    log("Do GetSalesOrderFromQuery Callback", ncUtil);
+                    log("Do GetProductPricingFromQuery Callback", ncUtil);
                     out.response.endpointStatusCode = response.statusCode;
                     out.response.endpointStatusMessage = response.statusMessage;
 
@@ -219,14 +221,16 @@ let GetSalesOrderFromQuery = function(ncUtil,
                     let data = body;
 
                     if (response.statusCode === 200) {
-                        // If we have an array of orders, set out.payload to be the array of orders returned
-                        if (data.QueryResponse.SalesReceipt && data.QueryResponse.SalesReceipt.length > 0) {
-                            for (let i = 0; i < data.QueryResponse.SalesReceipt.length; i++) {
-                                let order = data.QueryResponse.SalesReceipt[i];
+                        // If we have an array of products, set out.payload to be the array of products returned
+                        if (data.QueryResponse.Item && data.QueryResponse.Item.length > 0) {
+                            for (let i = 0; i < data.QueryResponse.Item.length; i++) {
+                                let product = {
+                                  Item: data.QueryResponse.Item[i]
+                                }
                                 docs.push({
-                                    doc: order,
-                                    salesOrderRemoteID: order.Id,
-                                    salesOrderBusinessReference: extractBusinessReference(channelProfile.salesOrderBusinessReferences, order)
+                                    doc: product,
+                                    productPricingRemoteID: product.Item.Id,
+                                    productPricingBusinessReference: extractBusinessReference(channelProfile.productPricingBusinessReferences, product)
                                 });
                             }
                             if (docs.length === payload.doc.pageSize) {
@@ -252,13 +256,13 @@ let GetSalesOrderFromQuery = function(ncUtil,
 
                     callback(out);
                 } else {
-                    logError("Do GetSalesOrderFromQuery Callback error - " + error, ncUtil);
+                    logError("Do GetProductPricingFromQuery Callback error", ncUtil);
                     out.ncStatusCode = 500;
                     out.payload.error = error;
                     callback(out);
                 }
             } catch (err) {
-                logError("Exception occurred in GetSalesOrderFromQuery - err" + err, ncUtil);
+                logError("Exception occurred in GetProductPricingFromQuery - err" + err, ncUtil);
                 out.ncStatusCode = 500;
                 out.payload.error = {
                     err: err,
@@ -268,7 +272,7 @@ let GetSalesOrderFromQuery = function(ncUtil,
             }
         });
     } else {
-        log("Callback with an invalid request - " + invalidMsg, ncUtil);
+        log("Callback with an invalid request", ncUtil);
         out.ncStatusCode = 400;
         out.payload.error = invalidMsg;
         callback(out);
@@ -283,4 +287,4 @@ function log(msg, ncUtil) {
     console.log("[info] " + msg);
 }
 
-module.exports.GetSalesOrderFromQuery = GetSalesOrderFromQuery;
+module.exports.GetProductPricingFromQuery = GetProductPricingFromQuery;

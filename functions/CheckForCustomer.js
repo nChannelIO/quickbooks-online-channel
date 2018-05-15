@@ -1,148 +1,206 @@
-let CheckForCustomer = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
+let CheckForCustomer = function(
+    ncUtil,
+    channelProfile,
+    flowContext,
+    payload,
+    callback)
+{
 
-  log("Building response object...", ncUtil);
-  let out = {
-    ncStatusCode: null,
-    response: {},
-    payload: {}
-  };
-
-  let invalid = false;
-  let invalidMsg = "";
-
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  }
-
-  //If channelProfile does not contain channelSettingsValues, channelAuthValues or customerBusinessReferences, the request can't be sent
-  if (!channelProfile) {
-    invalid = true;
-    invalidMsg = "channelProfile was not provided"
-  } else if (!channelProfile.channelSettingsValues) {
-    invalid = true;
-    invalidMsg = "channelProfile.channelSettingsValues was not provided"
-  } else if (!channelProfile.channelSettingsValues.protocol) {
-    invalid = true;
-    invalidMsg = "channelProfile.channelSettingsValues.protocol was not provided"
-  } else if (!channelProfile.channelAuthValues) {
-    invalid = true;
-    invalidMsg = "channelProfile.channelAuthValues was not provided"
-  } else if (!channelProfile.customerBusinessReferences) {
-    invalid = true;
-    invalidMsg = "channelProfile.customerBusinessReferences was not provided"
-  } else if (!Array.isArray(channelProfile.customerBusinessReferences)) {
-    invalid = true;
-    invalidMsg = "channelProfile.customerBusinessReferences is not an array"
-  } else if (channelProfile.customerBusinessReferences.length === 0) {
-    invalid = true;
-    invalidMsg = "channelProfile.customerBusinessReferences is empty"
-  }
-
-  //If a sales order document was not passed in, the request is invalid
-  if (!payload) {
-    invalid = true;
-    invalidMsg = "payload was not provided"
-  } else if (!payload.doc) {
-    invalid = true;
-    invalidMsg = "payload.doc was not provided";
-  }
-
-  //If callback is not a function
-  if (!callback) {
-    throw new Error("A callback function was not provided");
-  } else if (typeof callback !== 'function') {
-    throw new TypeError("callback is not a function")
-  }
-
-  if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
-    let request = require('request');
-
-    let url = "https://localhost/";
-
-    // Add any headers for the request
-    let headers = {
-
+    log("Building response object...", ncUtil);
+    let out = {
+        ncStatusCode: null,
+        response: {},
+        payload: {}
     };
 
-    // Log URL
-    log("Using URL [" + url + "]", ncUtil);
+      let invalid = false;
+      let invalidMsg = "";
+      const extractBusinessReference = require('../../../../util/extractBusinessReference');
 
-    // Set options
-    let options = {
-      url: url,
-      method: "GET",
-      headers: headers,
-      body: payload.doc,
-      json: true
-    };
+      // Check channelProfile properties
+      if (!ncUtil) {
+          invalid = true;
+          invalidMsg = "Check For Customer - Invalid Request: ncUtil was not passed into the function";
+      } else if (!channelProfile) {
+          invalid = true;
+          invalidMsg = "Check For Customer - Invalid Request: channelProfile was not passed into the function";
+      } else if (!channelProfile.channelAuthValues) {
+          invalid = true;
+          invalidMsg = "Check For Customer - Invalid Request: channelAuthValues is missing from channelProfile";
+      } else if (!channelProfile.channelSettingsValues) {
+          invalid = true;
+          invalidMsg = "Check For Customer - Invalid Request: channelSettingsValues is missing from channelProfile";
+      } else if (!channelProfile.channelSettingsValues.protocol) {
+          invalid = true;
+          invalidMsg = "Check For Customer - Invalid Request: channelProfile.channelSettingsValues.protocol is missing";
+      } else if (!channelProfile.channelSettingsValues.api_uri) {
+          invalid = true;
+          invalidMsg = "Check For Customer - Invalid Request: channelProfile.channelSettingsValues.api_uri is missing";
+      } else if (!channelProfile.channelSettingsValues.minor_version) {
+          invalid = true;
+          invalidMsg = "Check For Customer - Invalid Request: channelProfile.channelSettingsValues.minor_version is missing";
+      } else if (!channelProfile.channelAuthValues.realm_id) {
+          invalid = true;
+          invalidMsg = "Check For Customer - Invalid Request: channelProfile.channelAuthValues.realm_id is missing";
+      } else if (!channelProfile.channelAuthValues.access_token) {
+          invalid = true;
+          invalidMsg = "Check For Customer - Invalid Request: channelProfile.channelAuthValues.access_token is missing";
+      } else if (!channelProfile.customerBusinessReferences) {
+          invalidMsg = "Check For Customer - Invalid Request: channelProfile.customerBusinessReferences is missing";
+          invalid = true;
+      } else if (!Array.isArray(channelProfile.customerBusinessReferences)) {
+          invalidMsg = "Check For Customer - Invalid Request: channelProfile.customerBusinessReferences is expected to be an array";
+          invalid = true;
+      } else if (channelProfile.customerBusinessReferences.length == 0) {
+          invalidMsg = "Check For Customer - Invalid Request: channelProfile.customerBusinessReferences does not have any values";
+          invalid = true;
+      }
 
-    try {
-      // Pass in our URL and headers
-      request(options, function (error, response, body) {
-        if (!error) {
-          // If no errors, process results here
-          if (response.statusCode == 200) {
-            if (body.customers && body.customers.length == 1) {
-              out.ncStatusCode = 200;
-              out.payload = {
-                customerRemoteID: "1",
-                customerBusinessReference: "email"
-              };
-            } else if (body.customers.length > 1) {
-              out.ncStatusCode = 409;
-              out.payload.error = body;
-            } else {
-              out.ncStatusCode = 204;
-            }
-          } else if (response.statusCode == 429) {
-            out.ncStatusCode = 429;
-            out.payload.error = body;
-          } else if (response.statusCode == 500) {
-            out.ncStatusCode = 500;
-            out.payload.error = body;
-          } else {
-            out.ncStatusCode = 400;
-            out.payload.error = body;
+      // Check callback
+      if (!callback) {
+          throw new Error("A callback function was not provided");
+      } else if (typeof callback !== 'function') {
+          throw new TypeError("callback is not a function")
+      }
+
+      // Check payload
+      if (!payload) {
+          invalid = true;
+          invalidMsg = "payload was not provided"
+      } else if (!payload.doc) {
+          invalid = true;
+          invalidMsg = "payload.doc was not provided";
+      }
+
+      if (!invalid) {
+        try {
+          const extractBusinessReference = require('../../../../util/extractBusinessReference');
+          const jsonata = require('jsonata');
+
+          let request = ncUtil.request;
+          let url = "";
+
+          // Create endpoint
+          let minorVersion = "?minorversion=" + channelProfile.channelSettingsValues.minor_version;
+          let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/query";
+          url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
+
+          // Lookup the businessReference
+          let values = [];
+          let customerBusinessReference = [];
+
+          channelProfile.customerBusinessReferences.forEach(function (businessReference) {
+              let expression = jsonata(businessReference);
+              let value = expression.evaluate(payload.doc);
+              if (businessReference.startsWith('PrimaryEmailAddr')) {
+                values.push("PrimaryEmailAddr = '" + encodeURIComponent(value) + "'");
+              } else {
+                values.push(businessReference + " = '" + encodeURIComponent(value) + "'");
+              }
+              customerBusinessReference.push(encodeURIComponent(value));
+          });
+
+          // Set our query for looking up customers
+          let lookup = "&query=select * from Customer Where " + values.join(" AND ");
+
+          // Set headers
+          let headers = {};
+          headers = {
+              "Authorization": "Bearer " + channelProfile.channelAuthValues.access_token,
+              "Accept": "application/json"
           }
-          callback(out);
-        } else {
-          // If an error occurs, log the error here
-          logError("Do CheckForCustomer Callback error - " + error, ncUtil);
-          out.ncStatusCode = 500;
-          out.payload.error = error;
-          callback(out);
+
+          url += minorVersion + lookup
+
+          log("Using URL [" + url + "]", ncUtil);
+
+          let options = {
+              url: url,
+              headers: headers
+          };
+
+          // Pass in our URL and headers
+          request(options, function (error, response, body) {
+              try {
+                  if (!error) {
+                      log("Do CheckForCustomer Callback", ncUtil);
+                      out.response.endpointStatusCode = response.statusCode;
+                      out.response.endpointStatusMessage = response.statusMessage;
+
+                      // Parse data
+                      let data = JSON.parse(JSON.stringify(body));
+
+                      // 200 Response
+                      if (response.statusCode == 200) {
+                        data = JSON.parse(body);
+                        // _embedded.self is an array of customer data
+                        // One customer will return ncStatusCode = 200
+                        // More than one customer will return ncStatusCode = 409
+
+                        // _embedded.self is only returned if there is customer data
+                        // If not present, return ncStatusCode = 204
+                        if (data.QueryResponse.Customer) {
+                          if (data.QueryResponse.Customer && data.QueryResponse.Customer.length == 1) {
+                              let customer = data.QueryResponse.Customer[0];
+                              out.ncStatusCode = 200;
+                              out.payload.customerRemoteID = customer.Id;
+                              out.payload.customerBusinessReference = extractBusinessReference(channelProfile.customerBusinessReferences, customer);
+                          } else {
+                              out.ncStatusCode = 409;
+                              out.payload.error = { err: data };
+                          }
+                        } else {
+                            out.ncStatusCode = 204;
+                        }
+                      } else if (response.statusCode == 400) {
+                          out.ncStatusCode = 400;
+                          out.payload.error = { err: data };
+                      } else if (response.statusCode == 429) {
+                          out.ncStatusCode = 429;
+                          out.payload.error = { err: data };
+                      } else if (response.statusCode == 500) {
+                          out.ncStatusCode = 500;
+                          out.payload.error = { err: data };
+                      } else {
+                          out.ncStatusCode = 400;
+                          out.payload.error = { err: data };
+                      }
+                      callback(out);
+                  } else {
+                      logError("Do CheckForCustomer Callback error - " + error, ncUtil);
+                      out.ncStatusCode = 500;
+                      out.payload.error = { err: error };
+                      callback(out);
+                  }
+              } catch (err) {
+                  logError("Exception occurred in CheckForCustomer - " + err, ncUtil);
+                  console.log(err);
+                  out.payload.error = { err: err, stackTrace: err.stackTrace };
+                  out.ncStatusCode = 500;
+                  callback(out);
+              }
+          });
         }
-      });
-    } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in CheckForCustomer - " + err, ncUtil);
-      out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
-      callback(out);
-    }
-  } else {
-    // Invalid Request
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
-    out.ncStatusCode = 400;
-    out.payload.error = invalidMsg;
-    callback(out);
-  }
-};
+        catch (err){
+            logError("Exception occurred in CheckForCustomer - " + err, ncUtil);
+            out.ncStatusCode = 500;
+            out.payload.error = { err: err, stackTrace: err.stackTrace };
+            callback(out);
+        }
+      } else {
+          log("Callback with an invalid request - " + invalidMsg, ncUtil);
+          out.ncStatusCode = 400;
+          out.payload.error = { err: invalidMsg };
+          callback(out);
+      }
+}
 
 function logError(msg, ncUtil) {
-  console.log("[error] " + msg);
+    console.log("[error] " + msg);
 }
 
 function log(msg, ncUtil) {
-  console.log("[info] " + msg);
+    console.log("[info] " + msg);
 }
 
 module.exports.CheckForCustomer = CheckForCustomer;

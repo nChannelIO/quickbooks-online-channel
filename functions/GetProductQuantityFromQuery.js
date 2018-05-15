@@ -1,4 +1,4 @@
-let GetSalesOrderFromQuery = function(ncUtil,
+let GetProductQuantityFromQuery = function(ncUtil,
     channelProfile,
     flowContext,
     payload,
@@ -24,7 +24,7 @@ let GetSalesOrderFromQuery = function(ncUtil,
         invalidMsg = "ncUtil.request was not provided"
     }
 
-    //If channelProfile does not contain channelSettingsValues, channelAuthValues or salesOrderBusinessReferences, the request can't be sent
+    //If channelProfile does not contain channelSettingsValues, channelAuthValues or productQuantityBusinessReferences, the request can't be sent
     if (!channelProfile) {
         invalid = true;
         invalidMsg = "channelProfile was not provided"
@@ -49,15 +49,15 @@ let GetSalesOrderFromQuery = function(ncUtil,
     } else if (!channelProfile.channelAuthValues.realm_id) {
         invalid = true;
         invalidMsg = "channelProfile.channelAuthValues.realm_id was not provided"
-    } else if (!channelProfile.salesOrderBusinessReferences) {
+    } else if (!channelProfile.productQuantityBusinessReferences) {
         invalid = true;
-        invalidMsg = "channelProfile.salesOrderBusinessReferences was not provided"
-    } else if (!Array.isArray(channelProfile.salesOrderBusinessReferences)) {
+        invalidMsg = "channelProfile.productQuantityBusinessReferences was not provided"
+    } else if (!Array.isArray(channelProfile.productQuantityBusinessReferences)) {
         invalid = true;
-        invalidMsg = "channelProfile.salesOrderBusinessReferences is not an array"
-    } else if (channelProfile.salesOrderBusinessReferences.length === 0) {
+        invalidMsg = "channelProfile.productQuantityBusinessReferences is not an array"
+    } else if (channelProfile.productQuantityBusinessReferences.length === 0) {
         invalid = true;
-        invalidMsg = "channelProfile.salesOrderBusinessReferences is empty"
+        invalidMsg = "channelProfile.productQuantityBusinessReferences is empty"
     }
 
     //If a query document was not passed in, the request is invalid
@@ -67,10 +67,10 @@ let GetSalesOrderFromQuery = function(ncUtil,
     } else if (!payload.doc) {
         invalid = true;
         invalidMsg = "payload.doc was not provided";
-    } else if (!payload.doc.remoteIDs && !payload.doc.searchFields && !payload.doc.modifiedDateRange) {
+    } else if (!payload.doc.remoteIDs && !payload.doc.searchFields && !payload.doc.modifiedDateRange && !payload.doc.createdDateRange) {
         invalid = true;
         invalidMsg = "either payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange must be provided"
-    } else if (payload.doc.remoteIDs && (payload.doc.searchFields || payload.doc.modifiedDateRange)) {
+    } else if (payload.doc.remoteIDs && (payload.doc.searchFields || payload.doc.modifiedDateRange || payload.doc.createdDateRange)) {
         invalid = true;
         invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange may be provided"
     } else if (payload.doc.remoteIDs && (!Array.isArray(payload.doc.remoteIDs) || payload.doc.remoteIDs.length === 0)) {
@@ -92,7 +92,13 @@ let GetSalesOrderFromQuery = function(ncUtil,
         invalidMsg = "at least one of payload.doc.modifiedDateRange.startDateGMT or payload.doc.modifiedDateRange.endDateGMT must be provided"
     } else if (payload.doc.modifiedDateRange && payload.doc.modifiedDateRange.startDateGMT && payload.doc.modifiedDateRange.endDateGMT && (payload.doc.modifiedDateRange.startDateGMT > payload.doc.modifiedDateRange.endDateGMT)) {
         invalid = true;
-        invalidMsg = "startDateGMT must have a date before endDateGMT";
+        invalidMsg = "modifiedDateRange startDateGMT must have a date before endDateGMT";
+    } else if (payload.doc.createdDateRange && !(payload.doc.createdDateRange.startDateGMT || payload.doc.createdDateRange.endDateGMT)) {
+      invalid = true;
+      invalidMsg = "at least one of payload.doc.createdDateRange.startDateGMT or payload.doc.createdDateRange.endDateGMT must be provided"
+    } else if (payload.doc.createdDateRange && payload.doc.createdDateRange.startDateGMT && payload.doc.createdDateRange.endDateGMT && (payload.doc.createdDateRange.startDateGMT > payload.doc.createdDateRange.endDateGMT)) {
+        invalid = true;
+        invalidMsg = "createdDateRange startDateGMT must have a date before endDateGMT";
     }
 
     //If callback is not a function
@@ -122,21 +128,22 @@ let GetSalesOrderFromQuery = function(ncUtil,
         if (payload.doc.searchFields) {
             let fields = [];
             payload.doc.searchFields.forEach(function(searchField) {
-
-              // Check fields to get the base property to use in the query
-              if (searchField.searchField !== "MetaData.CreateTime" && searchField.searchField !== "MetaData.LastUpdatedTime") {
-                if (searchField.searchField === "CustomerRef.value") {
-                  searchField.searchField = "CustomerRef";
-                }
-              }
-
                 // Loop through each value
                 let values = [];
                 searchField.searchValues.forEach(function(searchValue) {
+                  if (searchField.searchField === "Active") {
+                    let value = (searchValue === "true");
+                    values.push(value);
+                  } else {
                     values.push("'" + searchValue + "'");
+                  }
                 });
 
-                fields.push(searchField.searchField + " IN (" + values.join(',') + ")");
+                if (searchField.searchField === "Active") {
+                  fields.push(searchField.searchField + " = " + values.join(''));
+                } else {
+                  fields.push(searchField.searchField + " IN (" + values.join(',') + ")");
+                }
             });
 
             filterParams.push(fields.join(' AND '));
@@ -162,6 +169,16 @@ let GetSalesOrderFromQuery = function(ncUtil,
             if (payload.doc.modifiedDateRange.endDateGMT) {
                 filterParams.push("MetaData.LastUpdatedTime <= '" + payload.doc.modifiedDateRange.endDateGMT + "'");
             }
+        } else if (payload.doc.createdDateRange){
+          /*
+           Add created date ranges to the query
+           */
+          if (payload.doc.createdDateRange.startDateGMT) {
+              filterParams.push("MetaData.CreateTime >= '" + payload.doc.createdDateRange.startDateGMT + "'");
+          }
+          if (payload.doc.createdDateRange.endDateGMT) {
+              filterParams.push("MetaData.CreateTime <= '" + payload.doc.createdDateRange.endDateGMT + "'");
+          }
         }
 
         // Format the 'filter' query parameter
@@ -187,7 +204,7 @@ let GetSalesOrderFromQuery = function(ncUtil,
         /*
          Format the query parameters and append them to the url
          */
-        url += "&query=SELECT * FROM SalesReceipt WHERE " + queryParams.join(' ');
+        url += "&query=SELECT * FROM Item WHERE " + queryParams.join(' ');
 
         log("Using URL [" + url + "]", ncUtil);
 
@@ -210,7 +227,7 @@ let GetSalesOrderFromQuery = function(ncUtil,
         request(options, function(error, response, body) {
             try {
                 if (!error) {
-                    log("Do GetSalesOrderFromQuery Callback", ncUtil);
+                    log("Do GetProductQuantityFromQuery Callback", ncUtil);
                     out.response.endpointStatusCode = response.statusCode;
                     out.response.endpointStatusMessage = response.statusMessage;
 
@@ -219,14 +236,16 @@ let GetSalesOrderFromQuery = function(ncUtil,
                     let data = body;
 
                     if (response.statusCode === 200) {
-                        // If we have an array of orders, set out.payload to be the array of orders returned
-                        if (data.QueryResponse.SalesReceipt && data.QueryResponse.SalesReceipt.length > 0) {
-                            for (let i = 0; i < data.QueryResponse.SalesReceipt.length; i++) {
-                                let order = data.QueryResponse.SalesReceipt[i];
+                        // If we have an array of products, set out.payload to be the array of products returned
+                        if (data.QueryResponse.Item && data.QueryResponse.Item.length > 0) {
+                            for (let i = 0; i < data.QueryResponse.Item.length; i++) {
+                                let product = {
+                                    Item: data.QueryResponse.Item[i]
+                                }
                                 docs.push({
-                                    doc: order,
-                                    salesOrderRemoteID: order.Id,
-                                    salesOrderBusinessReference: extractBusinessReference(channelProfile.salesOrderBusinessReferences, order)
+                                    doc: product,
+                                    productQuantityRemoteID: product.Item.Id,
+                                    productQuantityBusinessReference: extractBusinessReference(channelProfile.productQuantityBusinessReferences, product)
                                 });
                             }
                             if (docs.length === payload.doc.pageSize) {
@@ -252,13 +271,13 @@ let GetSalesOrderFromQuery = function(ncUtil,
 
                     callback(out);
                 } else {
-                    logError("Do GetSalesOrderFromQuery Callback error - " + error, ncUtil);
+                    logError("Do GetProductQuantityFromQuery Callback error", ncUtil);
                     out.ncStatusCode = 500;
                     out.payload.error = error;
                     callback(out);
                 }
             } catch (err) {
-                logError("Exception occurred in GetSalesOrderFromQuery - err" + err, ncUtil);
+                logError("Exception occurred in GetProductQuantityFromQuery - err" + err, ncUtil);
                 out.ncStatusCode = 500;
                 out.payload.error = {
                     err: err,
@@ -268,7 +287,7 @@ let GetSalesOrderFromQuery = function(ncUtil,
             }
         });
     } else {
-        log("Callback with an invalid request - " + invalidMsg, ncUtil);
+        log("Callback with an invalid request", ncUtil);
         out.ncStatusCode = 400;
         out.payload.error = invalidMsg;
         callback(out);
@@ -283,4 +302,4 @@ function log(msg, ncUtil) {
     console.log("[info] " + msg);
 }
 
-module.exports.GetSalesOrderFromQuery = GetSalesOrderFromQuery;
+module.exports.GetProductQuantityFromQuery = GetProductQuantityFromQuery;

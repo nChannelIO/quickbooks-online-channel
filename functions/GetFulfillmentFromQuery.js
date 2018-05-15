@@ -1,8 +1,9 @@
-let GetFulfillmentFromQuery = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
+let GetFulfillmentFromQuery = function(ncUtil,
+                                       channelProfile,
+                                       flowContext,
+                                       payload,
+                                       callback) {
+
 
   log("Building response object...", ncUtil);
   let out = {
@@ -18,9 +19,12 @@ let GetFulfillmentFromQuery = function (ncUtil,
   if (!ncUtil) {
     invalid = true;
     invalidMsg = "ncUtil was not provided"
+  } else if (!ncUtil.request) {
+    invalid = true;
+    invalidMsg = "ncUtil.request was not provided"
   }
 
-  //If channelProfile does not contain channelSettingsValues, channelAuthValues or fulfillmentBusinessReferences, the request can't be sent
+  //If channelProfile does not contain channelSettingsValues, channelAuthValues or salesOrderBusinessReferences, the request can't be sent
   if (!channelProfile) {
     invalid = true;
     invalidMsg = "channelProfile was not provided"
@@ -30,9 +34,30 @@ let GetFulfillmentFromQuery = function (ncUtil,
   } else if (!channelProfile.channelSettingsValues.protocol) {
     invalid = true;
     invalidMsg = "channelProfile.channelSettingsValues.protocol was not provided"
+  } else if (!channelProfile.channelSettingsValues.api_uri) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelSettingsValues.api_uri was not provided"
+  } else if (!channelProfile.channelSettingsValues.minor_version) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelSettingsValues.minor_version was not provided";
   } else if (!channelProfile.channelAuthValues) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues was not provided"
+  } else if (!channelProfile.channelAuthValues.access_token) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.access_token was not provided"
+  } else if (!channelProfile.channelAuthValues.realm_id) {
+    invalid = true;
+    invalidMsg = "channelProfile.channelAuthValues.realm_id was not provided"
+  } else if (!channelProfile.salesOrderBusinessReferences) {
+    invalid = true;
+    invalidMsg = "channelProfile.salesOrderBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.salesOrderBusinessReferences)) {
+    invalid = true;
+    invalidMsg = "channelProfile.salesOrderBusinessReferences is not an array"
+  } else if (channelProfile.salesOrderBusinessReferences.length === 0) {
+    invalid = true;
+    invalidMsg = "channelProfile.salesOrderBusinessReferences is empty"
   } else if (!channelProfile.fulfillmentBusinessReferences) {
     invalid = true;
     invalidMsg = "channelProfile.fulfillmentBusinessReferences was not provided"
@@ -44,13 +69,28 @@ let GetFulfillmentFromQuery = function (ncUtil,
     invalidMsg = "channelProfile.fulfillmentBusinessReferences is empty"
   }
 
-  //If a sales order document was not passed in, the request is invalid
+  //If a query document was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
     invalidMsg = "payload was not provided"
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
+  } else if (!payload.doc.remoteIDs && !payload.doc.modifiedDateRange) {
+    invalid = true;
+    invalidMsg = "either payload.doc.remoteIDs or payload.doc.modifiedDateRange must be provided"
+  } else if (payload.doc.remoteIDs && payload.doc.modifiedDateRange) {
+    invalid = true;
+    invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.modifiedDateRange may be provided"
+  } else if (payload.doc.remoteIDs && (!Array.isArray(payload.doc.remoteIDs) || payload.doc.remoteIDs.length === 0)) {
+    invalid = true;
+    invalidMsg = "payload.doc.remoteIDs must be an Array with at least 1 remoteID"
+  } else if (payload.doc.modifiedDateRange && !(payload.doc.modifiedDateRange.startDateGMT || payload.doc.modifiedDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "at least one of payload.doc.modifiedDateRange.startDateGMT or payload.doc.modifiedDateRange.endDateGMT must be provided"
+  } else if (payload.doc.modifiedDateRange && payload.doc.modifiedDateRange.startDateGMT && payload.doc.modifiedDateRange.endDateGMT && (payload.doc.modifiedDateRange.startDateGMT > payload.doc.modifiedDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "startDateGMT must have a date before endDateGMT";
   }
 
   //If callback is not a function
@@ -61,34 +101,100 @@ let GetFulfillmentFromQuery = function (ncUtil,
   }
 
   if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
-    let request = require('request');
+    const extractBusinessReference = require('../../../../util/extractBusinessReference');
 
-    let url = "https://localhost/";
+    let minorVersion = "?minorversion=" + channelProfile.channelSettingsValues.minor_version;
 
-    // Add any headers for the request
-    let headers = {
+    let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/query" + minorVersion;
 
-    };
+    let request = ncUtil.request;
 
-    // Log URL
+    let filter = require('lodash/filter');
+
+    let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
+
+    /*
+     Create query string for searching customers by specific fields
+     */
+    let queryParams = [];
+    let filterParams = [];
+
+    if (payload.doc.remoteIDs) {
+      /*
+       Add remote IDs as a query parameter
+       */
+      let ids = [];
+      payload.doc.remoteIDs.forEach((remoteID) => {
+        ids.push("'" + remoteID + "'");
+      });
+
+      filterParams.push("Id IN (" + ids.join(',') + ")");
+
+    } else if (payload.doc.modifiedDateRange) {
+      /*
+       Add modified date ranges to the query
+       */
+      if (payload.doc.modifiedDateRange.startDateGMT) {
+        filterParams.push("MetaData.LastUpdatedTime >= '" + payload.doc.modifiedDateRange.startDateGMT + "'");
+      }
+      if (payload.doc.modifiedDateRange.endDateGMT) {
+        filterParams.push("MetaData.LastUpdatedTime <= '" + payload.doc.modifiedDateRange.endDateGMT + "'");
+      }
+
+      // Set the query to only return documents created in the last two weeks
+      let moment = require('moment');
+      let twoWeeksAgo = moment().subtract(14, 'days').startOf('day').utc().format();
+      let createdDateQuery = "MetaData.CreateTime >= '" + twoWeeksAgo + "'";
+      filterParams.push(createdDateQuery);
+    }
+
+
+    // Format the 'filter' query parameter
+    queryParams.push(filterParams.join(' AND '));
+
+    /*
+     Add page to the query
+     */
+    let startDoc = (payload.doc.page - 1) * payload.doc.pageSize;
+    if (payload.doc.page) {
+      if (startDoc > 0) {
+        queryParams.push("STARTPOSITION " + startDoc);
+      }
+    }
+
+    /*
+     Add pageSize (limit) to the query
+     */
+    if (payload.doc.pageSize) {
+      queryParams.push("MAXRESULTS " + payload.doc.pageSize);
+    }
+
+    /*
+     Format the query parameters and append them to the url
+     */
+    url += "&query=SELECT * FROM SalesReceipt WHERE " + queryParams.join(' ');
+
     log("Using URL [" + url + "]", ncUtil);
 
-    // Set options
+    // Add the authorization header
+    headers = {
+      "Authorization": "Bearer " + channelProfile.channelAuthValues.access_token,
+      "Accept": "application/json"
+    }
+
+    /*
+     Set URL and headers
+     */
     let options = {
       url: url,
-      method: "GET",
       headers: headers,
-      body: payload.doc,
       json: true
     };
 
-    try {
-      // Pass in our URL and headers
-      request(options, function (error, response, body) {
+    // Pass in our URL and headers
+    request(options, function(error, response, body) {
+      try {
         if (!error) {
-          // If no errors, process results here
           log("Do GetFulfillmentFromQuery Callback", ncUtil);
           out.response.endpointStatusCode = response.statusCode;
           out.response.endpointStatusMessage = response.statusMessage;
@@ -98,19 +204,24 @@ let GetFulfillmentFromQuery = function (ncUtil,
           let data = body;
 
           if (response.statusCode === 200) {
-            if (data.fulfillments && data.fulfillments.length > 0) {
-              for (let i = 0; i < data.fulfillments.length; i++) {
-                let fulfillment = {
-                  fulfillment: data.fulfillments[i]
-                };
+            // If we have an array of orders, set out.payload to be the array of orders returned
+            if (data.QueryResponse.SalesReceipt && data.QueryResponse.SalesReceipt.length > 0) {
+              // We only need to process the SalesReceipts that have tracking number
+              let fulfillments = filter(data.QueryResponse.SalesReceipt, (salesReceipt) =>{
+                return salesReceipt.TrackingNum;
+              });
+
+              for (let i = 0; i < fulfillments.length; i++) {
+                let order = fulfillments[i];
                 docs.push({
-                  doc: fulfillment,
-                  fulfillmentRemoteID: fulfillment.fulfillment.id,
-                  fulfillmentBusinessReference: fulfillment.fulfillment.id,
-                  salesOrderRemoteID: payload.salesOrderRemoteID
+                  doc: {SalesReceipt: order},
+                  salesOrderRemoteID: order.Id,
+                  salesOrderBusinessReference: extractBusinessReference(channelProfile.salesOrderBusinessReferences, order),
+                  fulfillmentRemoteID: order.Id,
+                  fulfillmentBusinessReference: extractBusinessReference(channelProfile.fulfillmentBusinessReferences, order)
                 });
               }
-              if (docs.length === payload.doc.pageSize) {
+              if (data.QueryResponse.SalesReceipt.length === payload.doc.pageSize) {
                 out.ncStatusCode = 206;
               } else {
                 out.ncStatusCode = 200;
@@ -133,22 +244,22 @@ let GetFulfillmentFromQuery = function (ncUtil,
 
           callback(out);
         } else {
-          // If an error occurs, log the error here
           logError("Do GetFulfillmentFromQuery Callback error - " + error, ncUtil);
           out.ncStatusCode = 500;
-          out.payload.error = {err: error};
+          out.payload.error = error;
           callback(out);
         }
-      });
-    } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in GetFulfillmentFromQuery - " + err, ncUtil);
-      out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
-      callback(out);
-    }
+      } catch (err) {
+        logError("Exception occurred in GetFulfillmentFromQuery - err " + err, ncUtil);
+        out.ncStatusCode = 500;
+        out.payload.error = {
+          err: err,
+          stack: err.stackTrace
+        };
+        callback(out);
+      }
+    });
   } else {
-    // Invalid Request
     log("Callback with an invalid request - " + invalidMsg, ncUtil);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;

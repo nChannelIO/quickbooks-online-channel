@@ -1,148 +1,197 @@
-let CheckForProductQuantity = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
+let CheckForProductQuantity = function(
+    ncUtil,
+    channelProfile,
+    flowContext,
+    payload,
+    callback)
+{
 
-  log("Building response object...", ncUtil);
-  let out = {
-    ncStatusCode: null,
-    response: {},
-    payload: {}
-  };
-
-  let invalid = false;
-  let invalidMsg = "";
-
-  //If ncUtil does not contain a request object, the request can't be sent
-  if (!ncUtil) {
-    invalid = true;
-    invalidMsg = "ncUtil was not provided"
-  }
-
-  //If channelProfile does not contain channelSettingsValues, channelAuthValues or productQuantityBusinessReferences, the request can't be sent
-  if (!channelProfile) {
-    invalid = true;
-    invalidMsg = "channelProfile was not provided"
-  } else if (!channelProfile.channelSettingsValues) {
-    invalid = true;
-    invalidMsg = "channelProfile.channelSettingsValues was not provided"
-  } else if (!channelProfile.channelSettingsValues.protocol) {
-    invalid = true;
-    invalidMsg = "channelProfile.channelSettingsValues.protocol was not provided"
-  } else if (!channelProfile.channelAuthValues) {
-    invalid = true;
-    invalidMsg = "channelProfile.channelAuthValues was not provided"
-  } else if (!channelProfile.productQuantityBusinessReferences) {
-    invalid = true;
-    invalidMsg = "channelProfile.productQuantityBusinessReferences was not provided"
-  } else if (!Array.isArray(channelProfile.productQuantityBusinessReferences)) {
-    invalid = true;
-    invalidMsg = "channelProfile.productQuantityBusinessReferences is not an array"
-  } else if (channelProfile.productQuantityBusinessReferences.length === 0) {
-    invalid = true;
-    invalidMsg = "channelProfile.productQuantityBusinessReferences is empty"
-  }
-
-  //If a sales order document was not passed in, the request is invalid
-  if (!payload) {
-    invalid = true;
-    invalidMsg = "payload was not provided"
-  } else if (!payload.doc) {
-    invalid = true;
-    invalidMsg = "payload.doc was not provided";
-  }
-
-  //If callback is not a function
-  if (!callback) {
-    throw new Error("A callback function was not provided");
-  } else if (typeof callback !== 'function') {
-    throw new TypeError("callback is not a function")
-  }
-
-  if (!invalid) {
-    // Using request for example - A different npm module may be needed depending on the API communication is being made to
-    // The `soap` module can be used in place of `request` but the logic and data being sent will be different
-    let request = require('request');
-
-    let url = "https://localhost/";
-
-    // Add any headers for the request
-    let headers = {
-
+    log("Building response object...", ncUtil);
+    let out = {
+        ncStatusCode: null,
+        response: {},
+        payload: {}
     };
 
-    // Log URL
-    log("Using URL [" + url + "]", ncUtil);
+      let invalid = false;
+      let invalidMsg = "";
+      const extractBusinessReference = require('../../../../util/extractBusinessReference');
 
-    // Set options
-    let options = {
-      url: url,
-      method: "GET",
-      headers: headers,
-      body: payload.doc,
-      json: true
-    };
+      // Check channelProfile properties
+      if (!ncUtil) {
+          invalid = true;
+          invalidMsg = "Check For Product Quantity - Invalid Request: ncUtil was not passed into the function";
+      } else if (!channelProfile) {
+          invalid = true;
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelProfile was not passed into the function";
+      } else if (!channelProfile.channelAuthValues) {
+          invalid = true;
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelAuthValues is missing from channelProfile";
+      } else if (!channelProfile.channelSettingsValues) {
+          invalid = true;
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelSettingsValues is missing from channelProfile";
+      } else if (!channelProfile.channelSettingsValues.protocol) {
+          invalid = true;
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelProfile.channelSettingsValues.protocol is missing";
+      } else if (!channelProfile.channelSettingsValues.api_uri) {
+          invalid = true;
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelProfile.channelSettingsValues.api_uri is missing";
+      } else if (!channelProfile.channelSettingsValues.minor_version) {
+          invalid = true;
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelProfile.channelSettingsValues.minor_version is missing";
+      } else if (!channelProfile.channelAuthValues.realm_id) {
+          invalid = true;
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelProfile.channelAuthValues.realm_id is missing";
+      } else if (!channelProfile.channelAuthValues.access_token) {
+          invalid = true;
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelProfile.channelAuthValues.access_token is missing";
+      } else if (!channelProfile.productQuantityBusinessReferences) {
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelProfile.productQuantityBusinessReferences is missing";
+          invalid = true;
+      } else if (!Array.isArray(channelProfile.productQuantityBusinessReferences)) {
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelProfile.productQuantityBusinessReferences is expected to be an array";
+          invalid = true;
+      } else if (channelProfile.productQuantityBusinessReferences.length == 0) {
+          invalidMsg = "Check For Product Quantity - Invalid Request: channelProfile.productQuantityBusinessReferences does not have any values";
+          invalid = true;
+      }
 
-    try {
-      // Pass in our URL and headers
-      request(options, function (error, response, body) {
-        if (!error) {
-          // If no errors, process results here
-          if (response.statusCode == 200) {
-            if (body.products && body.products.length == 1) {
-              out.ncStatusCode = 200;
-              out.payload = {
-                productQuantityRemoteID: "1",
-                productQuantityBusinessReference: "sku"
-              };
-            } else if (body.products.length > 1) {
-              out.ncStatusCode = 409;
-              out.payload.error = body;
-            } else {
-              out.ncStatusCode = 204;
-            }
-          } else if (response.statusCode == 429) {
-            out.ncStatusCode = 429;
-            out.payload.error = body;
-          } else if (response.statusCode == 500) {
-            out.ncStatusCode = 500;
-            out.payload.error = body;
-          } else {
-            out.ncStatusCode = 400;
-            out.payload.error = body;
+      // Check callback
+      if (!callback) {
+          throw new Error("A callback function was not provided");
+      } else if (typeof callback !== 'function') {
+          throw new TypeError("callback is not a function")
+      }
+
+      // Check payload
+      if (!payload) {
+          invalid = true;
+          invalidMsg = "payload was not provided"
+      } else if (!payload.doc) {
+          invalid = true;
+          invalidMsg = "payload.doc was not provided";
+      }
+
+      if (!invalid) {
+        try {
+          const extractBusinessReference = require('../../../../util/extractBusinessReference');
+          const jsonata = require('jsonata');
+
+          let request = ncUtil.request;
+          let url = "";
+
+          // Create endpoint
+          let minorVersion = "?minorversion=" + channelProfile.channelSettingsValues.minor_version;
+          let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/query";
+          url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
+
+          // Lookup the businessReference
+          let values = [];
+          let productQuantityBusinessReference = [];
+
+          channelProfile.productQuantityBusinessReferences.forEach(function (businessReference) {
+              let property = businessReference.slice(businessReference.indexOf('.')+1)
+              let expression = jsonata(businessReference);
+              let value = expression.evaluate(payload.doc);
+              values.push(property + " = '" + value + "'");
+              productQuantityBusinessReference.push(value);
+          });
+
+          // Set our query for looking up products
+          let lookup = "&query=select * from Item Where " + values.join(" AND ");
+
+          // Set headers
+          let headers = {};
+          headers = {
+              "Authorization": "Bearer " + channelProfile.channelAuthValues.access_token,
+              "Accept": "application/json"
           }
-          callback(out);
-        } else {
-          // If an error occurs, log the error here
-          logError("Do CheckForProductQuantity Callback error - " + error, ncUtil);
-          out.ncStatusCode = 500;
-          out.payload.error = error;
-          callback(out);
+
+          url += minorVersion + lookup;
+
+          log("Using URL [" + url + "]", ncUtil);
+
+          let options = {
+              url: url,
+              headers: headers
+          };
+
+          // Pass in our URL and headers
+          request(options, function (error, response, body) {
+              try {
+                  if (!error) {
+                      log("Do CheckForProductQuantity Callback", ncUtil);
+                      out.response.endpointStatusCode = response.statusCode;
+                      out.response.endpointStatusMessage = response.statusMessage;
+
+                      // Parse data
+                      let data = JSON.parse(JSON.stringify(body));
+
+                      // 200 Response
+                      if (response.statusCode == 200) {
+                        data = JSON.parse(body);
+
+                        if (data.QueryResponse.Item) {
+                          if (data.QueryResponse.Item && data.QueryResponse.Item.length == 1) {
+                              let product = data.QueryResponse.Item[0];
+                              out.ncStatusCode = 200;
+                              out.payload.productQuantityRemoteID = product.Id;
+                              out.payload.productQuantityBusinessReference = extractBusinessReference(channelProfile.productQuantityBusinessReferences, product);
+                          } else {
+                              out.ncStatusCode = 409;
+                              out.payload.error = { err: data };
+                          }
+                        } else {
+                            out.ncStatusCode = 204;
+                        }
+                      } else if (response.statusCode == 400) {
+                          out.ncStatusCode = 400;
+                          out.payload.error = { err: data };
+                      } else if (response.statusCode == 429) {
+                          out.ncStatusCode = 429;
+                          out.payload.error = { err: data };
+                      } else if (response.statusCode == 500) {
+                          out.ncStatusCode = 500;
+                          out.payload.error = { err: data };
+                      } else {
+                          out.ncStatusCode = 400;
+                          out.payload.error = { err: data };
+                      }
+                      callback(out);
+                  } else {
+                      logError("Do CheckForProductQuantity Callback error - " + error, ncUtil);
+                      out.ncStatusCode = 500;
+                      out.payload.error = { err: error };
+                      callback(out);
+                  }
+              } catch (err) {
+                  logError("Exception occurred in CheckForProductQuantity - " + err, ncUtil);
+                  out.payload.error = { err: err, stackTrace: err.stackTrace };
+                  out.ncStatusCode = 500;
+                  callback(out);
+              }
+          });
         }
-      });
-    } catch (err) {
-      // Exception Handling
-      logError("Exception occurred in CheckForProductQuantity - " + err, ncUtil);
-      out.ncStatusCode = 500;
-      out.payload.error = {err: err, stack: err.stackTrace};
-      callback(out);
-    }
-  } else {
-    // Invalid Request
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
-    out.ncStatusCode = 400;
-    out.payload.error = invalidMsg;
-    callback(out);
-  }
-};
+        catch (err){
+            logError("Exception occurred in CheckForProductQuantity - " + err, ncUtil);
+            out.ncStatusCode = 500;
+            out.payload.error = { err: err, stackTrace: err.stackTrace };
+            callback(out);
+        }
+      } else {
+          log("Callback with an invalid request - " + invalidMsg, ncUtil);
+          out.ncStatusCode = 400;
+          out.payload.error = { err: invalidMsg };
+          callback(out);
+      }
+}
 
 function logError(msg, ncUtil) {
-  console.log("[error] " + msg);
+    console.log("[error] " + msg);
 }
 
 function log(msg, ncUtil) {
-  console.log("[info] " + msg);
+    console.log("[info] " + msg);
 }
 
 module.exports.CheckForProductQuantity = CheckForProductQuantity;
