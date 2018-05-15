@@ -1,12 +1,16 @@
 'use strict';
 
-let InsertSalesOrder = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
+let extractBusinessReference = require('../util/extractBusinessReference');
+let request = require('request');
 
-  log("Building response object...", ncUtil);
+let InsertSalesOrder = function (
+  ncUtil,
+  channelProfile,
+  flowContext,
+  payload,
+  callback) {
+
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -76,7 +80,7 @@ let InsertSalesOrder = function (ncUtil,
 
   if (!invalid) {
     try {
-      let request = ncUtil.request;
+
       // First query items by sku to update the sales order line items with their remote ids. If at least one can't be found return a 400.
 
       // Get a list of skus
@@ -177,7 +181,7 @@ let InsertSalesOrder = function (ncUtil,
               "Accept": "application/json"
             };
 
-            log("Using URL [" + url + "]", ncUtil);
+            log("Using URL [" + url + "]");
 
             // Delete the customer and replace it with the customer remoteID
             delete payload.doc.Customer;
@@ -201,8 +205,8 @@ let InsertSalesOrder = function (ncUtil,
             request(options, function (error, response, body) {
               try {
                 if (!error) {
-                  const extractBusinessReference = require('../../../../util/extractBusinessReference');
-                  log("Do InsertSalesOrder Callback", ncUtil);
+
+                  log("Do InsertSalesOrder Callback");
                   out.response.endpointStatusCode = response.statusCode;
                   out.response.endpointStatusMessage = response.statusMessage;
 
@@ -230,13 +234,13 @@ let InsertSalesOrder = function (ncUtil,
 
                   callback(out);
                 } else {
-                  logError("Do InsertSalesOrder Callback error - " + error, ncUtil);
+                  logError("Do InsertSalesOrder Callback error - " + error);
                   out.ncStatusCode = 500;
                   out.payload.error = {err: error};
                   callback(out);
                 }
               } catch (err) {
-                logError("Exception occurred in InsertSalesOrder - " + err, ncUtil);
+                logError("Exception occurred in InsertSalesOrder - " + err);
                 out.ncStatusCode = 500;
                 out.payload.error = {err: err, stackTrace: err.stackTrace};
                 callback(out);
@@ -261,25 +265,25 @@ let InsertSalesOrder = function (ncUtil,
         }
       });
     } catch (err) {
-      logError("Exception occurred in InsertSalesOrder - " + err, ncUtil);
+      logError("Exception occurred in InsertSalesOrder - " + err);
       out.ncStatusCode = 500;
       out.payload.error = {err: err, stackTrace: err.stackTrace};
       callback(out);
     }
 
   } else {
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = {err: invalidMsg};
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 

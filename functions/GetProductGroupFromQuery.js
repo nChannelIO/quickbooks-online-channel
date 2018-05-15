@@ -1,15 +1,17 @@
-const jsonata = require('jsonata');
-const product = require('./GetProductSimpleFromQuery');
-const extractBusinessReference = require('../../../../util/extractBusinessReference');
+'use strict';
 
-let GetProductGroupFromQuery = function (ncUtil,
-                                         channelProfile,
-                                         flowContext,
-                                         payload,
-                                         callback) {
+let product = require('./GetProductSimpleFromQuery');
+let extractBusinessReference = require('../util/extractBusinessReference');
+let jsonata = require('jsonata');
 
+let GetProductGroupFromQuery = function (
+  ncUtil,
+  channelProfile,
+  flowContext,
+  payload,
+  callback) {
 
-  log("Building response object...", ncUtil);
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -84,7 +86,7 @@ let GetProductGroupFromQuery = function (ncUtil,
       return newReferences;
     }, []);
 
-    log("No Quickbooks product group endpoint. Deferring to GetProductSimpleFromQuery", ncUtil);
+    log("No Quickbooks product group endpoint. Deferring to GetProductSimpleFromQuery");
 
     try {
       // Modified date range query
@@ -105,7 +107,7 @@ let GetProductGroupFromQuery = function (ncUtil,
         });
       }
     } catch (err) {
-      logError("Exception occurred in GetProductGroupFromQuery - err" + err, ncUtil);
+      logError("Exception occurred in GetProductGroupFromQuery - err" + err);
       out.ncStatusCode = 500;
       out.payload.error = {
         err: err,
@@ -115,7 +117,7 @@ let GetProductGroupFromQuery = function (ncUtil,
     }
 
   } else {
-    log("Callback with an invalid request", ncUtil);
+    log("Callback with an invalid request");
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
@@ -150,7 +152,7 @@ let GetProductGroupFromQuery = function (ncUtil,
  */
 function GetProductGroupsByTimeRange(ncUtil, channelProfile, flowContext, payload, callback, cache) {
   product.GetProductSimpleFromQuery(ncUtil, channelProfile, flowContext, payload, function (msg) {
-    log("Do GetProductGroupFromQuery Callback", ncUtil);
+    log("Do GetProductGroupFromQuery Callback");
 
     // If GetProduct did not return an error then group the products by the product group BR
     if (msg.ncStatusCode === 200 || msg.ncStatusCode === 206) {
@@ -249,7 +251,7 @@ function GetAllProductsInGroup(ncUtil, channelProfile, flowContext, payload, cal
       if (msg.ncStatusCode === 206) {
         payload.doc.page += 1;
         queryForGroup(group, payload, callback);
-      } else if(msg.ncStatusCode === 200 || msg.ncStatusCode === 204) {
+      } else if (msg.ncStatusCode === 200 || msg.ncStatusCode === 204) {
         let res = {
           ncStatusCode: group.length > 0 ? 200 : 204,
           payload: {
@@ -359,11 +361,11 @@ function getGroupReferencesSet(products, businessReferences) {
   }, {});
 }
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 

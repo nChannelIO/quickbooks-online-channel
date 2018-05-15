@@ -1,10 +1,16 @@
-let UpdateSalesOrder = function (ncUtil,
-                                 channelProfile,
-                                 flowContext,
-                                 payload,
-                                 callback) {
+'use strict';
 
-  log("Building response object...", ncUtil);
+let extractBusinessReference = require('../util/extractBusinessReference');
+let request = require('request');
+
+let UpdateSalesOrder = function (
+  ncUtil,
+  channelProfile,
+  flowContext,
+  payload,
+  callback) {
+
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -80,7 +86,7 @@ let UpdateSalesOrder = function (ncUtil,
 
   if (!invalid) {
     try {
-      let request = ncUtil.request;
+
       // First query items by sku to update the sales order line items with their remote ids. If at least one can't be found return a 400.
 
       // Get a list of skus
@@ -182,7 +188,7 @@ let UpdateSalesOrder = function (ncUtil,
               "Accept": "application/json"
             };
 
-            log("Using URL [" + url + "]", ncUtil);
+            log("Using URL [" + url + "]");
 
             let readOptions = {
               url: url + "/" + payload.salesOrderRemoteID + minorVersion,
@@ -193,10 +199,10 @@ let UpdateSalesOrder = function (ncUtil,
             // Query the salesOrder
             request(readOptions, function (error, response, read) {
               try {
-                const extractBusinessReference = require('../../../../util/extractBusinessReference');
+
                 if (!error) {
                   if (response.statusCode === 200) {
-                    log("Do UpdateSalesOrder Callback", ncUtil);
+                    log("Do UpdateSalesOrder Callback");
                     out.response.endpointStatusCode = response.statusCode;
                     out.response.endpointStatusMessage = response.statusMessage;
 
@@ -264,13 +270,13 @@ let UpdateSalesOrder = function (ncUtil,
                           }
                           callback(out);
                         } else {
-                          logError("Do UpdateSalesOrder Callback error - " + error, ncUtil);
+                          logError("Do UpdateSalesOrder Callback error - " + error);
                           out.payload.error = {err: error};
                           out.ncStatusCode = 400;
                           callback(out);
                         }
                       } catch (err) {
-                        logError("Exception occurred in UpdateSalesOrder - " + err, ncUtil);
+                        logError("Exception occurred in UpdateSalesOrder - " + err);
                         out.ncStatusCode = 500;
                         out.payload.error = {err: err, stack: err.stackTrace};
                         callback(out);
@@ -290,14 +296,14 @@ let UpdateSalesOrder = function (ncUtil,
                     callback(out);
                   }
                 } else {
-                  logError("Do UpdateSalesOrder Callback error - " + error, ncUtil);
+                  logError("Do UpdateSalesOrder Callback error - " + error);
                   out.payload.error = error;
                   out.ncStatusCode = 400;
                   callback(out);
                 }
 
               } catch (err) {
-                logError("Exception occurred in UpdateSalesOrder - " + err, ncUtil);
+                logError("Exception occurred in UpdateSalesOrder - " + err);
                 out.ncStatusCode = 500;
                 out.payload.error = {err: err, stack: err.stackTrace};
                 callback(out);
@@ -321,24 +327,24 @@ let UpdateSalesOrder = function (ncUtil,
         }
       });
     } catch (err) {
-      logError("Exception occurred in InsertSalesOrder - " + err, ncUtil);
+      logError("Exception occurred in InsertSalesOrder - " + err);
       out.ncStatusCode = 500;
       out.payload.error = {err: err, stackTrace: err.stackTrace};
       callback(out);
     }
   } else {
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = {err: "Callback with an invalid request - " + invalidMsg};
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 

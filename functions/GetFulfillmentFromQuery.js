@@ -1,11 +1,16 @@
-let GetFulfillmentFromQuery = function(ncUtil,
-                                       channelProfile,
-                                       flowContext,
-                                       payload,
-                                       callback) {
+'use strict';
 
+let extractBusinessReference = require('../util/extractBusinessReference');
+let request = require('request');
 
-  log("Building response object...", ncUtil);
+let GetFulfillmentFromQuery = function (
+  ncUtil,
+  channelProfile,
+  flowContext,
+  payload,
+  callback) {
+
+  log("Building response object...");
   let out = {
     ncStatusCode: null,
     response: {},
@@ -101,13 +106,12 @@ let GetFulfillmentFromQuery = function(ncUtil,
   }
 
   if (!invalid) {
-    const extractBusinessReference = require('../../../../util/extractBusinessReference');
+
 
     let minorVersion = "?minorversion=" + channelProfile.channelSettingsValues.minor_version;
 
     let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/query" + minorVersion;
 
-    let request = ncUtil.request;
 
     let filter = require('lodash/filter');
 
@@ -174,7 +178,7 @@ let GetFulfillmentFromQuery = function(ncUtil,
      */
     url += "&query=SELECT * FROM SalesReceipt WHERE " + queryParams.join(' ');
 
-    log("Using URL [" + url + "]", ncUtil);
+    log("Using URL [" + url + "]");
 
     // Add the authorization header
     headers = {
@@ -192,10 +196,10 @@ let GetFulfillmentFromQuery = function(ncUtil,
     };
 
     // Pass in our URL and headers
-    request(options, function(error, response, body) {
+    request(options, function (error, response, body) {
       try {
         if (!error) {
-          log("Do GetFulfillmentFromQuery Callback", ncUtil);
+          log("Do GetFulfillmentFromQuery Callback");
           out.response.endpointStatusCode = response.statusCode;
           out.response.endpointStatusMessage = response.statusMessage;
 
@@ -207,7 +211,7 @@ let GetFulfillmentFromQuery = function(ncUtil,
             // If we have an array of orders, set out.payload to be the array of orders returned
             if (data.QueryResponse.SalesReceipt && data.QueryResponse.SalesReceipt.length > 0) {
               // We only need to process the SalesReceipts that have tracking number
-              let fulfillments = filter(data.QueryResponse.SalesReceipt, (salesReceipt) =>{
+              let fulfillments = filter(data.QueryResponse.SalesReceipt, (salesReceipt) => {
                 return salesReceipt.TrackingNum;
               });
 
@@ -244,13 +248,13 @@ let GetFulfillmentFromQuery = function(ncUtil,
 
           callback(out);
         } else {
-          logError("Do GetFulfillmentFromQuery Callback error - " + error, ncUtil);
+          logError("Do GetFulfillmentFromQuery Callback error - " + error);
           out.ncStatusCode = 500;
           out.payload.error = error;
           callback(out);
         }
       } catch (err) {
-        logError("Exception occurred in GetFulfillmentFromQuery - err " + err, ncUtil);
+        logError("Exception occurred in GetFulfillmentFromQuery - err " + err);
         out.ncStatusCode = 500;
         out.payload.error = {
           err: err,
@@ -260,18 +264,18 @@ let GetFulfillmentFromQuery = function(ncUtil,
       }
     });
   } else {
-    log("Callback with an invalid request - " + invalidMsg, ncUtil);
+    log("Callback with an invalid request - " + invalidMsg);
     out.ncStatusCode = 400;
     out.payload.error = invalidMsg;
     callback(out);
   }
 };
 
-function logError(msg, ncUtil) {
+function logError(msg) {
   console.log("[error] " + msg);
 }
 
-function log(msg, ncUtil) {
+function log(msg) {
   console.log("[info] " + msg);
 }
 
