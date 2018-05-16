@@ -11,6 +11,25 @@
   ],
   "channelActionRegistries": [
     {
+      "name": "GET SALESORDER",
+      "description": "GET SALESORDER",
+      "channelVerb": "GET",
+      "channelNoun": "SALESORDER",
+      "ruleDef": {
+        "ruleSchema": {},
+        "defaultRuleValues": {}
+      },
+      "configDef": {
+        "configModel": {},
+        "configView": [],
+        "configValues": {}
+      },
+      "documentDef": {
+        "schema": {},
+        "referenceLocation": {"salesOrderBusinessReferences": ["DocNumber"]}
+      }
+    },
+    {
       "channelNoun": "SALESORDER",
       "channelVerb": "PUT",
       "description": "PUT SALESORDER",
@@ -99,7 +118,16 @@
           "customerBusinessReferences": [
             "PrimaryEmailAddr.Address"
           ]
-        }
+        },
+        "peers": [
+          {
+            "name": "lineItem",
+            "location": "Line",
+            "remoteID": "ID",
+            "businessReferences": ["$filter(Line, function($v) {$v.DetailType = 'SalesItemLineDetail' and $v.SalesItemLineDetail.ItemRef.name != 'Shipping' and $v.SalesItemLineDetail.ItemRef.name != null}).SalesItemLineDetail.ItemRef.name"]
+          }
+        ],
+        "refreshNouns": ["PRODUCT"]
       }
     },
     {
@@ -126,6 +154,85 @@
             "DocNumber"
           ]
         }
+      }
+    },
+    {
+      "name": "GET CUSTOMER",
+      "description": "GET CUSTOMER",
+      "channelVerb": "GET",
+      "channelNoun": "CUSTOMER",
+      "ruleDef": {
+        "ruleSchema": {},
+        "defaultRuleValues": {}
+      },
+      "configDef": {
+        "configModel": {},
+        "configView": [],
+        "configValues": {}
+      },
+      "documentDef": {
+        "schema": {},
+        "referenceLocation": {"customerBusinessReferences": ["PrimaryEmailAddr.Address"]}
+      }
+    },
+    {
+      "name": "PUT CUSTOMER",
+      "description": "PUT CUSTOMER",
+      "channelVerb": "PUT",
+      "channelNoun": "CUSTOMER",
+      "ruleDef": {
+        "ruleSchema": {},
+        "defaultRuleValues": {}
+      },
+      "configDef" : {
+        "configModel" : {
+          "type" : "object",
+          "properties" : {
+            "canUpdateCustomerFlag" : {
+              "title" : "Update Customer, canUpdateCustomerFlag",
+              "type" : "boolean"
+            },
+            "canUpdateCustomerAddressFlag" : {
+              "title" : "Update Customer, canUpdateCustomerAddressFlag",
+              "type" : "boolean"
+            },
+            "canUpdateCustomerContactFlag" : {
+              "title" : "Update Customer, canUpdateCustomerContactFlag",
+              "type" : "boolean"
+            },
+            "doPutCustomerAddressesFlag" : {
+              "title" : "Add Customer Addresses, doPutCustomerAddressesFlag",
+              "type" : "boolean"
+            },
+            "doPutCustomerContactsFlag" : {
+              "title" : "Add Customer Contacts, doPutCustomerContactsFlag",
+              "type" : "boolean"
+            }
+          },
+          "required" : [
+            "canUpdateCustomerFlag",
+            "canUpdateCustomerAddressFlag",
+            "canUpdateCustomerContactFlag",
+            "doPutCustomerAddressesFlag",
+            "doPutCustomerContactsFlag"
+          ]
+        },
+        "configView" : [
+          "canUpdateCustomerFlag",
+          "canUpdateCustomerAddressFlag",
+          "canUpdateCustomerContactFlag"
+        ],
+        "configValues" : {
+          "canUpdateCustomerFlag" : true,
+          "canUpdateCustomerAddressFlag" : false,
+          "canUpdateCustomerContactFlag" : false,
+          "doPutCustomerAddressesFlag" : false,
+          "doPutCustomerContactsFlag" : false
+        }
+      },
+      "documentDef": {
+        "schema": {},
+        "referenceLocation": {"customerBusinessReferences": ["PrimaryEmailAddr.Address"]}
       }
     },
     {
@@ -186,68 +293,27 @@
           "productBusinessReferences": [
             "Item.Sku"
           ]
-        }
-      }
-    },
-    {
-      "name": "REFRESH PRODUCT",
-      "description": "REFRESH PRODUCT",
-      "channelVerb": "REFRESH",
-      "channelNoun": "PRODUCT",
-      "ruleDef": {
-        "ruleSchema": {},
-        "defaultRuleValues": {}
-      },
-      "configDef": {
-        "configModel": {
-          "required": [],
-          "properties": {
-            "doGetMatrixProducts": {
-              "type": "boolean",
-              "title": "GET Product Matrix, doGetMatrixProducts"
-            },
-            "doGetVirtualMatrixProducts": {
-              "type": "boolean",
-              "title": "GET Product Virtual Matrix, doGetVirtualMatrixProducts"
-            },
-            "doGetSimpleProducts": {
-              "type": "boolean",
-              "title": "GET Simple Product, doGetSimpleProducts"
-            },
-            "canGetMatrixProduct": {
-              "type": "boolean",
-              "title": "GET Product Matrix, canGetMatrixProduct"
-            },
-            "canGetVirtualMatrixProducts": {
-              "type": "boolean",
-              "title": "GET Product Virtual Matrix, canGetVirtualMatrixProducts"
-            },
-            "canGetSimpleProducts": {
-              "type": "boolean",
-              "title": "GET Simple Product, canGetSimpleProducts"
-            }
-          },
-          "type": "object"
         },
-        "configView": [
-          "doGetSimpleProducts"
-        ],
-        "configValues": {
-          "doGetMatrixProducts": false,
-          "doGetVirtualMatrixProducts": false,
-          "doGetSimpleProducts": true,
-          "canGetMatrixProducts": false,
-          "canGetVirtualMatrixProducts": false,
-          "canGetSimpleProducts": true
-        }
-      },
-      "documentDef": {
-        "schema": {},
-        "referenceLocation": {
-          "productBusinessReferences": [
-            "Item.Sku"
-          ]
-        }
+        "children": [
+          {
+            "name": "PRODUCTPRICING",
+            "location": "Item",
+            "remoteID": "ID",
+            "businessReferences": ["Sku"]
+          },
+          {
+            "name": "PRODUCTQUANTITY",
+            "location": "Item",
+            "remoteID": "ID",
+            "businessReferences": ["Sku"]
+          },
+          {
+            "name": "lineItem",
+            "location": "Item",
+            "remoteID": "ID",
+            "businessReferences": ["Sku"]
+          }
+        ]
       }
     },
     {
@@ -329,13 +395,165 @@
           "productBusinessReferences": [
             "Item.Sku"
           ]
-        }
+        },
+        "children": [
+          {
+            "name": "PRODUCTPRICING",
+            "location": "Item",
+            "remoteID": "ID",
+            "businessReferences": ["Sku"]
+          },
+          {
+            "name": "PRODUCTQUANTITY",
+            "location": "Item",
+            "remoteID": "ID",
+            "businessReferences": ["Sku"]
+          },
+          {
+            "name": "lineItem",
+            "location": "Item",
+            "remoteID": "ID",
+            "businessReferences": ["Sku"]
+          }
+        ]
       }
     },
     {
-      "name": "REFRESH PRODUCTQUANTITY",
-      "description": "REFRESH PRODUCTQUANTITY",
+      "name": "REFRESH PRODUCT",
+      "description": "REFRESH PRODUCT",
       "channelVerb": "REFRESH",
+      "channelNoun": "PRODUCT",
+      "ruleDef": {
+        "ruleSchema": {},
+        "defaultRuleValues": {}
+      },
+      "configDef": {
+        "configModel": {
+          "required": [],
+          "properties": {
+            "doGetMatrixProducts": {
+              "type": "boolean",
+              "title": "GET Product Matrix, doGetMatrixProducts"
+            },
+            "doGetVirtualMatrixProducts": {
+              "type": "boolean",
+              "title": "GET Product Virtual Matrix, doGetVirtualMatrixProducts"
+            },
+            "doGetSimpleProducts": {
+              "type": "boolean",
+              "title": "GET Simple Product, doGetSimpleProducts"
+            },
+            "canGetMatrixProduct": {
+              "type": "boolean",
+              "title": "GET Product Matrix, canGetMatrixProduct"
+            },
+            "canGetVirtualMatrixProducts": {
+              "type": "boolean",
+              "title": "GET Product Virtual Matrix, canGetVirtualMatrixProducts"
+            },
+            "canGetSimpleProducts": {
+              "type": "boolean",
+              "title": "GET Simple Product, canGetSimpleProducts"
+            }
+          },
+          "type": "object"
+        },
+        "configView": [
+          "doGetSimpleProducts"
+        ],
+        "configValues": {
+          "doGetMatrixProducts": false,
+          "doGetVirtualMatrixProducts": false,
+          "doGetSimpleProducts": true,
+          "canGetMatrixProducts": false,
+          "canGetVirtualMatrixProducts": false,
+          "canGetSimpleProducts": true
+        }
+      },
+      "documentDef": {
+        "schema": {},
+        "referenceLocation": {
+          "productBusinessReferences": [
+            "Item.Sku"
+          ]
+        },
+        "children": [
+          {
+            "name": "PRODUCTPRICING",
+            "location": "Item",
+            "remoteID": "ID",
+            "businessReferences": ["Sku"]
+          },
+          {
+            "name": "PRODUCTQUANTITY",
+            "location": "Item",
+            "remoteID": "ID",
+            "businessReferences": ["Sku"]
+          },
+          {
+            "name": "lineItem",
+            "location": "Item",
+            "remoteID": "ID",
+            "businessReferences": ["Sku"]
+          }
+        ]
+      }
+    },
+    {
+      "name": "GET PRODUCTPRICING",
+      "description": "GET PRODUCTPRICING",
+      "channelVerb": "GET",
+      "channelNoun": "PRODUCTPRICING",
+      "ruleDef": {
+        "ruleSchema": {},
+        "defaultRuleValues": {}
+      },
+      "configDef": {
+        "configModel": {},
+        "configView": [],
+        "configValues": {}
+      },
+      "documentDef": {
+        "schema": {},
+        "referenceLocation": {"productPricingBusinessReferences": ["Item.Sku"]}
+      }
+    },
+    {
+      "name": "PUT PRODUCTPRICING",
+      "description": "PUT PRODUCTPRICING",
+      "channelVerb": "PUT",
+      "channelNoun": "PRODUCTPRICING",
+      "ruleDef": {
+        "ruleSchema": {},
+        "defaultRuleValues": {}
+      },
+      "configDef": {
+        "configValues" : {
+          "canUpdateProductPricingFlag": true
+        },
+        "configView" : [],
+        "configModel" : {
+          "required" : [
+            "canUpdateProductPricingFlag"
+          ],
+          "properties" : {
+            "canUpdateProductPricingFlag" : {
+              "type" : "boolean",
+              "title" : "PUT ProductPricing, canUpdateProductPricingFlag"
+            }
+          },
+          "type" : "object"
+        }
+      },
+      "documentDef": {
+        "schema": {},
+        "referenceLocation": {"productPricingBusinessReferences": ["Item.Sku"]}
+      }
+    },
+    {
+      "name": "GET PRODUCTQUANTITY",
+      "description": "GET PRODUCTQUANTITY",
+      "channelVerb": "GET",
       "channelNoun": "PRODUCTQUANTITY",
       "ruleDef": {
         "ruleSchema": {},
@@ -348,11 +566,39 @@
       },
       "documentDef": {
         "schema": {},
-        "referenceLocation": {
-          "productQuantityBusinessReferences": [
-            "Item.Sku"
-          ]
+        "referenceLocation": {"productQuantityBusinessReferences": ["Item.Sku"]}
+      }
+    },
+    {
+      "name": "PUT PRODUCTQUANTITY",
+      "description": "PUT PRODUCTQUANTITY",
+      "channelVerb": "PUT",
+      "channelNoun": "PRODUCTQUANTITY",
+      "ruleDef": {
+        "ruleSchema": {},
+        "defaultRuleValues": {}
+      },
+      "configDef": {
+        "configValues" : {
+          "canUpdateProductQuantityFlag": true
+        },
+        "configView" : [],
+        "configModel" : {
+          "required" : [
+            "canUpdateProductQuantityFlag"
+          ],
+          "properties" : {
+            "canUpdateProductQuantityFlag" : {
+              "type" : "boolean",
+              "title" : "PUT ProductQuantity, canUpdateProductQuantityFlag"
+            }
+          },
+          "type" : "object"
         }
+      },
+      "documentDef": {
+        "schema": {},
+        "referenceLocation": {"productQuantityBusinessReferences": ["Item.Sku"]}
       }
     }
   ],
