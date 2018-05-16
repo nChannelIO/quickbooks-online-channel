@@ -1,5 +1,4 @@
 {
-  "_id": "100000000000000000000006",
   "name": "Quickbooks Online Get Fulfillment",
   "schemaDef": {
     "$schema": "http://json-schema.org/draft-04/schema#",
@@ -453,7 +452,7 @@
           "BillEmail": {
             "title": "BillEmail",
             "description": "Identifies the Email Address with the invoice is sent.",
-            "anyOf" :[
+            "anyOf": [
               {
                 "type": "object",
                 "properties": {
