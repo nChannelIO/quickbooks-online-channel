@@ -1,25 +1,16 @@
 {
-	"_id": "100000000000000000000015",
-	"name": "Quickbooks Online Get Product Group",
+	"_id": "100000000000000000000014",
+	"name": "Quickbooks Online Get Product",
 	"schemaDef": {
 		"$schema": "http://json-schema.org/draft-04/schema#",
-		"description": "Quickbooks Online Get Product Group",
+		"description": "Quickbooks Online Get Product",
 		"type": "object",
 		"properties": {
 			"Item": {
-				"type": "array",
-				"minItems": 1,
-				"items": [
-					{
-						"$ref": "#/definitions/Item"
-					}
-				],
+				"$ref": "#/definitions/Item",
 				"additionalItems": false
 			}
 		},
-		"required": [
-			"Item"
-		],
 		"additionalProperties": false,
 		"definitions": {
 			"Item": {
@@ -172,6 +163,11 @@
 						"description": "Current quantity of the Inventory items available for sale. Not used for Service or NonInventory type items. Required for Inventory type items.",
 						"type": "number"
 					},
+					"ReorderPoint": {
+						"title": "ReorderPoint",
+						"description": "The minimum quantity of a product you want to have on hand. Only available for companies that track inventory in QuickBooks Plus.",
+						"type": "number"
+					},
 					"SalesTaxCodeRef": {
 						"title": "SalesTaxCodeRef",
 						"description": "Reference to the sales tax code for the Sales item. Applicable to Service and Sales item types only. Query the TaxCode name list resource to determine the appropriate TaxCode object for this reference. Use TaxCode.Id and TaxCode.Name from that object for SalesTaxCodeRef.value and SalesTaxCodeRef.name, respectively.",
@@ -184,17 +180,14 @@
 					},
 					"AbatementRate": {
 						"title": "AbatementRate",
-						"description": "",
 						"type": "number"
 					},
 					"ReverseChargeRate": {
 						"title": "ReverseChargeRate",
-						"description": "",
 						"type": "number"
 					},
 					"ServiceType": {
 						"title": "ServiceType",
-						"description": "",
 						"type": "string",
 						"enum": [
 							"ADVT",
@@ -355,7 +348,7 @@
 		}
 	},
 	"tags": [
-		"QuickBooksOnline",
+		"QuickbooksOnline",
 		"Product",
 		"Get"
 	],

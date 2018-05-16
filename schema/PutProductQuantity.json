@@ -1,0 +1,157 @@
+{
+	"_id": "100000000000000000000017",
+	"name": "Quick Books Online Get Product Quantity",
+	"schemaDef": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"description": "Quick Books Online Get Product Quantity",
+		"type": "object",
+		"properties": {
+			"Item": {
+				"$ref": "#/definitions/Item",
+				"additionalItems": false
+			}
+		},
+		"additionalProperties": false,
+		"definitions": {
+			"Item": {
+				"title": "Item",
+				"description": "Item Object",
+				"type": "object",
+				"properties": {
+					"Id": {
+						"title": "Id",
+						"description": "Unique Identifier for an Intuit entity (object).",
+						"type": "string"
+					},
+					"SyncToken": {
+						"title": "SyncToken",
+						"description": "Version number of the entity. ",
+						"type": "string"
+					},
+					"MetaData": {
+						"title": "MetaData",
+						"description": "Descriptive information about the entity. The MetaData values are set by Data Services and are read only for all applications.",
+						"$ref": "#/definitions/MetaData"
+					},
+					"Name": {
+						"title": "Name",
+						"description": "Name of the item.",
+						"type": "string",
+						"maxLength": 100
+					},
+					"Sku": {
+						"title": "Sku",
+						"description": "The stock keeping unit (SKU) for this Item. This is a company-defined identifier for an item or product used in tracking inventory.",
+						"type": [
+							"string",
+							"null"
+						],
+						"maxLength": 100
+					},
+					"Active": {
+						"title": "Active",
+						"description": "If true, the object is currently enabled for use by QuickBooks.",
+						"type": "boolean"
+					},
+					"SubItem": {
+						"title": "SubItem",
+						"description": "If true, this is a sub item. If false or null, this is a top-level item. *Creating inventory hierarchies with traditional inventory items is being phased out in lieu of using categories and sub categories. ",
+						"type": [
+							"boolean",
+							"null"
+						]
+					},
+					"ParentRef": {
+						"title": "ParentRef",
+						"description": "The immediate parent of the sub item in the hierarchical Item:SubItem list. If SubItem is true, then ParenRef is required. If SubItem is true, then ParenRef is required. Query the Item name list resource to determine the appropriate object for this reference. Use Item.Id and Item.Name from that object for ParentRef.value and ParentRef.name, respectively.",
+						"$ref": "#/definitions/ReferenceType"
+					},
+					"Level": {
+						"title": "Level",
+						"description": "Specifies the level of the hierarchy in which the entity is located. Zero specifies the top level of the hierarchy; anything above will be the next level with respect to the parent. Limited to 5 levels. (Default is 0)",
+						"type": "integer"
+					},
+					"FullyQualifiedName": {
+						"title": "FullyQualifiedName",
+						"description": "Fully qualified name of the entity. The fully qualified name prepends the topmost parent, followed by each sub element separated by colons. Takes the form of Item:SubItem. Returned from an existing object and not input on a new object.Limited to 5 levels. Read-only.",
+						"type": "string"
+					},
+					"Type": {
+						"title": "Type",
+						"description": "Classification that specifies the use of this item. See the description at the top of the Item entity page for details about supported item types. For requests with minor version=4 query parameter, this field is required to be explicitly set with one of the following: Inventory--Used for goods the company sells and buys that are tracked as inventory. Service--Used for non-tangible goods the company sells and buys that are not tracked as inventory. For example, specialized labor, consulting hours, and professional fees. NonInventory--Use for goods the company sells and buys that are not tracked as inventory. For example, office supplies or goods bought on behalf of the customer.",
+						"type": "string",
+						"enum": [
+							"Inventory",
+							"Service",
+							"NonInventory",
+							"Category"
+						]
+					},
+					"ItemCategoryType": {
+						"title": "ItemCategoryType",
+						"description": "Classification that specifies the use of this item. Applicable for France companies, only. Available when endpoint is evoked with the minorversion=3 query parameter. Read-only after object is created. Valid values include: Product and Service.",
+						"type": "string",
+						"enum": [
+							"Product",
+							"Service"
+						]
+					},
+					"TrackQtyOnHand": {
+						"title": "TrackQtyOnHand",
+						"description": "True if there is quantity on hand to be tracked. Once this value is true, it cannot be updated to false. Applicable for items of type Inventory. Not applicable for Service or NonInventory item types. (Default is false)",
+						"type": "boolean"
+					},
+					"InvStartDate": {
+						"title": "InvStartDate",
+						"description": "Date of opening balance for the inventory transaction. For read operations, the date returned in this field is always the originally provided inventory start date. For update operations, the date supplied is interpreted as the inventory adjust date, is stored as such in the underlying data model, and is reflected in the QuickBooks Online UI for the object. The inventory adjust date is not exposed for read operations through the API. Required for Inventory type items.",
+						"type": "string"
+					},
+					"QtyOnHand": {
+						"title": "QtyOnHand",
+						"description": "Current quantity of the Inventory items available for sale. Not used for Service or NonInventory type items. Required for Inventory type items.",
+						"type": "number"
+					}
+				},
+				"required": [
+					"Name"
+				]
+			},
+			"MetaData": {
+				"type": "object",
+				"properties": {
+					"CreateTime": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"LastUpdatedTime": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"additionalProperties": false
+			},
+			"ReferenceType": {
+				"type": "object",
+				"properties": {
+					"value": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"value"
+				],
+				"additionalProperties": false
+			}
+		}
+	},
+	"tags": [
+		"QuickBooksOnline",
+		"ProductQuantity",
+		"Get",
+		"Inventory"
+	],
+	"audit": {}
+}
