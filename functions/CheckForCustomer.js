@@ -96,7 +96,7 @@ let CheckForCustomer = function (
       });
 
       // Set our query for looking up customers
-      let lookup = "&query=select * from Customer Where " + values.join(" AND ");
+      let lookup = "&query=SELECT * from Customer Where " + values.join(" AND ");
 
       // Set headers
       let headers = {

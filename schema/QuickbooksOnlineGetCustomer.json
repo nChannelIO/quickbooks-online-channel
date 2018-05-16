@@ -1,0 +1,387 @@
+{
+	"_id": "100000000000000000000008",
+	"name": "Quickbooks Online Get Customer",
+	"schemaDef": {
+		"$schema": "http://json-schema.org/draft-04/schema#",
+		"title": "Quickbooks Online Get Customer",
+		"type": "object",
+		"properties": {
+			"Customer": {
+				"$ref": "#/definitions/Customer"
+			},
+			"time": {
+				"type": "string",
+				"format": "date-time"
+			}
+		},
+		"additionalProperties": false,
+		"definitions": {
+			"Address": {
+				"type": "object",
+				"properties": {
+					"Id": {
+						"title": "Id",
+						"description": "Read-only. Unique identifier of the QuickBooks object for the address, used for modifying the address.",
+						"type": "string"
+					},
+					"Line1": {
+						"title": "Line1",
+						"description": "Lines 1-5: First five lines of the address.",
+						"type": "string"
+					},
+					"Line2": {
+						"title": "Line2",
+						"description": "Lines 1-5: First five lines of the address.",
+						"type": "string"
+					},
+					"Line3": {
+						"title": "Line3",
+						"description": "Lines 1-5: First five lines of the address.",
+						"type": "string"
+					},
+					"Line4": {
+						"title": "Line4",
+						"description": "Lines 1-5: First five lines of the address.",
+						"type": "string"
+					},
+					"Line5": {
+						"title": "Line5",
+						"description": "Lines 1-5: First five lines of the address.",
+						"type": "string"
+					},
+					"City": {
+						"title": "City",
+						"description": "City Name.",
+						"type": "string",
+						"maxLength": 255
+					},
+					"Country": {
+						"title": "Country",
+						"description": "Country Name.",
+						"type": "string",
+						"maxLength": 255
+					},
+					"CountrySubDivisionCode": {
+						"title": "CountrySubDivisionCode",
+						"description": "Region within a country. For example, state name for USA, province name for Canada.",
+						"type": "string",
+						"maxLength": 255
+					},
+					"PostalCode": {
+						"title": "PostalCode",
+						"description": "Postal code. For example, zip code for USA and Canada",
+						"type": "string",
+						"maxLength": 30
+					},
+					"Lat": {
+						"title": "Lat",
+						"description": "Latitude coordinate of Geocode (Geospacial Entity Object Code). INVALIDis returned for invalid addresses.",
+						"type": "string"
+					},
+					"Long": {
+						"title": "Long",
+						"description": "Longitude coordinate of Geocode (Geospacial Entity Object Code). INVALIDis returned for invalid addresses.",
+						"type": "string"
+					}
+				},
+				"required": [],
+				"additionalProperties": false
+			},
+			"MetaData": {
+				"type": "object",
+				"properties": {
+					"CreateTime": {
+						"title": "CreateTime",
+						"description": "Time the entity was created in the source domain.",
+						"type": "string",
+						"format": "date-time"
+					},
+					"LastUpdatedTime": {
+						"title": "LastUpdatedTime",
+						"description": "Time the entity was last updated in the source domain.",
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"additionalProperties": false
+			},
+			"Customer": {
+				"type": "object",
+				"properties": {
+					"Id": {
+						"title": "Id",
+						"description": "Unique identifier for this object. ",
+						"type": "string"
+					},
+					"SyncToken": {
+						"type": "string"
+					},
+					"MetaData": {
+						"$ref": "#/definitions/MetaData"
+					},
+					"Title": {
+						"title": "Title",
+						"description": "Title of the person. This tag supports i18n, all locales. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.",
+						"type": [
+							"string",
+							"null"
+						],
+						"maxLength": 15
+					},
+					"GivenName": {
+						"title": "GivenName",
+						"description": "Given name or first name of a person.",
+						"type": [
+							"string",
+							"null"
+						],
+						"maxLength": 25
+					},
+					"MiddleName": {
+						"title": "MiddleName",
+						"description": "Title of the person. This tag supports i18n, all locales. The DisplayName attribute or at least one of Title, GivenName, MiddleName, FamilyName, or Suffix attributes is required.",
+						"type": [
+							"string",
+							"null"
+						],
+						"maxLength": 25
+					},
+					"FamilyName": {
+						"title": "FamilyName",
+						"description": "Family name or the last name of the person.",
+						"type": [
+							"string",
+							"null"
+						],
+						"maxLength": 25
+					},
+					"Suffix": {
+						"title": "Suffix",
+						"description": "Suffix of the name. For example, Jr.",
+						"type": [
+							"string",
+							"null"
+						],
+						"maxLength": 10
+					},
+					"DisplayName": {
+						"title": "DisplayName",
+						"description": "The name of the person or organization as displayed. Must be unique across all Customer, Vendor, and Employee objects. Cannot be removed with sparse update.",
+						"type": "string",
+						"maxLength": 100
+					},
+					"FullyQualifiedName": {
+						"title": "FullyQualifiedName",
+						"description": "Fully qualified name of the object. System genearated.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"CompanyName": {
+						"title": "CompanyName",
+						"description": "The name of the company associated with the person or organization.",
+						"type": [
+							"string",
+							"null"
+						],
+						"maxLength": 50
+					},
+					"PrintOnCheckName": {
+						"title": "PrintOnCheckName",
+						"description": "Name of the person or organization as printed on a check. If not provided, this is populated from DisplayName. Cannot be removed with sparse update.",
+						"type": "string",
+						"maxLength": 110
+					},
+					"Active": {
+						"title": "Active",
+						"description": "If true, this entity is currently enabled for use by QuickBooks.",
+						"type": "boolean"
+					},
+					"PrimaryPhone": {
+						"$ref": "#/definitions/FreeFormNumber"
+					},
+					"AlternatePhone": {
+						"$ref": "#/definitions/FreeFormNumber"
+					},
+					"Mobile": {
+						"$ref": "#/definitions/FreeFormNumber"
+					},
+					"Fax": {
+						"$ref": "#/definitions/FreeFormNumber"
+					},
+					"PrimaryEmailAddr": {
+						"$ref": "#/definitions/Email"
+					},
+					"WebAddr": {
+						"$ref": "#/definitions/WebAddress"
+					},
+					"DefaultTaxCodeRef": {
+						"$ref": "#/definitions/ReferenceType"
+					},
+					"Taxable": {
+						"title": "Taxable",
+						"description": "If true, transactions for this customer are taxable. Default behavior with minor version 10 and above: true, if DefaultTaxCodeRef is defined or false if TaxExemptionReasonId is set.",
+						"type": "boolean"
+					},
+					"TaxExemptionReasonId": {
+						"title": "TaxExemptionReasonId",
+						"description": "The tax exemption reason associated with this customer object.",
+						"type": [
+							"string",
+							"null"
+						]
+					},
+					"BillAddr": {
+						"$ref": "#/definitions/Address"
+					},
+					"ShipAddr": {
+						"$ref": "#/definitions/Address"
+					},
+					"Notes": {
+						"title": "Notes",
+						"description": "Free form text describing the Customer.",
+						"type": "string",
+						"maxLength": 2000
+					},
+					"Job": {
+						"title": "Job",
+						"description": "If true, this is a Job or sub-customer. If false or null, this is a top level customer, not a Job or sub-customer.",
+						"type": "boolean"
+					},
+					"BillWithParent": {
+						"title": "BillWithParent",
+						"description": "If true, this Customer object is billed with its parent. If false, or null the customer is not to be billed with its parent. This attribute is valid only if this entity is a Job or sub Customer.",
+						"type": "boolean"
+					},
+					"ParentRef": {
+						"$ref": "#/definitions/ReferenceType"
+					},
+					"Level": {
+						"title": "Level",
+						"description": "Specifies the level of the hierarchy in which the entity is located. Zero specifies the top level of the hierarchy; anything above will be level with respect to the parent.",
+						"type": "integer"
+					},
+					"SalesTermRef": {
+						"$ref": "#/definitions/ReferenceType"
+					},
+					"PaymentMethodRef": {
+						"$ref": "#/definitions/ReferenceType"
+					},
+					"Balance": {
+						"title": "Balance",
+						"description": "Specifies the open balance amount or the amount unpaid by the customer. For the create operation, this represents the opening balance for the customer. When returned in response to the query request it represents the current open balance (unpaid amount) for that customer.",
+						"type": "number"
+					},
+					"OpenBalanceDate": {
+						"title": "OpenBalanceDate",
+						"description": "Date of the Open Balance for the create operation.",
+						"type": "string"
+					},
+					"BalanceWithJobs": {
+						"title": "BalanceWithJobs",
+						"description": "Cumulative open balance amount for the Customer (or Job) and all its sub-jobs. Cannot be written to QuickBooks.",
+						"type": "number"
+					},
+					"CurrencyRef": {
+						"$ref": "#/definitions/ReferenceType"
+					},
+					"PreferredDeliveryMethod": {
+						"title": "PreferredDeliveryMethod",
+						"description": "Preferred delivery method. Values are Print, Email, or None.",
+						"type": "string",
+						"enum": [
+							"Print",
+							"Email",
+							"None"
+						]
+					},
+					"ResaleNum": {
+						"title": "ResaleNum",
+						"description": "Resale number or some additional info about the customer.",
+						"type": "string",
+						"maxLength": 16
+					},
+					"ARAccountRef": {
+						"$ref": "#/definitions/ReferenceType"
+					},
+					"domain": {
+						"title": "domain",
+						"type": "string"
+					},
+					"sparse": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"Id",
+					"SyncToken"
+				],
+				"additionalProperties": false
+			},
+			"FreeFormNumber": {
+				"type": "object",
+				"properties": {
+					"FreeFormNumber": {
+						"title": "FreeFormNumber",
+						"description": "Specifies the telephone number in free form.",
+						"type": "string",
+						"maxLength": 20
+					}
+				},
+				"additionalProperties": false
+			},
+			"Email": {
+				"type": "object",
+				"properties": {
+					"Address": {
+						"title": "Address",
+						"description": "An email address. The address format must follow the RFC 822 standard.",
+						"type": "string",
+						"maxLength": 100
+					}
+				},
+				"additionalProperties": false
+			},
+			"WebAddress": {
+				"type": "object",
+				"properties": {
+					"URI": {
+						"title": "URI",
+						"description": "Uniform Resource Identifier for the web site.",
+						"type": "string",
+						"maxLength": 1000
+					}
+				},
+				"additionalProperties": false
+			},
+			"ReferenceType": {
+				"type": [
+					"object",
+					"null"
+				],
+				"properties": {
+					"value": {
+						"title": "value",
+						"type": "string"
+					},
+					"name": {
+						"title": "name",
+						"type": "string"
+					}
+				},
+				"required": [
+					"value"
+				],
+				"additionalProperties": false
+			}
+		}
+	},
+	"tags": [
+		"Quickbooks",
+		"Online",
+		"Customer",
+		"Get"
+	],
+	"audit": {}
+}

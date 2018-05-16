@@ -5,7 +5,15 @@
     "logger": null
   },
   "channelProfile": {
-    "channelAuthValues": {}
+    "channelAuthValues": {
+      "realm_id": 123456789,
+      "access_token": "my-secret-token"
+    },
+    "channelSettingsValues": {
+      "protocol": "https",
+      "api_uri": "sandbox-quickbooks.api.intuit.com/v3",
+      "minor_version": 12
+    }
   },
   "docs": [
     {
@@ -14,786 +22,275 @@
         {
           "ncStatusCode": 200,
           "payload": {
-            "doc": {}
+            "doc": {
+              "PrimaryEmailAddr": {
+                "Address": "Cool_Cars@intuit.com"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20from%20Customer%20Where%20PrimaryEmailAddr%20=%20%27Cool_Cars%40intuit.com%27",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "customers": [
-                  {
-                    "id": 1073339459,
-                    "email": "derek.boytim@nchannel.com"
-                  }
-                ]
+                "QueryResponse": {
+                  "Customer": [{
+                    "Taxable": false,
+                    "BillAddr": {
+                      "Id": "4",
+                      "Line1": "65 Ocean Dr.",
+                      "City": "Half Moon Bay",
+                      "CountrySubDivisionCode": "CA",
+                      "PostalCode": "94213",
+                      "Lat": "37.4300318",
+                      "Long": "-122.4336537"
+                    },
+                    "Job": false,
+                    "BillWithParent": false,
+                    "Balance": 0,
+                    "BalanceWithJobs": 0,
+                    "CurrencyRef": {"value": "USD", "name": "United States Dollar"},
+                    "PreferredDeliveryMethod": "Print",
+                    "domain": "QBO",
+                    "sparse": false,
+                    "Id": "3",
+                    "SyncToken": "0",
+                    "MetaData": {"CreateTime": "2017-08-30T16:51:22-07:00", "LastUpdatedTime": "2017-09-07T12:59:21-07:00"},
+                    "GivenName": "Grace",
+                    "FamilyName": "Pariente",
+                    "FullyQualifiedName": "Cool Cars",
+                    "CompanyName": "Cool Cars",
+                    "DisplayName": "Cool Cars",
+                    "PrintOnCheckName": "Cool Cars",
+                    "Active": true,
+                    "PrimaryPhone": {"FreeFormNumber": "(415) 555-9933"},
+                    "PrimaryEmailAddr": {"Address": "Cool_Cars@intuit.com"}
+                  }], "startPosition": 1, "maxResults": 1
+                }, "time": "2017-10-05T06:31:35.496-07:00"
               }
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 204,
           "payload": {
             "doc": {
-              "customer": {
-                "email": "derek.boytim@nchannel.com"
+              "PrimaryEmailAddr": {
+                "Address": "test@intuit.com"
               }
             }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20from%20Customer%20Where%20PrimaryEmailAddr%20=%20%27test%40intuit.com%27",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "customers": []
+                "QueryResponse": {},
+                "time": "2017-10-05T06:31:35.957-07:00"
               }
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 409,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "customers": [
-                  {
-                    "id": 1073339459,
-                    "email": "derek.boytim@nchannel.com"
-                  },
-                  {
-                    "id": 1073339459,
-                    "email": "derek.boytim@nchannel.com"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["email"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["email"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["email"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "customers": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "customerBusinessReferences": ["email"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "CheckForProduct",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["productid"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["productid"]
-          }
-        },
-        {
-          "ncStatusCode": 409,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  },
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["productid"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["productid"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["productid"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["productid"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "CheckForProductGroup",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 409,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  },
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "CheckForProductPricing",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
-          }
-        },
-        {
-          "ncStatusCode": 409,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  },
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "CheckForProductQuantity",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
-          }
-        },
-        {
-          "ncStatusCode": 409,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  },
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "ExtractBillingAddressFromSalesOrder",
-      "tests": [
-        {
-          "ncStatusCode": 200,
           "payload": {
             "doc": {
-              "BillingAddress": {}
+              "PrimaryEmailAddr": {
+                "Address": "test@intuit.com"
+              }
             }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
-          "links": [],
+          "links": [
+            {
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20from%20Customer%20Where%20PrimaryEmailAddr%20=%20%27test%40intuit.com%27",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "QueryResponse": {
+                  "Customer": [
+                    {
+                      "Taxable": false,
+                      "BillAddr": {
+                        "Id": "4",
+                        "Line1": "65 Ocean Dr.",
+                        "City": "Half Moon Bay",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94213",
+                        "Lat": "37.4300318",
+                        "Long": "-122.4336537"
+                      },
+                      "Job": false,
+                      "BillWithParent": false,
+                      "Balance": 0,
+                      "BalanceWithJobs": 0,
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "PreferredDeliveryMethod": "Print",
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "3",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-08-30T16:51:22-07:00",
+                        "LastUpdatedTime": "2017-09-07T12:59:21-07:00"
+                      },
+                      "GivenName": "Grace",
+                      "FamilyName": "Pariente",
+                      "FullyQualifiedName": "Cool Cars",
+                      "CompanyName": "Cool Cars",
+                      "DisplayName": "Cool Cars",
+                      "PrintOnCheckName": "Cool Cars",
+                      "Active": true,
+                      "PrimaryPhone": {
+                        "FreeFormNumber": "(415) 555-9933"
+                      },
+                      "PrimaryEmailAddr": {
+                        "Address": "Cool_Cars@intuit.com"
+                      }
+                    },
+                    {
+                      "Taxable": false,
+                      "BillAddr": {
+                        "Id": "4",
+                        "Line1": "65 Ocean Dr.",
+                        "City": "Half Moon Bay",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94213",
+                        "Lat": "37.4300318",
+                        "Long": "-122.4336537"
+                      },
+                      "Job": false,
+                      "BillWithParent": false,
+                      "Balance": 0,
+                      "BalanceWithJobs": 0,
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "PreferredDeliveryMethod": "Print",
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "3",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-08-30T16:51:22-07:00",
+                        "LastUpdatedTime": "2017-09-07T12:59:21-07:00"
+                      },
+                      "GivenName": "Grace",
+                      "FamilyName": "Pariente",
+                      "FullyQualifiedName": "Cool Cars",
+                      "CompanyName": "Cool Cars",
+                      "DisplayName": "Cool Cars",
+                      "PrintOnCheckName": "Cool Cars",
+                      "Active": true,
+                      "PrimaryPhone": {
+                        "FreeFormNumber": "(415) 555-9933"
+                      },
+                      "PrimaryEmailAddr": {
+                        "Address": "Cool_Cars@intuit.com"
+                      }
+                    }
+                  ]
+                },
+                "time": "2017-10-05T06:31:35.496-07:00"
+              }
+            }
+          ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
-          "ncStatusCode": 204,
+          "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "PrimaryEmailAddr": {
+                "Address": "test@intuit.com"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
-          "links": [],
+          "links": [
+            {
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20from%20Customer%20Where%20PrimaryEmailAddr%20=%20%27test%40intuit.com%27",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 401,
+              "responsePayload": {}
+            }
+          ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
+          }
+        },
+        {
+          "ncStatusCode": 429,
+          "payload": {
+            "doc": {
+              "PrimaryEmailAddr": {
+                "Address": "test@intuit.com"
+              }
+            }
+          },
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20from%20Customer%20Where%20PrimaryEmailAddr%20=%20%27test%40intuit.com%27",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 429,
+              "responsePayload": {}
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
+          }
+        },
+        {
+          "ncStatusCode": 500,
+          "payload": {
+            "doc": {
+              "PrimaryEmailAddr": {
+                "Address": "test@intuit.com"
+              }
+            }
+          },
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "defaultHeaders": {},
+          "links": [
+            {
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20from%20Customer%20Where%20PrimaryEmailAddr%20=%20%27test%40intuit.com%27",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 500,
+              "responsePayload": {
+                "customers": []
+              }
+            }
+          ],
+          "channelProfile": {
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         }
       ]
@@ -805,159 +302,85 @@
           "ncStatusCode": 200,
           "payload": {
             "doc": {
-              "BillingCustomer": {}
-            }
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "ExtractCustomerAddressesFromCustomer",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "Addresses": [
-                {}
-              ]
-            }
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "customerBusinessReferences": ["email"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "customerBusinessReferences": ["email"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "ExtractCustomerContactsFromCustomer",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "ContactMethods": [
-                {}
-              ]
-            }
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "customerBusinessReferences": ["email"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "customerBusinessReferences": ["email"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "ExtractProductFromProductGroup",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "product": {
-                "id": 12020548676,
-                "title": "2asdfs45",
-                "vendor": "ci-sales-01",
-                "variants": [
-                  {
-                    "id": 52668187844,
-                    "product_id": 12020548676
+              "domain": "QBO",
+              "sparse": false,
+              "Id": "11",
+              "SyncToken": "0",
+              "MetaData": {
+                "CreateTime": "2014-09-16T14:59:48-07:00",
+                "LastUpdatedTime": "2014-09-16T14:59:48-07:00"
+              },
+              "CustomField": [
+                {
+                  "DefinitionId": "1",
+                  "Name": "Crew #",
+                  "Type": "StringType"
+                }
+              ],
+              "DocNumber": "1003",
+              "TxnDate": "2014-09-14",
+              "Line": [
+                {
+                  "Id": "1",
+                  "LineNum": 1,
+                  "Description": "Custom Design",
+                  "Amount": 337.5,
+                  "DetailType": "SalesItemLineDetail",
+                  "SalesItemLineDetail": {
+                    "ItemRef": {
+                      "value": "4",
+                      "name": "Design"
+                    },
+                    "UnitPrice": 75,
+                    "Qty": 4.5,
+                    "TaxCodeRef": {
+                      "value": "NON"
+                    }
                   }
-                ]
+                },
+                {
+                  "Amount": 337.5,
+                  "DetailType": "SubTotalLineDetail",
+                  "SubTotalLineDetail": {}
+                }
+              ],
+              "TxnTaxDetail": {
+                "TotalTax": 0
+              },
+              "Customer": {
+                "value": "6",
+                "name": "Dylan Sollfrank"
+              },
+              "CustomerMemo": {
+                "value": "Thank you for your business and have a great day!"
+              },
+              "BillAddr": {
+                "Id": "49",
+                "Line1": "Dylan Sollfrank",
+                "Lat": "INVALID",
+                "Long": "INVALID"
+              },
+              "TotalAmt": 337.5,
+              "ApplyTaxAfterDiscount": false,
+              "PrintStatus": "NotSet",
+              "EmailStatus": "NotSet",
+              "Balance": 0,
+              "PaymentMethodRef": {
+                "value": "2",
+                "name": "Check"
+              },
+              "PaymentRefNum": "10264",
+              "DepositToAccountRef": {
+                "value": "35",
+                "name": "Checking"
               }
             }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [],
           "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {
-              "product": {
-                "id": 12020548676,
-                "title": "2asdfs45",
-                "vendor": "ci-sales-01",
-                "variants": []
-              }
-            }
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "ExtractShippingAddressFromSalesOrder",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {
-              "ShippingAddress": {}
-            }
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [],
-          "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
@@ -965,11 +388,11 @@
           "payload": {
             "doc": {}
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         }
       ]
@@ -980,153 +403,275 @@
         {
           "ncStatusCode": 200,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["3"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Customer%20WHERE%20Id%20IN%20(%273%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "customers": [
-                  {
-                    "id": 1073339459,
-                    "email": "derek.boytim@nchannel.com"
-                  }
-                ]
+                "QueryResponse": {
+                  "Customer": [
+                    {
+                      "Taxable": false,
+                      "BillAddr": {
+                        "Id": "4",
+                        "Line1": "65 Ocean Dr.",
+                        "City": "Half Moon Bay",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94213",
+                        "Lat": "37.4300318",
+                        "Long": "-122.4336537"
+                      },
+                      "Job": false,
+                      "BillWithParent": false,
+                      "Balance": 0,
+                      "BalanceWithJobs": 0,
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "PreferredDeliveryMethod": "Print",
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "3",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-08-30T16:51:22-07:00",
+                        "LastUpdatedTime": "2017-09-07T12:59:21-07:00"
+                      },
+                      "GivenName": "Grace",
+                      "FamilyName": "Pariente",
+                      "FullyQualifiedName": "Cool Cars",
+                      "CompanyName": "Cool Cars",
+                      "DisplayName": "Cool Cars",
+                      "PrintOnCheckName": "Cool Cars",
+                      "Active": true,
+                      "PrimaryPhone": {
+                        "FreeFormNumber": "(415) 555-9933"
+                      },
+                      "PrimaryEmailAddr": {
+                        "Address": "Cool_Cars@intuit.com"
+                      }
+                    }
+                  ]
+                }
               }
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 204,
           "payload": {
             "doc": {
-              "customer": {
-                "email": "derek.boytim@nchannel.com"
-              }
+              "remoteIDs": ["3"]
             }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Customer%20WHERE%20Id%20IN%20(%273%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "customers": []
+                "QueryResponse": {
+                  "Customer": []
+                }
               }
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 206,
           "payload": {
             "doc": {
+              "remoteIDs": ["3"],
+              "page": 2,
               "pageSize": 2
             }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Customer%20WHERE%20Id%20IN%20(%273%27)%20STARTPOSITION%202%20MAXRESULTS%202",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "customers": [
-                  {
-                    "id": 1073339459,
-                    "email": "derek.boytim@nchannel.com"
-                  },
-                  {
-                    "id": 1073339459,
-                    "email": "derek.boytim@nchannel.com"
-                  }
-                ]
+                "QueryResponse": {
+                  "Customer": [
+                    {
+                      "Taxable": false,
+                      "BillAddr": {
+                        "Id": "4",
+                        "Line1": "65 Ocean Dr.",
+                        "City": "Half Moon Bay",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94213",
+                        "Lat": "37.4300318",
+                        "Long": "-122.4336537"
+                      },
+                      "Job": false,
+                      "BillWithParent": false,
+                      "Balance": 0,
+                      "BalanceWithJobs": 0,
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "PreferredDeliveryMethod": "Print",
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "3",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-08-30T16:51:22-07:00",
+                        "LastUpdatedTime": "2017-09-07T12:59:21-07:00"
+                      },
+                      "GivenName": "Grace",
+                      "FamilyName": "Pariente",
+                      "FullyQualifiedName": "Cool Cars",
+                      "CompanyName": "Cool Cars",
+                      "DisplayName": "Cool Cars",
+                      "PrintOnCheckName": "Cool Cars",
+                      "Active": true,
+                      "PrimaryPhone": {
+                        "FreeFormNumber": "(415) 555-9933"
+                      },
+                      "PrimaryEmailAddr": {
+                        "Address": "Cool_Cars@intuit.com"
+                      }
+                    },
+                    {
+                      "Taxable": false,
+                      "BillAddr": {
+                        "Id": "4",
+                        "Line1": "65 Ocean Dr.",
+                        "City": "Half Moon Bay",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94213",
+                        "Lat": "37.4300318",
+                        "Long": "-122.4336537"
+                      },
+                      "Job": false,
+                      "BillWithParent": false,
+                      "Balance": 0,
+                      "BalanceWithJobs": 0,
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "PreferredDeliveryMethod": "Print",
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "3",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-08-30T16:51:22-07:00",
+                        "LastUpdatedTime": "2017-09-07T12:59:21-07:00"
+                      },
+                      "GivenName": "Grace",
+                      "FamilyName": "Pariente",
+                      "FullyQualifiedName": "Cool Cars",
+                      "CompanyName": "Cool Cars",
+                      "DisplayName": "Cool Cars",
+                      "PrintOnCheckName": "Cool Cars",
+                      "Active": true,
+                      "PrimaryPhone": {
+                        "FreeFormNumber": "(415) 555-9933"
+                      },
+                      "PrimaryEmailAddr": {
+                        "Address": "Cool_Cars@intuit.com"
+                      }
+                    }
+                  ]
+                }
               }
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["3"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Customer%20WHERE%20Id%20IN%20(%273%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 401,
-              "responsePayload": {
-                "customers": []
-              }
+              "responsePayload": "Unauthorized"
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["3"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Customer%20WHERE%20Id%20IN%20(%273%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
-              "responsePayload": {
-                "customers": []
-              }
+              "responsePayload": "Too many requests"
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["3"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Customer%20WHERE%20Id%20IN%20(%273%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
-              "responsePayload": {
-                "customers": []
-              }
+              "responsePayload": "Internal server error"
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         }
       ]
@@ -1137,297 +682,514 @@
         {
           "ncStatusCode": 200,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "fulfillments": [
-                  {
-                    "id": 1073339459
-                  }
-                ]
+                "QueryResponse": {
+                  "SalesReceipt": [
+                    {
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "17",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-09-04T15:12:39-07:00",
+                        "LastUpdatedTime": "2017-09-04T15:12:39-07:00"
+                      },
+                      "CustomField": [
+                        {
+                          "DefinitionId": "1",
+                          "Name": "Crew #",
+                          "Type": "StringType"
+                        }
+                      ],
+                      "DocNumber": "1008",
+                      "TxnDate": "2017-08-13",
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "Line": [
+                        {
+                          "Id": "1",
+                          "LineNum": 1,
+                          "Description": "Custom Design",
+                          "Amount": 225,
+                          "DetailType": "SalesItemLineDetail",
+                          "SalesItemLineDetail": {
+                            "ItemRef": {
+                              "value": "4",
+                              "name": "Design"
+                            },
+                            "UnitPrice": 75,
+                            "Qty": 3,
+                            "TaxCodeRef": {
+                              "value": "NON"
+                            }
+                          }
+                        },
+                        {
+                          "Amount": 225,
+                          "DetailType": "SubTotalLineDetail",
+                          "SubTotalLineDetail": {}
+                        }
+                      ],
+                      "TxnTaxDetail": {
+                        "TotalTax": 0
+                      },
+                      "CustomerRef": {
+                        "value": "14",
+                        "name": "Kate Whelan"
+                      },
+                      "CustomerMemo": {
+                        "value": "Thank you for your business and have a great day!"
+                      },
+                      "BillAddr": {
+                        "Id": "54",
+                        "Line1": "Kate Whelan",
+                        "Line2": "45 First St.",
+                        "Line3": "Menlo Park, CA  94304 USA",
+                        "Lat": "37.3813444",
+                        "Long": "-122.1802812"
+                      },
+                      "ShipAddr": {
+                        "Id": "14",
+                        "Line1": "45 First St.",
+                        "City": "Menlo Park",
+                        "Country": "USA",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94304",
+                        "Lat": "37.4585825",
+                        "Long": "-122.1352789"
+                      },
+                      "TotalAmt": 225,
+                      "ApplyTaxAfterDiscount": false,
+                      "PrintStatus": "NeedToPrint",
+                      "EmailStatus": "NotSet",
+                      "BillEmail": {
+                        "Address": "Kate@Whelan.com"
+                      },
+                      "Balance": 0,
+                      "DepositToAccountRef": {
+                        "value": "35",
+                        "name": "Checking"
+                      },
+                      "TrackingNum": "123",
+                      "ShipDate": "2017-09-04T15:12:39-07:00"
+                    }
+                  ]
+                }
               }
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
+            "fulfillmentBusinessReferences": ["DocNumber"],
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 204,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "fulfillments": []
+                "QueryResponse": {
+                  "SalesReceipt": [
+                    {
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "17",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-09-04T15:12:39-07:00",
+                        "LastUpdatedTime": "2017-09-04T15:12:39-07:00"
+                      },
+                      "CustomField": [
+                        {
+                          "DefinitionId": "1",
+                          "Name": "Crew #",
+                          "Type": "StringType"
+                        }
+                      ],
+                      "DocNumber": "1008",
+                      "TxnDate": "2017-08-13",
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "Line": [
+                        {
+                          "Id": "1",
+                          "LineNum": 1,
+                          "Description": "Custom Design",
+                          "Amount": 225,
+                          "DetailType": "SalesItemLineDetail",
+                          "SalesItemLineDetail": {
+                            "ItemRef": {
+                              "value": "4",
+                              "name": "Design"
+                            },
+                            "UnitPrice": 75,
+                            "Qty": 3,
+                            "TaxCodeRef": {
+                              "value": "NON"
+                            }
+                          }
+                        },
+                        {
+                          "Amount": 225,
+                          "DetailType": "SubTotalLineDetail",
+                          "SubTotalLineDetail": {}
+                        }
+                      ],
+                      "TxnTaxDetail": {
+                        "TotalTax": 0
+                      },
+                      "CustomerRef": {
+                        "value": "14",
+                        "name": "Kate Whelan"
+                      },
+                      "CustomerMemo": {
+                        "value": "Thank you for your business and have a great day!"
+                      },
+                      "BillAddr": {
+                        "Id": "54",
+                        "Line1": "Kate Whelan",
+                        "Line2": "45 First St.",
+                        "Line3": "Menlo Park, CA  94304 USA",
+                        "Lat": "37.3813444",
+                        "Long": "-122.1802812"
+                      },
+                      "ShipAddr": {
+                        "Id": "14",
+                        "Line1": "45 First St.",
+                        "City": "Menlo Park",
+                        "Country": "USA",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94304",
+                        "Lat": "37.4585825",
+                        "Long": "-122.1352789"
+                      },
+                      "TotalAmt": 225,
+                      "ApplyTaxAfterDiscount": false,
+                      "PrintStatus": "NeedToPrint",
+                      "EmailStatus": "NotSet",
+                      "BillEmail": {
+                        "Address": "Kate@Whelan.com"
+                      },
+                      "Balance": 0,
+                      "DepositToAccountRef": {
+                        "value": "35",
+                        "name": "Checking"
+                      },
+                      "ShipDate": "2017-09-04T15:12:39-07:00"
+                    }
+                  ]
+                }
               }
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
+            "fulfillmentBusinessReferences": ["DocNumber"],
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 206,
           "payload": {
             "doc": {
+              "remoteIDs": ["17"],
               "pageSize": 2
             }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)%20MAXRESULTS%202",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "fulfillments": [
-                  {
-                    "id": 1073339459
-                  },
-                  {
-                    "id": 1073339459
-                  }
-                ]
+                "QueryResponse": {
+                  "SalesReceipt": [
+                    {
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "17",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-09-04T15:12:39-07:00",
+                        "LastUpdatedTime": "2017-09-04T15:12:39-07:00"
+                      },
+                      "CustomField": [
+                        {
+                          "DefinitionId": "1",
+                          "Name": "Crew #",
+                          "Type": "StringType"
+                        }
+                      ],
+                      "DocNumber": "1008",
+                      "TxnDate": "2017-08-13",
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "Line": [
+                        {
+                          "Id": "1",
+                          "LineNum": 1,
+                          "Description": "Custom Design",
+                          "Amount": 225,
+                          "DetailType": "SalesItemLineDetail",
+                          "SalesItemLineDetail": {
+                            "ItemRef": {
+                              "value": "4",
+                              "name": "Design"
+                            },
+                            "UnitPrice": 75,
+                            "Qty": 3,
+                            "TaxCodeRef": {
+                              "value": "NON"
+                            }
+                          }
+                        },
+                        {
+                          "Amount": 225,
+                          "DetailType": "SubTotalLineDetail",
+                          "SubTotalLineDetail": {}
+                        }
+                      ],
+                      "TxnTaxDetail": {
+                        "TotalTax": 0
+                      },
+                      "CustomerRef": {
+                        "value": "14",
+                        "name": "Kate Whelan"
+                      },
+                      "CustomerMemo": {
+                        "value": "Thank you for your business and have a great day!"
+                      },
+                      "BillAddr": {
+                        "Id": "54",
+                        "Line1": "Kate Whelan",
+                        "Line2": "45 First St.",
+                        "Line3": "Menlo Park, CA  94304 USA",
+                        "Lat": "37.3813444",
+                        "Long": "-122.1802812"
+                      },
+                      "ShipAddr": {
+                        "Id": "14",
+                        "Line1": "45 First St.",
+                        "City": "Menlo Park",
+                        "Country": "USA",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94304",
+                        "Lat": "37.4585825",
+                        "Long": "-122.1352789"
+                      },
+                      "TotalAmt": 225,
+                      "ApplyTaxAfterDiscount": false,
+                      "PrintStatus": "NeedToPrint",
+                      "EmailStatus": "NotSet",
+                      "BillEmail": {
+                        "Address": "Kate@Whelan.com"
+                      },
+                      "Balance": 0,
+                      "DepositToAccountRef": {
+                        "value": "35",
+                        "name": "Checking"
+                      },
+                      "TrackingNum": "123",
+                      "ShipDate": "2017-09-04T15:12:39-07:00"
+                    },
+                    {
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "17",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-09-04T15:12:39-07:00",
+                        "LastUpdatedTime": "2017-09-04T15:12:39-07:00"
+                      },
+                      "CustomField": [
+                        {
+                          "DefinitionId": "1",
+                          "Name": "Crew #",
+                          "Type": "StringType"
+                        }
+                      ],
+                      "DocNumber": "1008",
+                      "TxnDate": "2017-08-13",
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "Line": [
+                        {
+                          "Id": "1",
+                          "LineNum": 1,
+                          "Description": "Custom Design",
+                          "Amount": 225,
+                          "DetailType": "SalesItemLineDetail",
+                          "SalesItemLineDetail": {
+                            "ItemRef": {
+                              "value": "4",
+                              "name": "Design"
+                            },
+                            "UnitPrice": 75,
+                            "Qty": 3,
+                            "TaxCodeRef": {
+                              "value": "NON"
+                            }
+                          }
+                        },
+                        {
+                          "Amount": 225,
+                          "DetailType": "SubTotalLineDetail",
+                          "SubTotalLineDetail": {}
+                        }
+                      ],
+                      "TxnTaxDetail": {
+                        "TotalTax": 0
+                      },
+                      "CustomerRef": {
+                        "value": "14",
+                        "name": "Kate Whelan"
+                      },
+                      "CustomerMemo": {
+                        "value": "Thank you for your business and have a great day!"
+                      },
+                      "BillAddr": {
+                        "Id": "54",
+                        "Line1": "Kate Whelan",
+                        "Line2": "45 First St.",
+                        "Line3": "Menlo Park, CA  94304 USA",
+                        "Lat": "37.3813444",
+                        "Long": "-122.1802812"
+                      },
+                      "ShipAddr": {
+                        "Id": "14",
+                        "Line1": "45 First St.",
+                        "City": "Menlo Park",
+                        "Country": "USA",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94304",
+                        "Lat": "37.4585825",
+                        "Long": "-122.1352789"
+                      },
+                      "TotalAmt": 225,
+                      "ApplyTaxAfterDiscount": false,
+                      "PrintStatus": "NeedToPrint",
+                      "EmailStatus": "NotSet",
+                      "BillEmail": {
+                        "Address": "Kate@Whelan.com"
+                      },
+                      "Balance": 0,
+                      "DepositToAccountRef": {
+                        "value": "35",
+                        "name": "Checking"
+                      },
+                      "TrackingNum": "123",
+                      "ShipDate": "2017-09-04T15:12:39-07:00"
+                    }
+                  ]
+                }
               }
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
+            "fulfillmentBusinessReferences": ["DocNumber"],
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 401,
-              "responsePayload": {
-                "fulfillments": []
-              }
+              "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
+            "fulfillmentBusinessReferences": ["DocNumber"],
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
-              "responsePayload": {
-                "fulfillments": []
-              }
+              "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
+            "fulfillmentBusinessReferences": ["DocNumber"],
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
-              "responsePayload": {
-                "fulfillments": []
-              }
+              "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "GetProductGroupFromQuery",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 204,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 204,
-              "responsePayload": {
-                "products": [
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  },
-                  {
-                    "id": 1073339459,
-                    "sku": "test"
-                  }
-                ]
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 401,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "GET",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {
-                "products": []
-              }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
+            "fulfillmentBusinessReferences": ["DocNumber"],
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         }
       ]
@@ -1438,146 +1200,418 @@
         {
           "ncStatusCode": 200,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "orders": [
-                  {
-                    "id": 1073339459
-                  }
-                ]
+                "QueryResponse": {
+                  "SalesReceipt": [
+                    {
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "17",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-09-04T15:12:39-07:00",
+                        "LastUpdatedTime": "2017-09-04T15:12:39-07:00"
+                      },
+                      "CustomField": [
+                        {
+                          "DefinitionId": "1",
+                          "Name": "Crew #",
+                          "Type": "StringType"
+                        }
+                      ],
+                      "DocNumber": "1008",
+                      "TxnDate": "2017-08-13",
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "Line": [
+                        {
+                          "Id": "1",
+                          "LineNum": 1,
+                          "Description": "Custom Design",
+                          "Amount": 225,
+                          "DetailType": "SalesItemLineDetail",
+                          "SalesItemLineDetail": {
+                            "ItemRef": {
+                              "value": "4",
+                              "name": "Design"
+                            },
+                            "UnitPrice": 75,
+                            "Qty": 3,
+                            "TaxCodeRef": {
+                              "value": "NON"
+                            }
+                          }
+                        },
+                        {
+                          "Amount": 225,
+                          "DetailType": "SubTotalLineDetail",
+                          "SubTotalLineDetail": {}
+                        }
+                      ],
+                      "TxnTaxDetail": {
+                        "TotalTax": 0
+                      },
+                      "CustomerRef": {
+                        "value": "14",
+                        "name": "Kate Whelan"
+                      },
+                      "CustomerMemo": {
+                        "value": "Thank you for your business and have a great day!"
+                      },
+                      "BillAddr": {
+                        "Id": "54",
+                        "Line1": "Kate Whelan",
+                        "Line2": "45 First St.",
+                        "Line3": "Menlo Park, CA  94304 USA",
+                        "Lat": "37.3813444",
+                        "Long": "-122.1802812"
+                      },
+                      "ShipAddr": {
+                        "Id": "14",
+                        "Line1": "45 First St.",
+                        "City": "Menlo Park",
+                        "Country": "USA",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94304",
+                        "Lat": "37.4585825",
+                        "Long": "-122.1352789"
+                      },
+                      "TotalAmt": 225,
+                      "ApplyTaxAfterDiscount": false,
+                      "PrintStatus": "NeedToPrint",
+                      "EmailStatus": "NotSet",
+                      "BillEmail": {
+                        "Address": "Kate@Whelan.com"
+                      },
+                      "Balance": 0,
+                      "DepositToAccountRef": {
+                        "value": "35",
+                        "name": "Checking"
+                      },
+                      "TrackingNum": "123",
+                      "ShipDate": "2017-09-04T15:12:39-07:00"
+                    }
+                  ]
+                }
               }
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 204,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "orders": []
+                "QueryResponse": {
+                  "SalesReceipt": []
+                }
               }
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 206,
           "payload": {
             "doc": {
+              "remoteIDs": ["17"],
               "pageSize": 2
             }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)%20MAXRESULTS%202",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "orders": [
-                  {
-                    "id": 1073339459
-                  },
-                  {
-                    "id": 1073339459
-                  }
-                ]
+                "QueryResponse": {
+                  "SalesReceipt": [
+                    {
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "17",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-09-04T15:12:39-07:00",
+                        "LastUpdatedTime": "2017-09-04T15:12:39-07:00"
+                      },
+                      "CustomField": [
+                        {
+                          "DefinitionId": "1",
+                          "Name": "Crew #",
+                          "Type": "StringType"
+                        }
+                      ],
+                      "DocNumber": "1008",
+                      "TxnDate": "2017-08-13",
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "Line": [
+                        {
+                          "Id": "1",
+                          "LineNum": 1,
+                          "Description": "Custom Design",
+                          "Amount": 225,
+                          "DetailType": "SalesItemLineDetail",
+                          "SalesItemLineDetail": {
+                            "ItemRef": {
+                              "value": "4",
+                              "name": "Design"
+                            },
+                            "UnitPrice": 75,
+                            "Qty": 3,
+                            "TaxCodeRef": {
+                              "value": "NON"
+                            }
+                          }
+                        },
+                        {
+                          "Amount": 225,
+                          "DetailType": "SubTotalLineDetail",
+                          "SubTotalLineDetail": {}
+                        }
+                      ],
+                      "TxnTaxDetail": {
+                        "TotalTax": 0
+                      },
+                      "CustomerRef": {
+                        "value": "14",
+                        "name": "Kate Whelan"
+                      },
+                      "CustomerMemo": {
+                        "value": "Thank you for your business and have a great day!"
+                      },
+                      "BillAddr": {
+                        "Id": "54",
+                        "Line1": "Kate Whelan",
+                        "Line2": "45 First St.",
+                        "Line3": "Menlo Park, CA  94304 USA",
+                        "Lat": "37.3813444",
+                        "Long": "-122.1802812"
+                      },
+                      "ShipAddr": {
+                        "Id": "14",
+                        "Line1": "45 First St.",
+                        "City": "Menlo Park",
+                        "Country": "USA",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94304",
+                        "Lat": "37.4585825",
+                        "Long": "-122.1352789"
+                      },
+                      "TotalAmt": 225,
+                      "ApplyTaxAfterDiscount": false,
+                      "PrintStatus": "NeedToPrint",
+                      "EmailStatus": "NotSet",
+                      "BillEmail": {
+                        "Address": "Kate@Whelan.com"
+                      },
+                      "Balance": 0,
+                      "DepositToAccountRef": {
+                        "value": "35",
+                        "name": "Checking"
+                      },
+                      "TrackingNum": "123",
+                      "ShipDate": "2017-09-04T15:12:39-07:00"
+                    },
+                    {
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "17",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2017-09-04T15:12:39-07:00",
+                        "LastUpdatedTime": "2017-09-04T15:12:39-07:00"
+                      },
+                      "CustomField": [
+                        {
+                          "DefinitionId": "1",
+                          "Name": "Crew #",
+                          "Type": "StringType"
+                        }
+                      ],
+                      "DocNumber": "1008",
+                      "TxnDate": "2017-08-13",
+                      "CurrencyRef": {
+                        "value": "USD",
+                        "name": "United States Dollar"
+                      },
+                      "Line": [
+                        {
+                          "Id": "1",
+                          "LineNum": 1,
+                          "Description": "Custom Design",
+                          "Amount": 225,
+                          "DetailType": "SalesItemLineDetail",
+                          "SalesItemLineDetail": {
+                            "ItemRef": {
+                              "value": "4",
+                              "name": "Design"
+                            },
+                            "UnitPrice": 75,
+                            "Qty": 3,
+                            "TaxCodeRef": {
+                              "value": "NON"
+                            }
+                          }
+                        },
+                        {
+                          "Amount": 225,
+                          "DetailType": "SubTotalLineDetail",
+                          "SubTotalLineDetail": {}
+                        }
+                      ],
+                      "TxnTaxDetail": {
+                        "TotalTax": 0
+                      },
+                      "CustomerRef": {
+                        "value": "14",
+                        "name": "Kate Whelan"
+                      },
+                      "CustomerMemo": {
+                        "value": "Thank you for your business and have a great day!"
+                      },
+                      "BillAddr": {
+                        "Id": "54",
+                        "Line1": "Kate Whelan",
+                        "Line2": "45 First St.",
+                        "Line3": "Menlo Park, CA  94304 USA",
+                        "Lat": "37.3813444",
+                        "Long": "-122.1802812"
+                      },
+                      "ShipAddr": {
+                        "Id": "14",
+                        "Line1": "45 First St.",
+                        "City": "Menlo Park",
+                        "Country": "USA",
+                        "CountrySubDivisionCode": "CA",
+                        "PostalCode": "94304",
+                        "Lat": "37.4585825",
+                        "Long": "-122.1352789"
+                      },
+                      "TotalAmt": 225,
+                      "ApplyTaxAfterDiscount": false,
+                      "PrintStatus": "NeedToPrint",
+                      "EmailStatus": "NotSet",
+                      "BillEmail": {
+                        "Address": "Kate@Whelan.com"
+                      },
+                      "Balance": 0,
+                      "DepositToAccountRef": {
+                        "value": "35",
+                        "name": "Checking"
+                      },
+                      "TrackingNum": "123",
+                      "ShipDate": "2017-09-04T15:12:39-07:00"
+                    }
+                  ]
+                }
               }
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 401,
-              "responsePayload": {
-                "orders": []
-              }
+              "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
-              "responsePayload": {
-                "orders": []
-              }
+              "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "remoteIDs": ["17"]
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20SalesReceipt%20WHERE%20Id%20IN%20(%2717%27)",
               "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
-              "responsePayload": {
-                "orders": []
-              }
+              "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         }
       ]
@@ -1588,38 +1622,91 @@
         {
           "ncStatusCode": 201,
           "payload": {
-            "doc": {}
+            "doc": {
+              "customer": {
+                "email": "derek.boytim@nchannel.com",
+                "first_name": "Derek",
+                "last_name": "Boytim"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/customer?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
-              "statusCode": 201,
+              "statusCode": 200,
               "responsePayload": {
-                "customer": {
-                  "id": 1073339459,
-                  "email": "derek.boytim@nchannel.com"
-                }
+                "Customer": {
+                  "Taxable": true,
+                  "BillAddr": {
+                    "Id": "101",
+                    "Line1": "123 Test Drive",
+                    "City": "Columbus",
+                    "Country": "USA",
+                    "CountrySubDivisionCode": "OH",
+                    "PostalCode": "43212"
+                  },
+                  "Job": false,
+                  "BillWithParent": false,
+                  "Balance": 0,
+                  "BalanceWithJobs": 0,
+                  "CurrencyRef": {
+                    "value": "USD",
+                    "name": "United States Dollar"
+                  },
+                  "PreferredDeliveryMethod": "Print",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "64",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2017-10-05T06:24:21-07:00",
+                    "LastUpdatedTime": "2017-10-05T06:24:21-07:00"
+                  },
+                  "GivenName": "Test",
+                  "MiddleName": "A",
+                  "FamilyName": "Drive",
+                  "FullyQualifiedName": "Test Drive",
+                  "DisplayName": "Test Drive",
+                  "PrintOnCheckName": "Test A Drive",
+                  "Active": true,
+                  "PrimaryPhone": {
+                    "FreeFormNumber": "(555) 555-5555"
+                  },
+                  "PrimaryEmailAddr": {
+                    "Address": "test@test.com"
+                  },
+                  "DefaultTaxCodeRef": {
+                    "value": "2"
+                  }
+                },
+                "time": "2017-10-05T06:24:21.879-07:00"
               }
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "customer": {
+                "email": "derek.boytim@nchannel.com",
+                "first_name": "Derek",
+                "last_name": "Boytim"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/customer?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 400,
@@ -1627,19 +1714,25 @@
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "customer": {
+                "email": "derek.boytim@nchannel.com",
+                "first_name": "Derek",
+                "last_name": "Boytim"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/customer?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 429,
@@ -1647,19 +1740,25 @@
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "customer": {
+                "email": "derek.boytim@nchannel.com",
+                "first_name": "Derek",
+                "last_name": "Boytim"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/customer?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 500,
@@ -1667,48 +1766,121 @@
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         }
       ]
     },
     {
-      "functionName": "InsertFulfillment",
+      "functionName": "InsertProductSimple",
       "tests": [
         {
           "ncStatusCode": 201,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
-              "statusCode": 201,
+              "statusCode": 200,
               "responsePayload": {
-                "fulfillment": {
-                  "id": 1073339459
-                }
+                "Item": {
+                  "Name": "Garden Supplies",
+                  "Active": true,
+                  "Sku": "Office",
+                  "FullyQualifiedName": "Garden Supplies",
+                  "Taxable": false,
+                  "UnitPrice": 0,
+                  "Type": "Inventory",
+                  "IncomeAccountRef": {
+                    "value": "79",
+                    "name": "Sales of Product Income"
+                  },
+                  "PurchaseCost": 0,
+                  "ExpenseAccountRef": {
+                    "value": "80",
+                    "name": "Cost of Goods Sold"
+                  },
+                  "AssetAccountRef": {
+                    "value": "81",
+                    "name": "Inventory Asset"
+                  },
+                  "TrackQtyOnHand": true,
+                  "QtyOnHand": 10,
+                  "InvStartDate": "2015-01-01",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "19",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-12-09T11:12:39-08:00",
+                    "LastUpdatedTime": "2015-12-09T11:12:41-08:00"
+                  }
+                },
+                "time": "2015-12-09T11:12:39.748-08:00"
               }
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 400,
@@ -1716,19 +1888,40 @@
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 429,
@@ -1736,19 +1929,40 @@
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 500,
@@ -1756,49 +1970,121 @@
             }
           ],
           "channelProfile": {
-            "fulfillmentBusinessReferences": ["fulfillmentid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         }
       ]
     },
     {
-      "functionName": "InsertProduct",
+      "functionName": "InsertProductPricing",
       "tests": [
         {
           "ncStatusCode": 201,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
-              "statusCode": 201,
+              "statusCode": 200,
               "responsePayload": {
-                "product": {
-                  "id": 1073339459,
-                  "sku": "test"
-                }
+                "Item": {
+                  "Name": "Garden Supplies",
+                  "Active": true,
+                  "Sku": "Office",
+                  "FullyQualifiedName": "Garden Supplies",
+                  "Taxable": false,
+                  "UnitPrice": 0,
+                  "Type": "Inventory",
+                  "IncomeAccountRef": {
+                    "value": "79",
+                    "name": "Sales of Product Income"
+                  },
+                  "PurchaseCost": 0,
+                  "ExpenseAccountRef": {
+                    "value": "80",
+                    "name": "Cost of Goods Sold"
+                  },
+                  "AssetAccountRef": {
+                    "value": "81",
+                    "name": "Inventory Asset"
+                  },
+                  "TrackQtyOnHand": true,
+                  "QtyOnHand": 10,
+                  "InvStartDate": "2015-01-01",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "19",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-12-09T11:12:39-08:00",
+                    "LastUpdatedTime": "2015-12-09T11:12:41-08:00"
+                  }
+                },
+                "time": "2015-12-09T11:12:39.748-08:00"
               }
             }
           ],
           "channelProfile": {
-            "productBusinessReferences": ["productid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 400,
@@ -1806,19 +2092,40 @@
             }
           ],
           "channelProfile": {
-            "productBusinessReferences": ["productid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 429,
@@ -1826,19 +2133,40 @@
             }
           ],
           "channelProfile": {
-            "productBusinessReferences": ["productid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 500,
@@ -1846,49 +2174,121 @@
             }
           ],
           "channelProfile": {
-            "productBusinessReferences": ["productid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         }
       ]
     },
     {
-      "functionName": "InsertProductGroup",
+      "functionName": "InsertProductQuantity",
       "tests": [
         {
           "ncStatusCode": 201,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
-              "statusCode": 201,
+              "statusCode": 200,
               "responsePayload": {
-                "product": {
-                  "id": 1073339459,
-                  "sku": "test"
-                }
+                "Item": {
+                  "Name": "Garden Supplies",
+                  "Active": true,
+                  "Sku": "Office",
+                  "FullyQualifiedName": "Garden Supplies",
+                  "Taxable": false,
+                  "UnitPrice": 0,
+                  "Type": "Inventory",
+                  "IncomeAccountRef": {
+                    "value": "79",
+                    "name": "Sales of Product Income"
+                  },
+                  "PurchaseCost": 0,
+                  "ExpenseAccountRef": {
+                    "value": "80",
+                    "name": "Cost of Goods Sold"
+                  },
+                  "AssetAccountRef": {
+                    "value": "81",
+                    "name": "Inventory Asset"
+                  },
+                  "TrackQtyOnHand": true,
+                  "QtyOnHand": 10,
+                  "InvStartDate": "2015-01-01",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "19",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-12-09T11:12:39-08:00",
+                    "LastUpdatedTime": "2015-12-09T11:12:41-08:00"
+                  }
+                },
+                "time": "2015-12-09T11:12:39.748-08:00"
               }
             }
           ],
           "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 400,
@@ -1896,19 +2296,40 @@
             }
           ],
           "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 429,
@@ -1916,19 +2337,40 @@
             }
           ],
           "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies 3",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            }
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/item?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
               "statusCode": 500,
@@ -1936,7 +2378,7 @@
             }
           ],
           "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         }
       ]
@@ -1947,85 +2389,251 @@
         {
           "ncStatusCode": 201,
           "payload": {
-            "doc": {}
+            "doc": {
+              "DocNumber": "2222",
+              "Line": [
+                {
+                  "Amount": 100.00,
+                  "DetailType": "SalesItemLineDetail",
+                  "SalesItemLineDetail": {
+                    "ItemRef": {
+                      "name": "OS001"
+                    }
+                  }
+                }
+              ],
+              "CustomerRef": {
+                "value": "1"
+              }
+            },
+            "billingCustomerRemoteID": "1",
+            "billingAddressRemoteID": "49"
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Item%20WHERE%20Sku%20IN%20(%27OS001%27)%20AND%20Sku%20!=%20%27%20%27%20MAXRESULTS%2025",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "QueryResponse": {
+                  "Item": [
+                    {
+                      "Name": "Office Supplies",
+                      "Description": "This is the sales description.",
+                      "Active": true,
+                      "FullyQualifiedName": "Office Supplies",
+                      "Taxable": true,
+                      "UnitPrice": 25,
+                      "Type": "Inventory",
+                      "Sku": "OS001",
+                      "IncomeAccountRef": {
+                        "value": "79",
+                        "name": "Sales of Product Income"
+                      },
+                      "PurchaseDesc": "This is the purchasing description.",
+                      "PurchaseCost": 35,
+                      "ExpenseAccountRef": {
+                        "value": "80",
+                        "name": "Cost of Goods Sold"
+                      },
+                      "AssetAccountRef": {
+                        "value": "81",
+                        "name": "Inventory Asset"
+                      },
+                      "TrackQtyOnHand": true,
+                      "QtyOnHand": 10,
+                      "InvStartDate": "2013-02-19",
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "37",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2015-04-22T11:03:23-07:00",
+                        "LastUpdatedTime": "2015-04-22T11:03:24-07:00"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            {
+              "uri": "/company/123456789/salesreceipt?minorversion=12",
               "method": "POST",
               "replyHeaders": {},
-              "statusCode": 201,
+              "statusCode": 200,
               "responsePayload": {
-                "order": {
-                  "id": 1073339459
-                }
+                "SalesReceipt": {
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "5",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-07-29T09:25:02-07:00",
+                    "LastUpdatedTime": "2015-07-29T09:25:02-07:00"
+                  },
+                  "DocNumber": "222",
+                  "TxnDate": "2015-07-29",
+                  "Line": [
+                    {
+                      "Id": "1",
+                      "LineNum": 1,
+                      "Description": "Pest Control Services",
+                      "Amount": 100.0,
+                      "DetailType": "SalesItemLineDetail",
+                      "SalesItemLineDetail": {
+                        "ItemRef": {
+                          "value": "37",
+                          "name": "Office Supplies"
+                        },
+                        "UnitPrice": 100,
+                        "Qty": 1,
+                        "TaxCodeRef": {
+                          "value": "NON"
+                        }
+                      }
+                    },
+                    {
+                      "Amount": 100.0,
+                      "DetailType": "SubTotalLineDetail",
+                      "SubTotalLineDetail": {}
+                    }
+                  ],
+                  "TxnTaxDetail": {
+                    "TotalTax": 0
+                  },
+                  "TotalAmt": 100.0,
+                  "ApplyTaxAfterDiscount": false,
+                  "PrintStatus": "NeedToPrint",
+                  "EmailStatus": "NotSet",
+                  "Balance": 0,
+                  "DepositToAccountRef": {
+                    "value": "4",
+                    "name": "Undeposited Funds"
+                  }
+                },
+                "time": "2015-07-29T09:25:04.214-07:00"
               }
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "DocNumber": "2222",
+              "Line": [
+                {
+                  "Amount": 100.00,
+                  "DetailType": "SalesItemLineDetail",
+                  "SalesItemLineDetail": {
+                    "ItemRef": {
+                      "name": "OS001"
+                    }
+                  }
+                }
+              ],
+              "CustomerRef": {
+                "value": "1"
+              }
+            },
+            "billingCustomerRemoteID": "1",
+            "billingAddressRemoteID": "49"
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "POST",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Item%20WHERE%20Sku%20IN%20(%27OS001%27)%20AND%20Sku%20!=%20%27%20%27%20MAXRESULTS%2025",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "DocNumber": "2222",
+              "Line": [
+                {
+                  "Amount": 100.00,
+                  "DetailType": "SalesItemLineDetail",
+                  "SalesItemLineDetail": {
+                    "ItemRef": {
+                      "name": "OS001"
+                    }
+                  }
+                }
+              ],
+              "CustomerRef": {
+                "value": "1"
+              }
+            },
+            "billingCustomerRemoteID": "1",
+            "billingAddressRemoteID": "49"
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "POST",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Item%20WHERE%20Sku%20IN%20(%27OS001%27)%20AND%20Sku%20!=%20%27%20%27%20MAXRESULTS%2025",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "DocNumber": "2222",
+              "Line": [
+                {
+                  "Amount": 100.00,
+                  "DetailType": "SalesItemLineDetail",
+                  "SalesItemLineDetail": {
+                    "ItemRef": {
+                      "name": "OS001"
+                    }
+                  }
+                }
+              ],
+              "CustomerRef": {
+                "value": "1"
+              }
+            },
+            "billingCustomerRemoteID": "1",
+            "billingAddressRemoteID": "49"
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "POST",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Item%20WHERE%20Sku%20IN%20(%27OS001%27)%20AND%20Sku%20!=%20%27%20%27%20MAXRESULTS%2025",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         }
       ]
@@ -2036,266 +2644,487 @@
         {
           "ncStatusCode": 200,
           "payload": {
-            "doc": {}
+            "doc": {
+              "BillAddr": {
+                "Line1": "123 Test Drive",
+                "City": "Columbus",
+                "Country": "USA",
+                "CountrySubDivisionCode": "OH",
+                "PostalCode": "43212"
+              },
+              "GivenName": "Test",
+              "MiddleName": "A",
+              "FamilyName": "Test",
+              "DisplayName": "Test Test",
+              "PrimaryPhone": {
+                "FreeFormNumber": "(555) 555-5555"
+              },
+              "PrimaryEmailAddr": {
+                "Address": "testa@test.com"
+              }
+            },
+            "customerRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/customer/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "customer": {
-                  "id": 1073339459,
-                  "email": "derek.boytim@nchannel.com"
-                }
+                "Customer": {
+                  "Taxable": false,
+                  "BillAddr": {
+                    "Id": "3",
+                    "Line1": "123 Test Drive",
+                    "City": "Columbus",
+                    "Country": "USA",
+                    "CountrySubDivisionCode": "OH",
+                    "PostalCode": "43212"
+                  },
+                  "Job": false,
+                  "BillWithParent": false,
+                  "Balance": 0,
+                  "BalanceWithJobs": 0,
+                  "CurrencyRef": {"value": "USD", "name": "United States Dollar"},
+                  "PreferredDeliveryMethod": "Print",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "4",
+                  "SyncToken": "0",
+                  "MetaData": {"CreateTime": "2017-08-30T16:49:28-07:00", "LastUpdatedTime": "2017-10-06T03:43:50-07:00"},
+                  "GivenName": "TestTestA",
+                  "MiddleName": "A",
+                  "FamilyName": "TestTestA",
+                  "FullyQualifiedName": "TestTestA TestTestA (deleted)",
+                  "DisplayName": "TestTestA TestTestA (deleted)",
+                  "PrintOnCheckName": "TestTestA A TestTestA",
+                  "Active": false,
+                  "PrimaryPhone": {"FreeFormNumber": "(555) 555-5555"},
+                  "PrimaryEmailAddr": {"Address": "testa@test.com"}
+                }, "time": "2017-10-06T03:50:02.132-07:00"
+              }
+            },
+            {
+              "uri": "/company/123456789/customer?minorversion=12",
+              "method": "POST",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "Customer": {
+                  "Taxable": false,
+                  "BillAddr": {
+                    "Id": "3",
+                    "Line1": "123 Test Drive",
+                    "City": "Columbus",
+                    "Country": "USA",
+                    "CountrySubDivisionCode": "OH",
+                    "PostalCode": "43212",
+                    "Lat": "37.4307072",
+                    "Long": "-122.4295234"
+                  },
+                  "Job": false,
+                  "BillWithParent": false,
+                  "Balance": 85.0,
+                  "BalanceWithJobs": 85.0,
+                  "PreferredDeliveryMethod": "Print",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "4",
+                  "SyncToken": "4",
+                  "MetaData": {
+                    "CreateTime": "2014-09-11T16:49:28-07:00",
+                    "LastUpdatedTime": "2015-07-23T11:18:37-07:00"
+                  },
+                  "GivenName": "Test",
+                  "MiddleName": "A",
+                  "FamilyName": "Test",
+                  "FullyQualifiedName": "Test Test",
+                  "DisplayName": "Test Test",
+                  "PrintOnCheckName": "Test Test",
+                  "Active": true,
+                  "PrimaryPhone": {
+                    "FreeFormNumber": "(555) 555-5555"
+                  },
+                  "PrimaryEmailAddr": {
+                    "Address": "testa@test.com"
+                  }
+                },
+                "time": "2015-07-23T11:18:37.323-07:00"
               }
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "BillAddr": {
+                "Line1": "123 Test Drive",
+                "City": "Columbus",
+                "Country": "USA",
+                "CountrySubDivisionCode": "OH",
+                "PostalCode": "43212"
+              },
+              "GivenName": "Test",
+              "MiddleName": "A",
+              "FamilyName": "Test",
+              "DisplayName": "Test Test",
+              "PrimaryPhone": {
+                "FreeFormNumber": "(555) 555-5555"
+              },
+              "PrimaryEmailAddr": {
+                "Address": "testa@test.com"
+              }
+            },
+            "customerRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/customer/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "BillAddr": {
+                "Line1": "123 Test Drive",
+                "City": "Columbus",
+                "Country": "USA",
+                "CountrySubDivisionCode": "OH",
+                "PostalCode": "43212"
+              },
+              "GivenName": "Test",
+              "MiddleName": "A",
+              "FamilyName": "Test",
+              "DisplayName": "Test Test",
+              "PrimaryPhone": {
+                "FreeFormNumber": "(555) 555-5555"
+              },
+              "PrimaryEmailAddr": {
+                "Address": "testa@test.com"
+              }
+            },
+            "customerRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/customer/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "BillAddr": {
+                "Line1": "123 Test Drive",
+                "City": "Columbus",
+                "Country": "USA",
+                "CountrySubDivisionCode": "OH",
+                "PostalCode": "43212"
+              },
+              "GivenName": "Test",
+              "MiddleName": "A",
+              "FamilyName": "Test",
+              "DisplayName": "Test Test",
+              "PrimaryPhone": {
+                "FreeFormNumber": "(555) 555-5555"
+              },
+              "PrimaryEmailAddr": {
+                "Address": "testa@test.com"
+              }
+            },
+            "customerRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/customer/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "customerBusinessReferences": ["email"]
+            "customerBusinessReferences": ["PrimaryEmailAddr.Address"]
           }
         }
       ]
     },
     {
-      "functionName": "UpdateProduct",
+      "functionName": "UpdateProductSimple",
       "tests": [
         {
           "ncStatusCode": 200,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "product": {
-                  "id": 1073339459,
-                  "sku": "test"
-                }
+                "Item": {
+                  "Name": "Garden Supplies",
+                  "Active": true,
+                  "Sku": "TestSKU",
+                  "FullyQualifiedName": "Garden Supplies",
+                  "Taxable": false,
+                  "UnitPrice": 0,
+                  "Type": "Inventory",
+                  "IncomeAccountRef": {
+                    "value": "79",
+                    "name": "Sales of Product Income"
+                  },
+                  "PurchaseCost": 0,
+                  "ExpenseAccountRef": {
+                    "value": "80",
+                    "name": "Cost of Goods Sold"
+                  },
+                  "AssetAccountRef": {
+                    "value": "81",
+                    "name": "Inventory Asset"
+                  },
+                  "TrackQtyOnHand": true,
+                  "QtyOnHand": 10,
+                  "InvStartDate": "2015-01-01",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "19",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-12-09T11:12:39-08:00",
+                    "LastUpdatedTime": "2015-12-09T11:12:41-08:00"
+                  }
+                },
+                "time": "2015-12-09T11:12:39.748-08:00"
+              }
+            },
+            {
+              "uri": "/company/123456789/item?minorversion=12",
+              "method": "POST",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "Item": {
+                  "Name": "Garden Supplies",
+                  "Active": true,
+                  "Sku": "Office",
+                  "FullyQualifiedName": "Garden Supplies",
+                  "Taxable": false,
+                  "UnitPrice": 0,
+                  "Type": "Inventory",
+                  "IncomeAccountRef": {
+                    "value": "79",
+                    "name": "Sales of Product Income"
+                  },
+                  "PurchaseCost": 0,
+                  "ExpenseAccountRef": {
+                    "value": "80",
+                    "name": "Cost of Goods Sold"
+                  },
+                  "AssetAccountRef": {
+                    "value": "81",
+                    "name": "Inventory Asset"
+                  },
+                  "TrackQtyOnHand": true,
+                  "QtyOnHand": 10,
+                  "InvStartDate": "2015-01-01",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "19",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-12-09T11:12:39-08:00",
+                    "LastUpdatedTime": "2015-12-09T11:12:41-08:00"
+                  }
+                },
+                "time": "2015-12-09T11:12:39.748-08:00"
               }
             }
           ],
           "channelProfile": {
-            "productBusinessReferences": ["productid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "productBusinessReferences": ["productid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "PUT",
-              "replyHeaders": {},
-              "statusCode": 429,
-              "responsePayload": {}
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["productid"]
-          }
-        },
-        {
-          "ncStatusCode": 500,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "PUT",
-              "replyHeaders": {},
-              "statusCode": 500,
-              "responsePayload": {}
-            }
-          ],
-          "channelProfile": {
-            "productBusinessReferences": ["productid"]
-          }
-        }
-      ]
-    },
-    {
-      "functionName": "UpdateProductGroup",
-      "tests": [
-        {
-          "ncStatusCode": 200,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "PUT",
-              "replyHeaders": {},
-              "statusCode": 200,
-              "responsePayload": {
-                "product": {
-                  "id": 1073339459,
-                  "sku": "test"
-                }
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
               }
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 400,
-          "payload": {
-            "doc": {}
+            },
+            "productRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
-              "replyHeaders": {},
-              "statusCode": 400,
-              "responsePayload": {}
-            }
-          ],
-          "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
-          }
-        },
-        {
-          "ncStatusCode": 429,
-          "payload": {
-            "doc": {}
-          },
-          "baseUri": "https://localhost",
-          "defaultHeaders": {},
-          "links": [
-            {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "productGroupBusinessReferences": ["productgroupid"]
+            "productBusinessReferences": ["Item.Sku"]
           }
         }
       ]
@@ -2306,86 +3135,246 @@
         {
           "ncStatusCode": 200,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productPricingRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "product": {
-                  "id": 1073339459,
-                  "sku": "test"
-                }
+                "Item": {
+                  "Name": "Garden Supplies",
+                  "Active": true,
+                  "Sku": "TestSKU",
+                  "FullyQualifiedName": "Garden Supplies",
+                  "Taxable": false,
+                  "UnitPrice": 0,
+                  "Type": "Inventory",
+                  "IncomeAccountRef": {
+                    "value": "79",
+                    "name": "Sales of Product Income"
+                  },
+                  "PurchaseCost": 0,
+                  "ExpenseAccountRef": {
+                    "value": "80",
+                    "name": "Cost of Goods Sold"
+                  },
+                  "AssetAccountRef": {
+                    "value": "81",
+                    "name": "Inventory Asset"
+                  },
+                  "TrackQtyOnHand": true,
+                  "QtyOnHand": 10,
+                  "InvStartDate": "2015-01-01",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "19",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-12-09T11:12:39-08:00",
+                    "LastUpdatedTime": "2015-12-09T11:12:41-08:00"
+                  }
+                },
+                "time": "2015-12-09T11:12:39.748-08:00"
+              }
+            },
+            {
+              "uri": "/company/123456789/item?minorversion=12",
+              "method": "POST",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "Item": {
+                  "Name": "Garden Supplies",
+                  "Active": true,
+                  "Sku": "Office",
+                  "FullyQualifiedName": "Garden Supplies",
+                  "Taxable": false,
+                  "UnitPrice": 0,
+                  "Type": "Inventory",
+                  "IncomeAccountRef": {
+                    "value": "79",
+                    "name": "Sales of Product Income"
+                  },
+                  "PurchaseCost": 0,
+                  "ExpenseAccountRef": {
+                    "value": "80",
+                    "name": "Cost of Goods Sold"
+                  },
+                  "AssetAccountRef": {
+                    "value": "81",
+                    "name": "Inventory Asset"
+                  },
+                  "TrackQtyOnHand": true,
+                  "QtyOnHand": 10,
+                  "InvStartDate": "2015-01-01",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "19",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-12-09T11:12:39-08:00",
+                    "LastUpdatedTime": "2015-12-09T11:12:41-08:00"
+                  }
+                },
+                "time": "2015-12-09T11:12:39.748-08:00"
               }
             }
           ],
           "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
+            "productPricingBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productPricingRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
+            "productPricingBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productPricingRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
+            "productPricingBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productPricingRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "productPricingBusinessReferences": ["productpricingid"]
+            "productPricingBusinessReferences": ["Item.Sku"]
           }
         }
       ]
@@ -2396,86 +3385,246 @@
         {
           "ncStatusCode": 200,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productQuantityRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "product": {
-                  "id": 1073339459,
-                  "sku": "test"
-                }
+                "Item": {
+                  "Name": "Garden Supplies",
+                  "Active": true,
+                  "Sku": "TestSKU",
+                  "FullyQualifiedName": "Garden Supplies",
+                  "Taxable": false,
+                  "UnitPrice": 0,
+                  "Type": "Inventory",
+                  "IncomeAccountRef": {
+                    "value": "79",
+                    "name": "Sales of Product Income"
+                  },
+                  "PurchaseCost": 0,
+                  "ExpenseAccountRef": {
+                    "value": "80",
+                    "name": "Cost of Goods Sold"
+                  },
+                  "AssetAccountRef": {
+                    "value": "81",
+                    "name": "Inventory Asset"
+                  },
+                  "TrackQtyOnHand": true,
+                  "QtyOnHand": 10,
+                  "InvStartDate": "2015-01-01",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "19",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-12-09T11:12:39-08:00",
+                    "LastUpdatedTime": "2015-12-09T11:12:41-08:00"
+                  }
+                },
+                "time": "2015-12-09T11:12:39.748-08:00"
+              }
+            },
+            {
+              "uri": "/company/123456789/item?minorversion=12",
+              "method": "POST",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "Item": {
+                  "Name": "Garden Supplies",
+                  "Active": true,
+                  "Sku": "Office",
+                  "FullyQualifiedName": "Garden Supplies",
+                  "Taxable": false,
+                  "UnitPrice": 0,
+                  "Type": "Inventory",
+                  "IncomeAccountRef": {
+                    "value": "79",
+                    "name": "Sales of Product Income"
+                  },
+                  "PurchaseCost": 0,
+                  "ExpenseAccountRef": {
+                    "value": "80",
+                    "name": "Cost of Goods Sold"
+                  },
+                  "AssetAccountRef": {
+                    "value": "81",
+                    "name": "Inventory Asset"
+                  },
+                  "TrackQtyOnHand": true,
+                  "QtyOnHand": 10,
+                  "InvStartDate": "2015-01-01",
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "19",
+                  "SyncToken": "0",
+                  "MetaData": {
+                    "CreateTime": "2015-12-09T11:12:39-08:00",
+                    "LastUpdatedTime": "2015-12-09T11:12:41-08:00"
+                  }
+                },
+                "time": "2015-12-09T11:12:39.748-08:00"
               }
             }
           ],
           "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
+            "productQuantityBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productQuantityRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
+            "productQuantityBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productQuantityRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 429,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
+            "productQuantityBusinessReferences": ["Item.Sku"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "Item": {
+                "Name": "Garden Supplies",
+                "Sku": "Office",
+                "IncomeAccountRef": {
+                  "value": "79",
+                  "name": "Sales of Product Income"
+                },
+                "ExpenseAccountRef": {
+                  "value": "80",
+                  "name": "Cost of Goods Sold"
+                },
+                "AssetAccountRef": {
+                  "value": "81",
+                  "name": "Inventory Asset"
+                },
+                "Type": "Inventory",
+                "TrackQtyOnHand": true,
+                "QtyOnHand": 10,
+                "InvStartDate": "2015-01-01"
+              }
+            },
+            "productQuantityRemoteID": 4
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/item/4?minorversion=12",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 500,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "productQuantityBusinessReferences": ["productquantityid"]
+            "productQuantityBusinessReferences": ["Item.Sku"]
           }
         }
       ]
@@ -2486,85 +3635,293 @@
         {
           "ncStatusCode": 200,
           "payload": {
-            "doc": {}
+            "doc": {
+              "DocNumber": "2222",
+              "Line": [
+                {
+                  "Amount": 100.00,
+                  "DetailType": "SalesItemLineDetail",
+                  "SalesItemLineDetail": {
+                    "ItemRef": {
+                      "name": "OS001"
+                    }
+                  }
+                }
+              ],
+              "CustomerRef": {
+                "value": "1"
+              }
+            },
+            "salesOrderRemoteID": "148"
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Item%20WHERE%20Sku%20IN%20(%27OS001%27)%20AND%20Sku%20!=%20%27%20%27%20MAXRESULTS%2025",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 200,
               "responsePayload": {
-                "order": {
-                  "id": 1073339459
+                "QueryResponse": {
+                  "Item": [
+                    {
+                      "Name": "Office Supplies",
+                      "Description": "This is the sales description.",
+                      "Active": true,
+                      "FullyQualifiedName": "Office Supplies",
+                      "Taxable": true,
+                      "UnitPrice": 25,
+                      "Type": "Inventory",
+                      "Sku": "OS001",
+                      "IncomeAccountRef": {
+                        "value": "79",
+                        "name": "Sales of Product Income"
+                      },
+                      "PurchaseDesc": "This is the purchasing description.",
+                      "PurchaseCost": 35,
+                      "ExpenseAccountRef": {
+                        "value": "80",
+                        "name": "Cost of Goods Sold"
+                      },
+                      "AssetAccountRef": {
+                        "value": "81",
+                        "name": "Inventory Asset"
+                      },
+                      "TrackQtyOnHand": true,
+                      "QtyOnHand": 10,
+                      "InvStartDate": "2013-02-19",
+                      "domain": "QBO",
+                      "sparse": false,
+                      "Id": "37",
+                      "SyncToken": "0",
+                      "MetaData": {
+                        "CreateTime": "2015-04-22T11:03:23-07:00",
+                        "LastUpdatedTime": "2015-04-22T11:03:24-07:00"
+                      }
+                    }
+                  ]
                 }
+              }
+            },
+            {
+              "uri": "/company/123456789/salesreceipt/148?minorversion=12",
+              "method": "GET",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "SalesReceipt": {
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "148",
+                  "SyncToken": "4",
+                  "MetaData": {"CreateTime": "2017-10-06T12:51:10-07:00", "LastUpdatedTime": "2017-10-06T12:53:34-07:00"},
+                  "CustomField": [{"DefinitionId": "1", "Name": "Crew #", "Type": "StringType"}],
+                  "DocNumber": "2222",
+                  "TxnDate": "2017-10-06",
+                  "CurrencyRef": {"value": "USD", "name": "United States Dollar"},
+                  "Line": [{
+                    "Id": "5",
+                    "LineNum": 1,
+                    "Amount": 100.00,
+                    "DetailType": "SalesItemLineDetail",
+                    "SalesItemLineDetail": {"ItemRef": {"value": "1", "name": "Services"}, "TaxCodeRef": {"value": "NON"}}
+                  }, {"Amount": 100.00, "DetailType": "SubTotalLineDetail", "SubTotalLineDetail": {}}],
+                  "TxnTaxDetail": {"TotalTax": 0},
+                  "CustomerRef": {"value": "1", "name": "Amy's Bird Sanctuary"},
+                  "BillAddr": {
+                    "Id": "2",
+                    "Line1": "4581 Finch St.",
+                    "City": "Bayshore",
+                    "CountrySubDivisionCode": "CA",
+                    "PostalCode": "94326",
+                    "Lat": "INVALID",
+                    "Long": "INVALID"
+                  },
+                  "ShipAddr": {
+                    "Id": "2",
+                    "Line1": "4581 Finch St.",
+                    "City": "Bayshore",
+                    "CountrySubDivisionCode": "CA",
+                    "PostalCode": "94326",
+                    "Lat": "INVALID",
+                    "Long": "INVALID"
+                  },
+                  "TotalAmt": 100.00,
+                  "ApplyTaxAfterDiscount": false,
+                  "PrintStatus": "NeedToPrint",
+                  "EmailStatus": "NotSet",
+                  "Balance": 0,
+                  "DepositToAccountRef": {"value": "4", "name": "Undeposited Funds"}
+                }, "time": "2017-10-06T12:54:34.035-07:00"
+              }
+            },
+            {
+              "uri": "/company/123456789/salesreceipt?minorversion=12",
+              "method": "POST",
+              "replyHeaders": {},
+              "statusCode": 200,
+              "responsePayload": {
+                "SalesReceipt": {
+                  "domain": "QBO",
+                  "sparse": false,
+                  "Id": "148",
+                  "SyncToken": "5",
+                  "MetaData": {"CreateTime": "2017-10-06T12:51:10-07:00", "LastUpdatedTime": "2017-10-06T12:54:34-07:00"},
+                  "CustomField": [{"DefinitionId": "1", "Name": "Crew #", "Type": "StringType"}],
+                  "DocNumber": "2222",
+                  "TxnDate": "2017-10-06",
+                  "CurrencyRef": {"value": "USD", "name": "United States Dollar"},
+                  "Line": [{
+                    "Id": "6",
+                    "LineNum": 1,
+                    "Amount": 100,
+                    "DetailType": "SalesItemLineDetail",
+                    "SalesItemLineDetail": {"ItemRef": {"value": "1", "name": "Services"}, "TaxCodeRef": {"value": "NON"}}
+                  }, {"Amount": 100, "DetailType": "SubTotalLineDetail", "SubTotalLineDetail": {}}],
+                  "TxnTaxDetail": {"TotalTax": 0},
+                  "CustomerRef": {"value": "1", "name": "Amy's Bird Sanctuary"},
+                  "BillAddr": {
+                    "Id": "2",
+                    "Line1": "4581 Finch St.",
+                    "City": "Bayshore",
+                    "CountrySubDivisionCode": "CA",
+                    "PostalCode": "94326",
+                    "Lat": "INVALID",
+                    "Long": "INVALID"
+                  },
+                  "ShipAddr": {
+                    "Id": "2",
+                    "Line1": "4581 Finch St.",
+                    "City": "Bayshore",
+                    "CountrySubDivisionCode": "CA",
+                    "PostalCode": "94326",
+                    "Lat": "INVALID",
+                    "Long": "INVALID"
+                  },
+                  "TotalAmt": 100,
+                  "ApplyTaxAfterDiscount": false,
+                  "PrintStatus": "NeedToPrint",
+                  "EmailStatus": "NotSet",
+                  "Balance": 0,
+                  "DepositToAccountRef": {"value": "4", "name": "Undeposited Funds"}
+                }, "time": "2017-10-06T12:54:34.584-07:00"
               }
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 400,
           "payload": {
-            "doc": {}
+            "doc": {
+              "DocNumber": "2222",
+              "Line": [
+                {
+                  "Amount": 100.00,
+                  "DetailType": "SalesItemLineDetail",
+                  "SalesItemLineDetail": {
+                    "ItemRef": {
+                      "name": "OS001"
+                    }
+                  }
+                }
+              ],
+              "CustomerRef": {
+                "value": "1"
+              }
+            },
+            "salesOrderRemoteID": "148"
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Item%20WHERE%20Sku%20IN%20(%27OS001%27)%20AND%20Sku%20!=%20%27%20%27%20MAXRESULTS%2025",
+              "method": "GET",
               "replyHeaders": {},
               "statusCode": 400,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 429,
           "payload": {
-            "doc": {}
+            "doc": {
+              "DocNumber": "2222",
+              "Line": [
+                {
+                  "Amount": 100.00,
+                  "DetailType": "SalesItemLineDetail",
+                  "SalesItemLineDetail": {
+                    "ItemRef": {
+                      "name": "OS001"
+                    }
+                  }
+                }
+              ],
+              "CustomerRef": {
+                "value": "1"
+              }
+            },
+            "salesOrderRemoteID": "148"
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Item%20WHERE%20Sku%20IN%20(%27OS001%27)%20AND%20Sku%20!=%20%27%20%27%20MAXRESULTS%2025",
+              "method": "GET",
               "replyHeaders": {},
-              "statusCode": 429,
+              "statusCode": 400,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         },
         {
           "ncStatusCode": 500,
           "payload": {
-            "doc": {}
+            "doc": {
+              "DocNumber": "2222",
+              "Line": [
+                {
+                  "Amount": 100.00,
+                  "DetailType": "SalesItemLineDetail",
+                  "SalesItemLineDetail": {
+                    "ItemRef": {
+                      "name": "OS001"
+                    }
+                  }
+                }
+              ],
+              "CustomerRef": {
+                "value": "1"
+              }
+            },
+            "salesOrderRemoteID": "148"
           },
-          "baseUri": "https://localhost",
+          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
-              "uri": "/",
-              "method": "PUT",
+              "uri": "/company/123456789/query?minorversion=12&query=SELECT%20*%20FROM%20Item%20WHERE%20Sku%20IN%20(%27OS001%27)%20AND%20Sku%20!=%20%27%20%27%20MAXRESULTS%2025",
+              "method": "GET",
               "replyHeaders": {},
-              "statusCode": 500,
+              "statusCode": 400,
               "responsePayload": {}
             }
           ],
           "channelProfile": {
-            "salesOrderBusinessReferences": ["orderid"]
+            "salesOrderBusinessReferences": ["DocNumber"]
           }
         }
       ]

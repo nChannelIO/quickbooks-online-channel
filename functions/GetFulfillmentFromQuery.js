@@ -218,6 +218,8 @@ let GetFulfillmentFromQuery = function (
               }
               if (data.QueryResponse.SalesReceipt.length === payload.doc.pageSize) {
                 out.ncStatusCode = 206;
+              } else if (docs.length === 0) {
+                out.ncStatusCode = 204;
               } else {
                 out.ncStatusCode = 200;
               }
