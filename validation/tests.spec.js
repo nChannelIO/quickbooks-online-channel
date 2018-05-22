@@ -225,135 +225,128 @@ if (fs.existsSync('config/channel-settings.json')) {
                 });
               }
 
-              it('It should fail with 400 when no docsFile.ncUtil is passed in', (done) => {
-                file[functionName](null, channelProfile, null, docs[i].tests[t].payload, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
+              if (docs[i].tests[t].ncStatusCode == 400) {
+                it('It should fail with 400 when no channel profile is passed in', (done) => {
+                  file[functionName](docsFile.ncUtil, null, null, docs[i].tests[t].payload, (response) => {
+                    expect(response.ncStatusCode).to.be.equal(400);
+                    expect(response.payload).to.be.a('Object');
+                    expect(response.payload).to.have.property('error');
+                    done();
+                  });
+                });
+
+                it('It should fail with 400 when no channel settings values are passed in', (done) => {
+                  let errChannelProfile = {
+                    channelAuthValues: channelProfile.channelAuthValues,
+                    customerBusinessReferences: channelProfile.customerBusinessReferences
+                  };
+                  file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
+                    expect(response.ncStatusCode).to.be.equal(400);
+                    expect(response.payload).to.be.a('Object');
+                    expect(response.payload).to.have.property('error');
+                    done();
+                  });
+                });
+
+                it('It should fail with 400 when no channel settings protocol is passed in', (done) => {
+                  let errChannelProfile = {
+                    channelSettingsValues: {},
+                    channelAuthValues: channelProfile.channelAuthValues,
+                    customerBusinessReferences: channelProfile.customerBusinessReferences
+                  };
+                  file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
+                    expect(response.ncStatusCode).to.be.equal(400);
+                    expect(response.payload).to.be.a('Object');
+                    expect(response.payload).to.have.property('error');
+                    done();
+                  });
+                });
+
+                it('It should fail with 400 when no channel auth values are passed in', (done) => {
+                  let errChannelProfile = {
+                    channelSettingsValues: channelProfile.channelSettingsValues,
+                    customerBusinessReferences: channelProfile.customerBusinessReferences
+                  };
+                  file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
+                    expect(response.ncStatusCode).to.be.equal(400);
+                    expect(response.payload).to.be.a('Object');
+                    expect(response.payload).to.have.property('error');
+                    done();
+                  });
+                });
+
+                it('It should fail with 400 when no business reference is passed in', (done) => {
+                  let errChannelProfile = {
+                    channelSettingsValues: channelProfile.channelSettingsValues,
+                    channelAuthValues: channelProfile.channelAuthValues
+                  };
+                  file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
+                    expect(response.ncStatusCode).to.be.equal(400);
+                    expect(response.payload).to.be.a('Object');
+                    expect(response.payload).to.have.property('error');
+                    done();
+                  });
+                });
+
+                it('It should fail with 400 when business references is not an array', (done) => {
+                  let errChannelProfile = {
+                    customerBusinessReferences: {},
+                    channelSettingsValues: channelProfile.channelSettingsValues,
+                    channelAuthValues: channelProfile.channelAuthValues
+                  };
+                  file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
+                    expect(response.ncStatusCode).to.be.equal(400);
+                    expect(response.payload).to.be.a('Object');
+                    expect(response.payload).to.have.property('error');
+                    done();
+                  });
+                });
+
+                it('It should fail with 400 when business references is empty', (done) => {
+                  let errChannelProfile = {
+                    customerBusinessReferences: [],
+                    channelSettingsValues: channelProfile.channelSettingsValues,
+                    channelAuthValues: channelProfile.channelAuthValues
+                  };
+                  file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
+                    expect(response.ncStatusCode).to.be.equal(400);
+                    expect(response.payload).to.be.a('Object');
+                    expect(response.payload).to.have.property('error');
+                    done();
+                  });
+                });
+
+                it('It should fail with 400 when no payload is passed in', (done) => {
+                  file[functionName](docsFile.ncUtil, channelProfile, null, null, (response) => {
+                    expect(response.ncStatusCode).to.be.equal(400);
+                    expect(response.payload).to.be.a('Object');
+                    expect(response.payload).to.have.property('error');
+                    done();
+                  });
+                });
+
+                it('It should fail with 400 because the payload does not contain a customer', (done) => {
+                  let payload = {};
+                  file[functionName](docsFile.ncUtil, channelProfile, null, payload, (response) => {
+                    expect(response.ncStatusCode).to.be.equal(400);
+                    expect(response.payload).to.be.a('Object');
+                    expect(response.payload).to.have.property('error');
+                    done();
+                  });
+                });
+
+                it('It should throw an exception when no callback is provided', (done) => {
+                  expect(() => file[functionName](docsFile.ncUtil, channelProfile, null, docs[i].tests[t].payload, null))
+                    .to.throw(Error, 'A callback function was not provided');
                   done();
                 });
-              });
 
-              it('It should fail with 400 when no channel profile is passed in', (done) => {
-                file[functionName](docsFile.ncUtil, null, null, docs[i].tests[t].payload, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
+                it('It should throw an exception when the callback is not a function', (done) => {
+                  expect(() => file[functionName](docsFile.ncUtil, channelProfile, null, docs[i].tests[t].payload, {}))
+                    .to.throw(TypeError, 'callback is not a function');
                   done();
                 });
-              });
-
-              it('It should fail with 400 when no channel settings values are passed in', (done) => {
-                let errChannelProfile = {
-                  channelAuthValues: channelProfile.channelAuthValues,
-                  customerBusinessReferences: channelProfile.customerBusinessReferences
-                };
-                file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
-                  done();
-                });
-              });
-
-              it('It should fail with 400 when no channel settings protocol is passed in', (done) => {
-                let errChannelProfile = {
-                  channelSettingsValues: {},
-                  channelAuthValues: channelProfile.channelAuthValues,
-                  customerBusinessReferences: channelProfile.customerBusinessReferences
-                };
-                file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
-                  done();
-                });
-              });
-
-              it('It should fail with 400 when no channel auth values are passed in', (done) => {
-                let errChannelProfile = {
-                  channelSettingsValues: channelProfile.channelSettingsValues,
-                  customerBusinessReferences: channelProfile.customerBusinessReferences
-                };
-                file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
-                  done();
-                });
-              });
-
-              it('It should fail with 400 when no business reference is passed in', (done) => {
-                let errChannelProfile = {
-                  channelSettingsValues: channelProfile.channelSettingsValues,
-                  channelAuthValues: channelProfile.channelAuthValues
-                };
-                file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
-                  done();
-                });
-              });
-
-              it('It should fail with 400 when business references is not an array', (done) => {
-                let errChannelProfile = {
-                  customerBusinessReferences: {},
-                  channelSettingsValues: channelProfile.channelSettingsValues,
-                  channelAuthValues: channelProfile.channelAuthValues
-                };
-                file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
-                  done();
-                });
-              });
-
-              it('It should fail with 400 when business references is empty', (done) => {
-                let errChannelProfile = {
-                  customerBusinessReferences: [],
-                  channelSettingsValues: channelProfile.channelSettingsValues,
-                  channelAuthValues: channelProfile.channelAuthValues
-                };
-                file[functionName](docsFile.ncUtil, errChannelProfile, null, docs[i].tests[t].payload, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
-                  done();
-                });
-              });
-
-              it('It should fail with 400 when no payload is passed in', (done) => {
-                file[functionName](docsFile.ncUtil, channelProfile, null, null, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
-                  done();
-                });
-              });
-
-              it('It should fail with 400 because the payload does not contain a customer', (done) => {
-                let payload = {};
-                file[functionName](docsFile.ncUtil, channelProfile, null, payload, (response) => {
-                  expect(response.ncStatusCode).to.be.equal(400);
-                  expect(response.payload).to.be.a('Object');
-                  expect(response.payload).to.have.property('error');
-                  done();
-                });
-              });
-
-              it('It should throw an exception when no callback is provided', (done) => {
-                expect(() => file[functionName](docsFile.ncUtil, channelProfile, null, docs[i].tests[t].payload, null))
-                  .to.throw(Error, 'A callback function was not provided');
-                done();
-              });
-
-              it('It should throw an exception when the callback is not a function', (done) => {
-                expect(() => file[functionName](docsFile.ncUtil, channelProfile, null, docs[i].tests[t].payload, {}))
-                  .to.throw(TypeError, 'callback is not a function');
-                done();
-              });
+              }
 
             });
           }
@@ -371,13 +364,13 @@ if (fs.existsSync('config/channel-settings.json')) {
                     break;
                   case 'POST':
                     errorTest === false ?
-                    fake.post(test.links[i].uri, test.payload.doc).reply(statusCode != null ? statusCode : test.links[i].statusCode, test.links[i].responsePayload) :
-                    fake.post(test.links[i].uri, test.payload.doc).replyWithError({ message: "Internal Error" });
+                    fake.post(test.links[i].uri).reply(statusCode != null ? statusCode : test.links[i].statusCode, test.links[i].responsePayload) :
+                    fake.post(test.links[i].uri).replyWithError({ message: "Internal Error" });
                     break;
                   case 'PUT':
                     errorTest === false ?
-                    fake.put(test.links[i].uri, test.payload.doc).reply(statusCode != null ? statusCode : test.links[i].statusCode, test.links[i].responsePayload) :
-                    fake.put(test.links[i].uri, test.payload.doc).replyWithError({ message: "Internal Error" });
+                    fake.put(test.links[i].uri).reply(statusCode != null ? statusCode : test.links[i].statusCode, test.links[i].responsePayload) :
+                    fake.put(test.links[i].uri).replyWithError({ message: "Internal Error" });
                     break;
                   case 'DELETE':
                     errorTest === false ?
@@ -490,7 +483,12 @@ if (fs.existsSync('config/channel-settings.json')) {
           function assertPackage(scope) {
             switch (docsFile.unitTestPackage.toLowerCase()) {
               case 'nock':
-                expect(scope.isDone()).to.be.true;
+                try {
+                  expect(scope.isDone()).to.be.true;
+                } catch (err) {
+                  console.error('pending mocks: %j', scope.pendingMocks());
+                  throw err;
+                }
                 break;
               default:
                 break;
