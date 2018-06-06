@@ -36,10 +36,22 @@
       "name": "PUT SALESORDER",
       "configDef": {
         "configValues": {
+          "canInsertOrderFlag": true,
+          "canInsertCustomerFlag": true,
+          "canInsertCustomerAddressFlag": false,
+          "canInsertCustomerContactFlag": false,
           "canUpdateOrderFlag": false,
           "canUpdateCustomerFlag": false,
           "canUpdateCustomerAddressFlag": false,
           "canUpdateCustomerContactFlag": false,
+          "doInsertOrderFlag": true,
+          "doInsertCustomerFlag": true,
+          "doInsertCustomerAddressFlag": false,
+          "doInsertCustomerContactFlag": false,
+          "doUpdateOrderFlag": false,
+          "doUpdateCustomerFlag": false,
+          "doUpdateCustomerAddressFlag": false,
+          "doUpdateCustomerContactFlag": false,
           "doPutCustomerFlag": true,
           "doExtractShippingAddressFromSalesOrderFlag": false,
           "doExtractBillingAddressFromSalesOrderFlag": false,
@@ -47,24 +59,49 @@
           "doPutCustomerContactsFlag": false
         },
         "configView": [
-          "canUpdateOrderFlag",
-          "canUpdateCustomerFlag",
-          "canUpdateCustomerAddressFlag",
-          "canUpdateCustomerContactFlag"
+          "doPutCustomerFlag"
         ],
         "configModel": {
           "required": [
+            "canInsertOrderFlag",
+            "canInsertCustomerFlag",
+            "canInsertCustomerAddressFlag",
+            "canInsertCustomerContactFlag",
             "canUpdateOrderFlag",
             "canUpdateCustomerFlag",
             "canUpdateCustomerAddressFlag",
             "canUpdateCustomerContactFlag",
+            "doInsertOrderFlag",
+            "doInsertCustomerFlag",
+            "doInsertCustomerAddressFlag",
+            "doInsertCustomerContactFlag",
+            "doUpdateOrderFlag",
+            "doUpdateCustomerFlag",
+            "doUpdateCustomerAddressFlag",
+            "doUpdateCustomerContactFlag",
             "doPutCustomerFlag",
-            "doExtractShippingAddressFromSalesOrderFlag",
-            "doExtractBillingAddressFromSalesOrderFlag",
             "doPutCustomerAddressesFlag",
-            "doPutCustomerContactsFlag"
+            "doPutCustomerContactsFlag",
+            "doExtractShippingAddressFromSalesOrderFlag",
+            "doExtractBillingAddressFromSalesOrderFlag"
           ],
           "properties": {
+            "canInsertOrderFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canInsertOrderFlag"
+            },
+            "canInsertCustomerFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canInsertCustomerFlag"
+            },
+            "canInsertCustomerAddressFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canInsertCustomerAddressFlag"
+            },
+            "canInsertCustomerContactFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canInsertCustomerContactFlag"
+            },
             "canUpdateOrderFlag": {
               "type": "boolean",
               "title": "PUT Sales Order, canUpdateOrderFlag"
@@ -81,9 +118,37 @@
               "type": "boolean",
               "title": "PUT Sales Order, canUpdateCustomerContactFlag"
             },
-            "doPutCustomerFlag": {
+            "doInsertOrderFlag": {
               "type": "boolean",
-              "title": "PUT Sales Order, doPutCustomerFlag"
+              "title": "PUT Sales Order, doInsertOrderFlag"
+            },
+            "doInsertCustomerFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doInsertCustomerFlag"
+            },
+            "doInsertCustomerAddressFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doInsertCustomerAddressFlag"
+            },
+            "doInsertCustomerContactFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doInsertCustomerContactFlag"
+            },
+            "doUpdateOrderFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doUpdateOrderFlag"
+            },
+            "doUpdateCustomerFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doUpdateCustomerFlag"
+            },
+            "doUpdateCustomerAddressFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doUpdateCustomerAddressFlag"
+            },
+            "doUpdateCustomerContactFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doUpdateCustomerContactFlag"
             },
             "doExtractShippingAddressFromSalesOrderFlag": {
               "type": "boolean",
@@ -92,14 +157,6 @@
             "doExtractBillingAddressFromSalesOrderFlag": {
               "type": "boolean",
               "title": "PUT Sales Order, doExtractBillingAddressFromSalesOrderFlag"
-            },
-            "doPutCustomerAddressesFlag": {
-              "type": "boolean",
-              "title": "PUT Sales Order, doPutCustomerAddressesFlag"
-            },
-            "doPutCustomerContactsFlag": {
-              "type": "boolean",
-              "title": "PUT Sales Order, doPutCustomerContactsFlag"
             }
           },
           "type": "object"
@@ -186,46 +243,98 @@
       },
       "configDef" : {
         "configModel" : {
-          "type" : "object",
-          "properties" : {
-            "canUpdateCustomerFlag" : {
-              "title" : "Update Customer, canUpdateCustomerFlag",
-              "type" : "boolean"
+          "type": "object",
+          "properties": {
+            "canInsertCustomerFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canInsertCustomerFlag"
             },
-            "canUpdateCustomerAddressFlag" : {
-              "title" : "Update Customer, canUpdateCustomerAddressFlag",
-              "type" : "boolean"
+            "canInsertCustomerAddressFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canInsertCustomerAddressFlag"
             },
-            "canUpdateCustomerContactFlag" : {
-              "title" : "Update Customer, canUpdateCustomerContactFlag",
-              "type" : "boolean"
+            "canInsertCustomerContactFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canInsertCustomerContactFlag"
             },
-            "doPutCustomerAddressesFlag" : {
-              "title" : "Add Customer Addresses, doPutCustomerAddressesFlag",
-              "type" : "boolean"
+            "canUpdateCustomerFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canUpdateCustomerFlag"
             },
-            "doPutCustomerContactsFlag" : {
-              "title" : "Add Customer Contacts, doPutCustomerContactsFlag",
-              "type" : "boolean"
+            "canUpdateCustomerAddressFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canUpdateCustomerAddressFlag"
+            },
+            "canUpdateCustomerContactFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, canUpdateCustomerContactFlag"
+            },
+            "doInsertCustomerFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doInsertCustomerFlag"
+            },
+            "doInsertCustomerAddressFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doInsertCustomerAddressFlag"
+            },
+            "doInsertCustomerContactFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doInsertCustomerContactFlag"
+            },
+            "doUpdateCustomerFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doUpdateCustomerFlag"
+            },
+            "doUpdateCustomerAddressFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doUpdateCustomerAddressFlag"
+            },
+            "doUpdateCustomerContactFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doUpdateCustomerContactFlag"
+            },
+            "doPutCustomerAddressFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doPutCustomerAddressFlag"
+            },
+            "doPutCustomerContactFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doPutCustomerContactFlag"
             }
           },
-          "required" : [
+          "required": [
+            "canInsertCustomerFlag",
+            "canInsertCustomerAddressFlag",
+            "canInsertCustomerContactFlag",
             "canUpdateCustomerFlag",
             "canUpdateCustomerAddressFlag",
             "canUpdateCustomerContactFlag",
+            "doInsertCustomerFlag",
+            "doInsertCustomerAddressFlag",
+            "doInsertCustomerContactFlag",
+            "doUpdateCustomerFlag",
+            "doUpdateCustomerAddressFlag",
+            "doUpdateCustomerContactFlag",
             "doPutCustomerAddressesFlag",
             "doPutCustomerContactsFlag"
           ]
         },
         "configView" : [
-          "canUpdateCustomerFlag",
-          "canUpdateCustomerAddressFlag",
-          "canUpdateCustomerContactFlag"
+          "doUpdateCustomerFlag"
         ],
         "configValues" : {
+          "canInsertCustomerFlag": true,
+          "canInsertCustomerAddressFlag": false,
+          "canInsertCustomerContactFlag": false,
           "canUpdateCustomerFlag" : true,
           "canUpdateCustomerAddressFlag" : false,
           "canUpdateCustomerContactFlag" : false,
+          "doInsertCustomerFlag": true,
+          "doInsertCustomerAddressFlag": false,
+          "doInsertCustomerContactFlag": false,
+          "doUpdateCustomerFlag": true,
+          "doUpdateCustomerAddressFlag": false,
+          "doUpdateCustomerContactFlag": false,
           "doPutCustomerAddressesFlag" : false,
           "doPutCustomerContactsFlag" : false
         }
@@ -246,12 +355,12 @@
       },
       "configDef": {
         "configValues": {
-          "doGetMatrixProducts": false,
-          "doGetVirtualMatrixProducts": false,
-          "doGetSimpleProducts": true,
+          "canGetSimpleProducts": true,
           "canGetMatrixProducts": false,
           "canGetVirtualMatrixProducts": false,
-          "canGetSimpleProducts": true
+          "doGetSimpleProducts": true,
+          "doGetMatrixProducts": false,
+          "doGetVirtualMatrixProducts": false
         },
         "configView": [
           "doGetSimpleProducts"
@@ -327,47 +436,65 @@
       },
       "configDef": {
         "configValues": {
-          "doPutProductPricingFlag": false,
-          "doPutProductQuantityFlag": false,
-          "canUpdateProductPricingFlag": false,
-          "canUpdateProductQuantityFlag": false,
-          "canUpdateProduct": true,
+          "canInsertSimpleProduct": true,
+          "canInsertMatrixProduct": false,
+          "canInsertProductPricingFlag": false,
+          "canInsertProductQuantityFlag": false,
           "canUpdateSimpleProduct": true,
           "canUpdateMatrixProduct": false,
-          "canInsertSimpleProduct": true,
-          "canInsertMatrixProduct": false
+          "canUpdateProductPricingFlag": false,
+          "canUpdateProductQuantityFlag": false,
+          "doInsertSimpleProduct": true,
+          "doInsertMatrixProduct": false,
+          "doInsertProductPricingFlag": false,
+          "doInsertProductQuantityFlag": false,
+          "doUpdateSimpleProduct": true,
+          "doUpdateMatrixProduct": false,
+          "doUpdateProductPricingFlag": false,
+          "doUpdateProductQuantityFlag": false,
+          "doPutProductPricingFlag": false,
+          "doPutProductQuantityFlag": false
         },
         "configView": [
-          "canUpdateProduct"
+          "doUpdateSimpleProduct"
         ],
         "configModel": {
           "required": [
-            "doPutProductPricingFlag",
-            "doPutProductQuantityFlag",
+            "canInsertSimpleProduct",
+            "canInsertMatrixProduct",
+            "canInsertProductPricingFlag",
+            "canInsertProductQuantityFlag",
+            "canUpdateSimpleProduct",
+            "canUpdateMatrixProduct",
             "canUpdateProductPricingFlag",
             "canUpdateProductQuantityFlag",
-            "canUpdateProduct"
+            "doInsertSimpleProduct",
+            "doInsertMatrixProduct",
+            "doInsertProductPricingFlag",
+            "doInsertProductQuantityFlag",
+            "doUpdateSimpleProduct",
+            "doUpdateMatrixProduct",
+            "doUpdateProductPricingFlag",
+            "doUpdateProductQuantityFlag",
+            "doPutProductPricingFlag",
+            "doPutProductQuantityFlag"
           ],
           "properties": {
-            "doPutProductPricingFlag": {
+            "canInsertSimpleProduct": {
               "type": "boolean",
-              "title": "PUT Product, doPutProductPricingFlag"
+              "title": "PUT Product, canInsertSimpleProduct"
             },
-            "doPutProductQuantityFlag": {
+            "canInsertMatrixProduct": {
               "type": "boolean",
-              "title": "PUT Product, doPutProductQuantityFlag"
+              "title": "PUT Product, canInsertMatrixProduct"
             },
-            "canUpdateProductPricingFlag": {
+            "canInsertProductPricingFlag": {
               "type": "boolean",
-              "title": "PUT Product, canUpdateProductPricingFlag"
+              "title": "PUT Product, canInsertProductPricingFlag"
             },
-            "canUpdateProductQuantityFlag": {
+            "canInsertProductQuantityFlag": {
               "type": "boolean",
-              "title": "PUT Product, canUpdateProductQuantityFlag"
-            },
-            "canUpdateProduct": {
-              "type": "boolean",
-              "title": "PUT Product, canUpdateProduct"
+              "title": "PUT Product, canInsertProductQuantityFlag"
             },
             "canUpdateSimpleProduct": {
               "type": "boolean",
@@ -377,13 +504,53 @@
               "type": "boolean",
               "title": "PUT Product, canUpdateMatrixProduct"
             },
-            "canInsertSimpleProduct": {
+            "canUpdateProductPricingFlag": {
               "type": "boolean",
-              "title": "PUT Product, canInsertSimpleProduct"
+              "title": "PUT Product, canUpdateProductPricingFlag"
             },
-            "canInsertMatrixProduct": {
+            "canUpdateProductQuantityFlag": {
               "type": "boolean",
-              "title": "PUT Product, canInsertMatrixProduct"
+              "title": "PUT Product, canUpdateProductQuantityFlag"
+            },
+            "doInsertSimpleProduct": {
+              "type": "boolean",
+              "title": "PUT Product, doInsertSimpleProduct"
+            },
+            "doInsertMatrixProduct": {
+              "type": "boolean",
+              "title": "PUT Product, doInsertMatrixProduct"
+            },
+            "doInsertProductPricingFlag": {
+              "type": "boolean",
+              "title": "PUT Product, doInsertProductPricingFlag"
+            },
+            "doInsertProductQuantityFlag": {
+              "type": "boolean",
+              "title": "PUT Product, doInsertProductQuantityFlag"
+            },
+            "doUpdateSimpleProduct": {
+              "type": "boolean",
+              "title": "PUT Product, doUpdateSimpleProduct"
+            },
+            "doUpdateMatrixProduct": {
+              "type": "boolean",
+              "title": "PUT Product, doUpdateMatrixProduct"
+            },
+            "doUpdateProductPricingFlag": {
+              "type": "boolean",
+              "title": "PUT Product, doUpdateProductPricingFlag"
+            },
+            "doUpdateProductQuantityFlag": {
+              "type": "boolean",
+              "title": "PUT Product, doUpdateProductQuantityFlag"
+            },
+            "doPutProductPricingFlag": {
+              "type": "boolean",
+              "title": "PUT Product, doPutProductPricingFlag"
+            },
+            "doPutProductQuantityFlag": {
+              "type": "boolean",
+              "title": "PUT Product, doPutProductQuantityFlag"
             }
           },
           "type": "object"
@@ -458,9 +625,7 @@
           },
           "type": "object"
         },
-        "configView": [
-          "doGetSimpleProducts"
-        ],
+        "configView": [],
         "configValues": {
           "doGetMatrixProducts": false,
           "doGetVirtualMatrixProducts": false,
@@ -529,17 +694,23 @@
       },
       "configDef": {
         "configValues" : {
-          "canUpdateProductPricingFlag": true
+          "canUpdateProductPricingFlag": true,
+          "doUpdateProductPricingFlag": true
         },
         "configView" : [],
         "configModel" : {
           "required" : [
-            "canUpdateProductPricingFlag"
+            "canUpdateProductPricingFlag",
+            "doUpdateProductPricingFlag"
           ],
           "properties" : {
             "canUpdateProductPricingFlag" : {
               "type" : "boolean",
               "title" : "PUT ProductPricing, canUpdateProductPricingFlag"
+            },
+            "doUpdateProductPricingFlag" : {
+              "type" : "boolean",
+              "title" : "PUT ProductPricing, doUpdateProductPricingFlag"
             }
           },
           "type" : "object"
@@ -580,17 +751,23 @@
       },
       "configDef": {
         "configValues" : {
-          "canUpdateProductQuantityFlag": true
+          "canUpdateProductQuantityFlag": true,
+          "doUpdateProductQuantityFlag": true
         },
         "configView" : [],
         "configModel" : {
           "required" : [
-            "canUpdateProductQuantityFlag"
+            "canUpdateProductQuantityFlag",
+            "doUpdateProductQuantityFlag"
           ],
           "properties" : {
             "canUpdateProductQuantityFlag" : {
               "type" : "boolean",
               "title" : "PUT ProductQuantity, canUpdateProductQuantityFlag"
+            },
+            "doUpdateProductQuantityFlag" : {
+              "type" : "boolean",
+              "title" : "PUT ProductQuantity, doUpdateProductQuantityFlag"
             }
           },
           "type" : "object"
