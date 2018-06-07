@@ -3,7 +3,7 @@
 let extractBusinessReference = require('../util/extractBusinessReference');
 let request = require('request');
 
-let InsertCustomer = function (
+let InsertProductPricing = function (
   ncUtil,
   channelProfile,
   flowContext,
@@ -20,7 +20,7 @@ let InsertCustomer = function (
   let invalid = false;
   let invalidMsg = "";
 
-  //If channelProfile does not contain channelSettingsValues, channelAuthValues or customerBusinessReferences, the request can't be sent
+  //If channelProfile does not contain channelSettingsValues, channelAuthValues or productPricingBusinessReferences, the request can't be sent
   if (!channelProfile) {
     invalid = true;
     invalidMsg = "channelProfile was not provided"
@@ -45,24 +45,26 @@ let InsertCustomer = function (
   } else if (!channelProfile.channelAuthValues.realm_id) {
     invalid = true;
     invalidMsg = "channelProfile.channelAuthValues.realm_id was not provided"
-  } else if (!channelProfile.customerBusinessReferences) {
+  } else if (!channelProfile.productPricingBusinessReferences) {
     invalid = true;
-    invalidMsg = "channelProfile.customerBusinessReferences was not provided"
-  } else if (!Array.isArray(channelProfile.customerBusinessReferences)) {
+    invalidMsg = "channelProfile.productPricingBusinessReferences was not provided"
+  } else if (!Array.isArray(channelProfile.productPricingBusinessReferences)) {
     invalid = true;
     invalidMsg = "channelProfile.customerBusinessReferences is not an array"
-  } else if (channelProfile.customerBusinessReferences.length === 0) {
+  } else if (channelProfile.productPricingBusinessReferences.length === 0) {
     invalid = true;
-    invalidMsg = "channelProfile.customerBusinessReferences is empty"
+    invalidMsg = "channelProfile.productPricingBusinessReferences is empty"
   }
 
-  //If a customerAddressDocument was not passed in, the request is invalid
   if (!payload) {
     invalid = true;
     invalidMsg = "payload was not provided"
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided"
+  } else if (!payload.doc.Item) {
+    invalid = true;
+    invalidMsg = "payload.doc.Item was not provided"
   }
 
   //If callback is not a function
@@ -74,7 +76,7 @@ let InsertCustomer = function (
 
   if (!invalid) {
     let minorVersion = "?minorversion=" + channelProfile.channelSettingsValues.minor_version;
-    let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/customer" + minorVersion;
+    let endPoint = "/company/" + channelProfile.channelAuthValues.realm_id + "/item" + minorVersion;
     let url = channelProfile.channelSettingsValues.protocol + "://" + channelProfile.channelSettingsValues.api_uri + endPoint;
 
     /*
@@ -87,6 +89,8 @@ let InsertCustomer = function (
 
     log("Using URL [" + url + "]");
 
+    let item = payload.doc.Item;
+
     /*
      Set URL and headers
      */
@@ -94,7 +98,7 @@ let InsertCustomer = function (
       url: url,
       method: "POST",
       headers: headers,
-      body: payload.doc,
+      body: item,
       json: true
     };
 
@@ -103,19 +107,19 @@ let InsertCustomer = function (
       request(options, function (error, response, body) {
         if (!error) {
 
-          log("Do InsertCustomer Callback");
+          log("Do InsertProductPricing Callback");
           out.response.endpointStatusCode = response.statusCode;
           out.response.endpointStatusMessage = response.statusMessage;
 
           // Parse data
           let data = body;
 
-          // If we have a customer object, set out.payload.doc to be the customer document
+          // If we have a product object, set out.payload.doc to be the product document
           if (data && response.statusCode === 200) {
             out.payload = {
-              doc: data.Customer,
-              "customerRemoteID": data.Customer.Id,
-              "customerBusinessReference": extractBusinessReference(channelProfile.customerBusinessReferences, data.Customer)
+              doc: data,
+              "productPricingRemoteID": data.Id,
+              "productPricingBusinessReference": extractBusinessReference(channelProfile.productPricingBusinessReferences, data)
             };
 
             out.ncStatusCode = 201;
@@ -132,14 +136,14 @@ let InsertCustomer = function (
 
           callback(out);
         } else {
-          logError("Do InsertCustomer Callback error - " + error);
+          logError("Do InsertProductPricing Callback error - " + error);
           out.ncStatusCode = 500;
           out.payload.error = {err: error};
           callback(out);
         }
       });
     } catch (err) {
-      logError("Exception occurred in InsertCustomer - " + err);
+      logError("Exception occurred in InsertProductPricing - " + err);
       out.ncStatusCode = 500;
       out.payload.error = {err: err, stack: err.stackTrace};
       callback(out);
@@ -160,4 +164,4 @@ function log(msg) {
   console.log("[info] " + msg);
 }
 
-module.exports.InsertCustomer = InsertCustomer;
+module.exports.InsertProductPricing = InsertProductPricing;
