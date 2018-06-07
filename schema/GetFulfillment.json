@@ -1,0 +1,797 @@
+{
+  "name": "Quickbooks Online Get Fulfillment",
+  "schemaDef": {
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Quickbooks Online Get Fulfillment",
+    "type": "object",
+    "properties": {
+      "SalesReceipt": {
+        "$ref": "#/definitions/Fulfillment"
+      },
+      "time": {
+        "type": "string",
+        "format": "date-time"
+      }
+    },
+    "additionalProperties": false,
+    "definitions": {
+      "Lines": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "title": "Id",
+            "description": "The Id of the line item. Its use in requests is as folllows: If Idis greater than zero and exists for the company, the request is considered an update operation for a line item. If no Idis provided, the Idprovided is less than or equal to zero, or the Idprovided is greater than zero and does not exist for the company then the request is considered a create operation for a line item. ",
+            "type": "string"
+          },
+          "LineNum": {
+            "title": "LineNum",
+            "description": "Specifies the position of the line in the collection of transaction lines.",
+            "type": "integer",
+            "minimum": 1
+          },
+          "Description": {
+            "title": "Description",
+            "description": "Free form text description of the line item that appears in the printed record.",
+            "type": "string",
+            "maxLength": 4000
+          },
+          "Amount": {
+            "title": "Amount",
+            "description": "The amount of the line item.",
+            "type": "number",
+            "maxLength": 15
+          },
+          "DetailType": {
+            "title": "DetailType",
+            "description": "Type of line.",
+            "type": "string",
+            "enum": [
+              "SalesItemLineDetail",
+              "GroupLineDetail",
+              "DiscountLineDetail",
+              "DescriptionOnly",
+              "DescriptionLineDetail",
+              "SubTotalLineDetail"
+            ]
+          },
+          "SalesItemLineDetail": {
+            "$ref": "#/definitions/SalesItemLineDetail"
+          },
+          "GroupLineDetail": {
+            "$ref": "#/definitions/GroupLineDetail"
+          },
+          "DescriptionLineDetail": {
+            "$ref": "#/definitions/DescriptionLineDetail"
+          },
+          "DiscountLineDetail": {
+            "$ref": "#/definitions/DiscountLineDetail"
+          },
+          "SubTotalLineDetail": {
+            "$ref": "#/definitions/SubTotalLineDetail"
+          }
+        },
+        "required": [
+          "Amount",
+          "DetailType"
+        ],
+        "additionalProperties": false
+      },
+      "SalesItemLineDetail": {
+        "type": "object",
+        "properties": {
+          "ItemRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "ClassRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "UnitPrice": {
+            "title": "UnitPrice",
+            "description": "Unit price of the subject item as referenced by ItemRef. Corresponds to the Rate column on the QuickBooks Online UI to specify either unit price, a discount, or a tax rate for item. If used for unit price, the monetary value of the service or product, as expressed in the home currency. You can override the unit price of the subject item by supplying a new value with create or update operations.",
+            "type": "number"
+          },
+          "MarkupInfo": {
+            "description": "Used to define markup when this line represents a billable expense on the invoice. Markup information for the billable expense line.",
+            "type": "object",
+            "properties": {
+              "PercentBased": {
+                "title": "PercentBased",
+                "description": "True if the markup is expressed as a percentage.",
+                "type": "boolean"
+              },
+              "value": {
+                "title": "value",
+                "description": "Markup value.",
+                "type": "number"
+              },
+              "Percent": {
+                "title": "Percent",
+                "description": "Markup amount expressed as a percent of charges already entered in the current transaction. To enter a rate of 10% use 10.0, not 0.01.",
+                "type": "number"
+              },
+              "PriceLevelRef": {
+                "$ref": "#/definitions/ReferenceType"
+              }
+            },
+            "additionalProperties": false
+          },
+          "Qty": {
+            "title": "Qty",
+            "description": "Number of items for the line.",
+            "type": "number"
+          },
+          "ItemAccountRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "TaxCodeRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "ServiceDate": {
+            "title": "ServiceDate",
+            "description": "Date when the service is performed.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "TaxInclusiveAmt": {
+            "title": "TaxInclusiveAmt",
+            "description": "The total amount of the line item including tax. Constraints: Available when endpoint is evoked with the minorversion=1 query parameter.",
+            "type": "number"
+          },
+          "DiscountRate": {
+            "title": "DiscountRate",
+            "description": "The discount rate applied to this line. If both DiscountAmt and DiscountRate are supplied, DiscountRate takes precedence and DiscountAmt is recalculated by QuickBooks services based on amount of DiscountRate.",
+            "type": "number"
+          },
+          "DiscountAmt": {
+            "title": "DiscountAmt",
+            "description": "The discount amount applied to this line. If both DiscountAmt and DiscountRate are supplied, DiscountRate takes precedence and DiscountAmt is recalculated by QuickBooks services based on amount of DiscountRate.",
+            "type": "number"
+          }
+        },
+        "additionalProperties": false
+      },
+      "GroupLineDetail": {
+        "title": "GroupLineDetail",
+        "description": "Details for a Group Product and line items of the items that make up the bundle.",
+        "type": "object",
+        "properties": {
+          "GroupItemRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "Quantity": {
+            "title": "Qty",
+            "description": "Number of items for the line.",
+            "type": "number"
+          },
+          "Line": {
+            "title": "Line",
+            "description": "Individual ItemLine elements that comprise a bundle. ",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Lines"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "DescriptionLineDetail": {
+        "title": "DescriptionLineDetail",
+        "type": "object",
+        "properties": {
+          "ServiceDate": {
+            "title": "ServiceDate",
+            "description": "Date when the service is performed.",
+            "type": "string"
+          },
+          "TaxCodeRef": {
+            "$ref": "#/definitions/ReferenceType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SubTotalLineDetail": {
+        "title": "SubTotalLineDetail (Read-only)",
+        "description": "Subtotal of LineDetail",
+        "type": "object",
+        "properties": {
+          "ItemRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "TaxCodeRef": {
+            "$ref": "#/definitions/ReferenceType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DiscountLineDetail": {
+        "title": "DiscountLineDetail",
+        "description": "Discount detail type for the entire transaction. This is in contrast to a discount applied to a specific line. The company preference Sales Form Entry | Discounts must be enabled for this type of line to be available.",
+        "type": "object",
+        "properties": {
+          "PercentBased": {
+            "title": "PercentBased",
+            "description": "True if the markup is expressed as a percentage.",
+            "type": "boolean"
+          },
+          "DiscountPercent": {
+            "title": "DiscountPercent",
+            "description": "Percentage by which the amount due is reduced, from 0% to 100%. To enter a discount of 8.5% use 8.5, not 0.085.",
+            "type": "number"
+          },
+          "DiscountAccountRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "ClassRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "TaxCodeRef": {
+            "$ref": "#/definitions/ReferenceType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomField": {
+        "type": "object",
+        "properties": {
+          "DefinitionId": {
+            "title": "DefinitionId",
+            "description": "Unique identifier of the CustomFieldDefinition that corresponds to this CustomField.",
+            "type": "string"
+          },
+          "Name": {
+            "title": "Name",
+            "description": "Name of the custom field.",
+            "type": "string"
+          },
+          "Type": {
+            "title": "Type",
+            "description": "Data type of custom field. Only one type is currently supported: StringType.",
+            "type": "string",
+            "enum": [
+              "StringType"
+            ]
+          },
+          "StringValue": {
+            "title": "StringValue",
+            "description": "The value for the StringTypecustom field.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "DefinitionId"
+        ],
+        "additionalProperties": false
+      },
+      "Fulfillment": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string"
+          },
+          "sparse": {
+            "type": "boolean"
+          },
+          "Id": {
+            "title": "Id (REQUIRED FOR UPDATE)",
+            "description": "filterable, sortable | Unique Identifier for this object, sort order is ASC by default.",
+            "type": "string"
+          },
+          "SyncToken": {
+            "title": "SyncToken (REQUIRED FOR UPDATE)",
+            "description": "Version number of the object. It is used to lock an object for use by one app at a time. As soon as an application modifies an object, its SyncToken is incremented. Attempts to modify an object specifying an older SyncToken fails. Only the latest version of the object is maintained by QuickBooks Online.",
+            "type": "string"
+          },
+          "MetaData": {
+            "$ref": "#/definitions/MetaData"
+          },
+          "CustomField": {
+            "title": "CustomField [0..3]",
+            "description": "Custom field or data extension.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/CustomField"
+            }
+          },
+          "DocNumber": {
+            "title": "DocNumber",
+            "description": "Reference number for the transaction. If not explicitly provided at create time, this field is populated based on the setting of Preferences:CustomTxnNumber. If Preferences:CustomTxnNumber is true a custom value can be provided. If no value is supplied, the resulting DocNumber is null. If Preferences:CustomTxnNumber is false, resulting DocNumber is system generated by incrementing the last number by 1. If Preferences:CustomTxnNumber is false and a value is supplied, that value is stored even if it is a duplicate. Recommended best practice: check the setting of Preferences:CustomTxnNumber before setting DocNumber.",
+            "type": "string",
+            "maxLength": 21
+          },
+          "TxnDate": {
+            "title": "TxnDate",
+            "description": "The date entered by the user when this transaction occurred. For posting transactions, this is the posting date that affects the financial statements. If the date is not supplied, the current date on the server is used. ",
+            "type": "string"
+          },
+          "DepartmentRef": {
+            "title": "DepartmentRef",
+            "description": "A reference to a Department object specifying the location of the transaction.  Available if Preferences.AccountingInfoPrefs.TrackDepartments is set to true. Query the Department name list resource to determine the appropriate department object for this reference. Use Department.Id and Department.Name from that object for DepartmentRef.value and DepartmentRef.name, respectively.",
+            "type": [
+              "object",
+              "null"
+            ],
+            "properties": {
+              "value": {
+                "title": "DepartmentRef.value",
+                "description": "The ID for the referenced object as found in the Id field of the object payload. The context is set by the type of reference and is specific to the QuickBooks company file.",
+                "type": "string"
+              },
+              "name": {
+                "title": "DepartmentRef.name",
+                "description": "An identifying name for the object being referenced by value and is derived from the field that holds the common name of that object. This varies by context and specific type of object referenced. For example, references to a Customer object use Customer.DisplayName to populate this field. Optionally returned in responses, implementation dependent.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "PrivateNote": {
+            "title": "PrivateNote (optional)",
+            "description": "User entered, organization-private note about the transaction. This note does not appear on the transaction form to the customer. This field maps to the Memo field on the Sales Receipt form.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "maxLength": 4000
+          },
+          "Line": {
+            "title": "Line",
+            "description": "Individual line items of a transaction.",
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/Lines"
+            }
+          },
+          "TxnTaxDetail": {
+            "title": "TxnTaxDetail",
+            "description": "This element provides information for taxes charged on the transaction as a whole.  It captures the details sales taxes calculated for the transaction based on the tax codes referenced by the transaction. This can be calculated by QuickBooks business logic or you may supply it when adding a transaction. See Global tax model for more information about this element.",
+            "type": "object",
+            "properties": {
+              "TxnTaxCodeRef": {
+                "$ref": "#/definitions/ReferenceType"
+              },
+              "TotalTax": {
+                "title": "TotalTax",
+                "description": "Total tax calculated for the transaction, excluding any tax lines manually inserted into the transaction line list.",
+                "type": "number"
+              },
+              "TaxLine": {
+                "$ref": "#/definitions/TaxLine"
+              }
+            },
+            "additionalProperties": false
+          },
+          "CustomerRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "CustomerMemo": {
+            "title": "CustomerMemo",
+            "description": "User-entered message to the customer; this message is visible to end user on their transactions.",
+            "type": "object",
+            "properties": {
+              "value": {
+                "title": "value",
+                "description": "User-entered message to the customer; this message is visible to end user on their transactions.",
+                "type": "string",
+                "maxLength": 1000
+              }
+            },
+            "additionalProperties": false
+          },
+          "BillAddr": {
+            "title": "BillAddr",
+            "description": "Bill-to address of the Invoice. If BillAddris not specified, and a default Customer:BillingAddr is specified in QuickBooks for this customer, the default bill-to address is used by QuickBooks.",
+            "$ref": "#/definitions/Address"
+          },
+          "ShipAddr": {
+            "title": "ShipAddr",
+            "description": "Identifies the address where the goods must be shipped. If ShipAddris not specified, and a default Customer:ShippingAddr is specified in QuickBooks for this customer, the default ship-to address will be used by QuickBooks.",
+            "$ref": "#/definitions/Address"
+          },
+          "ShipMethodRef": {
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "ShipDate": {
+            "title": "ShipDate",
+            "description": "Date of the shipment, default is null.",
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "TrackingNum": {
+            "title": "TrackingNum",
+            "description": "Shipping provider's tracking number for the delivery of the goods associated with the transaction.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "TotalAmt": {
+            "title": "TotalAmt",
+            "description": "Indicates the total amount of the transaction. This includes the total of all the charges, allowances, and taxes. Calculated by QuickBooks business logic; any value you supply is over-written by QuickBooks.",
+            "type": "number"
+          },
+          "PrintStatus": {
+            "title": "PrintStatus",
+            "description": "Printing status of the invoice. Valid values: NotSet, NeedToPrint, PrintComplete.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "NotSet",
+              "NeedToPrint",
+              "PrintComplete"
+            ]
+          },
+          "EmailStatus": {
+            "title": "EmailStatus",
+            "description": "Email status of the receipt. Valid values: NotSet, NeedToSend, EmailSent.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "NotSet",
+              "NeedToSend",
+              "EmailSent"
+            ]
+          },
+          "BillEmail": {
+            "title": "BillEmail",
+            "description": "Identifies the Email Address with the invoice is sent.",
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "Address": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "format": "email"
+                  }
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "DeliveryInfo": {
+            "description": "Email delivery information. Returned when a request has been made to deliver email with the send operation.",
+            "type": "object",
+            "properties": {
+              "DeliveryType": {
+                "type": "string",
+                "enum": [
+                  "Email"
+                ]
+              },
+              "DeliveryTime": {
+                "type": "string",
+                "format": "date-time"
+              }
+            },
+            "additionalProperties": false
+          },
+          "Balance": {
+            "description": "The balance reflecting any payments made against the transaction. Initially set to the value of TotalAmt. A Balance of 0 indicates the invoice is fully paid. Calculated by QuickBooks business logic; any value you supply is over-written by QuickBooks.",
+            "type": "number"
+          },
+          "HomeBalance": {
+            "description": "Convenience field containing the amount in Balance expressed in terms of the home currency. Calculated by QuickBooks business logic. Value is valid only when CurrencyRef is specified and available when endpoint is evoked with the minorversion=3 query parameter.",
+            "type": "number"
+          },
+          "PaymentMethodRef": {
+            "title": "PaymentMethodRef",
+            "description": "Reference to a PaymentMethod associated with this transaction.",
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "PaymentRefNum": {
+            "title": "PaymentRefNum",
+            "description": "The reference number for the payment received. For example,  Check # for a check, envelope # for a cash donation.",
+            "type": "string",
+            "maxLength": 21
+          },
+          "CreditCardPayment": {
+            "description": "Information about a credit card payment for the transaction. Used when PaymentType is CreditCard. Inject with data only if the payment was transacted through Intuit Payments API.",
+            "type": "object"
+          },
+          "TxnSource": {
+            "description": "Used internally to specify originating source of a credit card transaction.",
+            "type": "string"
+          },
+          "ApplyTaxAfterDiscount": {
+            "title": "ApplyTaxAfterDiscount",
+            "description": "If false or null, calculate the sales tax first, and then apply the discount. If true, subtract the discount first and then calculate the sales tax. ",
+            "type": "boolean"
+          },
+          "DepositToAccountRef": {
+            "title": "DepositToAccountRef",
+            "description": "Account to which payment money is deposited.",
+            "$ref": "#/definitions/ReferenceType"
+          },
+          "CurrencyRef": {
+            "description": "Reference to the currency in which all amounts on the associated transaction are expressed. This must be defined if multicurrency is enabled for the company. Multicurrency is enabled for the company if Preferences.MultiCurrencyEnabled is set to true.",
+            "type": "object",
+            "properties": {
+              "name": {
+                "description": "Full name of the currency",
+                "type": "string"
+              },
+              "value": {
+                "description": "A three letter string representing the ISO 4217 code for the currency. For example, USD, AUD, EUR, and so on.",
+                "type": "string",
+                "minLength": 3
+              }
+            },
+            "required": [
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          "ExchangeRate": {
+            "description": "The number of home currency units it takes to equal one unit of currency specified by CurrencyRef. (default is 1, applicable if multicurrency is enabled for the company).",
+            "type": "number"
+          },
+          "HomeTotalAmt": {
+            "description": "Total amount of the transaction in the home currency. Includes the total of all the charges, allowances and taxes. Calculated by QuickBooks business logic. Value is valid only when CurrencyRef is specified. (read-only, applicable if multicurrency is enabled for the company )",
+            "type": "number"
+          },
+          "GlobalTaxCalculation": {
+            "description": "Method in which tax is applied. Allowed values are: TaxExcluded, TaxInclusive, and NotApplicable.",
+            "type": "string",
+            "enum": [
+              "TaxExcluded",
+              "TaxInclusive",
+              "NotApplicable"
+            ]
+          },
+          "TransactionLocationType": {
+            "title": "TransactionLocationType",
+            "description": "The account location. Valid values include: WithinFrance, FranceOverseas, OutsideFranceWithEU, OutsideEU. For France locales, only. Default is WithinFrance",
+            "type": "string",
+            "enum": [
+              "WitihinFrance",
+              "FranceOverseas",
+              "OutsideFranceWithEU",
+              "OutsideEU"
+            ]
+          }
+        },
+        "required": [
+          "DocNumber",
+          "CustomerRef"
+        ],
+        "additionalProperties": false
+      },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "title": "Id (system-defined, read-only)",
+            "description": "Unique identifier of the QuickBooks object for the address, used for modifying the address.",
+            "type": "string"
+          },
+          "Line1": {
+            "title": "Line1",
+            "description": "First five lines of the Address. Address1 or Customer Name",
+            "type": "string",
+            "maxLength": 500
+          },
+          "Line2": {
+            "description": "First five lines of the Address. Address 2 or Company Name",
+            "type": "string",
+            "maxLength": 500
+          },
+          "Line3": {
+            "description": "First five lines of the Address. Possbile address 1..5, city, subdivision code, postal code returned.",
+            "type": "string",
+            "maxLength": 500
+          },
+          "Line4": {
+            "description": "First five lines of the Address. Possbile address 1..5, city, subdivision code, postal code returned.",
+            "type": "string",
+            "maxLength": 500
+          },
+          "Line5": {
+            "description": "First five lines of the Address. First five lines of the Address. Possbile address 1..5, city, subdivision code, postal code returned.",
+            "type": "string",
+            "maxLength": 500
+          },
+          "City": {
+            "title": "City",
+            "description": "City",
+            "type": "string",
+            "maxLength": 255
+          },
+          "Country": {
+            "title": "Country",
+            "description": "Country Name.",
+            "type": "string",
+            "maxLength": 255
+          },
+          "CountrySubDivisionCode": {
+            "title": "CountrySubDivisionCode",
+            "description": "Region within a country. For example, state name for USA, province name for Canada.",
+            "type": "string",
+            "maxLength": 255
+          },
+          "PostalCode": {
+            "title": "PostalCode",
+            "description": "Postal code. For example, zip code for USA and Canada",
+            "type": "string",
+            "maxLength": 30
+          },
+          "Lat": {
+            "description": "Latitude coordinate of Geocode (Geospacial Entity Object Code). INVALID is returned for invalid addresses. (system-defined, read-only)",
+            "type": "string"
+          },
+          "Long": {
+            "description": "Longitude coordinate of Geocode (Geospacial Entity Object Code). INVALIDis returned for invalid addresses. (system-defined, read-only)",
+            "type": "string"
+          },
+          "Type": {
+            "title": "Type",
+            "description": "Address Type.",
+            "type": "string",
+            "enum": [
+              "BillAddr",
+              "ShipAddr"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "FreeFormNumber": {
+        "type": "object",
+        "properties": {
+          "FreeFormNumber": {
+            "title": "FreeFormNumber",
+            "description": "Specifies the telephone number in free form.",
+            "type": "string",
+            "maxLength": 20
+          }
+        },
+        "additionalProperties": false
+      },
+      "Email": {
+        "type": "object",
+        "properties": {
+          "Address": {
+            "title": "Address",
+            "description": "An email address. The address format must follow the RFC 822 standard.",
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReferenceType": {
+        "anyOf": [
+          {
+            "type": "object",
+            "properties": {
+              "value": {
+                "title": "value",
+                "type": "string"
+              },
+              "name": {
+                "title": "name",
+                "type": "string"
+              }
+            },
+            "required": [
+              "value"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "null"
+          }
+        ]
+      },
+      "MetaData": {
+        "description": "Descriptive information about the object. The MetaData values are set by Data Services and are read only for all applications.",
+        "type": "object",
+        "properties": {
+          "CreateTime": {
+            "title": "CreateTime",
+            "description": "Time the entity was created in the source domain.",
+            "type": "string",
+            "format": "date-time"
+          },
+          "LastUpdatedTime": {
+            "title": "LastUpdatedTime",
+            "description": "Time the entity was last updated in the source domain.",
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TaxLine": {
+        "type": "array",
+        "items": {
+          "properties": {
+            "Amount": {
+              "description": "The amount of tax for this tax line. This value is negative for JournalEntry objects with PostingType set to Credit. (max 15 digits in 10.5 format, required)",
+              "type": "number"
+            },
+            "DetailType": {
+              "type": "string",
+              "enum": [
+                "TaxLineDetail"
+              ]
+            },
+            "TaxLineDetail": {
+              "type": "object",
+              "properties": {
+                "PercentBased": {
+                  "title": "PercentBased",
+                  "description": "True = sales tax rate is expressed as a percentage. False = sales tax rate is expressed as a number amount.",
+                  "type": "boolean"
+                },
+                "NetAmountTaxable": {
+                  "title": "NetAmountTaxable",
+                  "description": "This is the taxable amount on the total of the applicable tax rates. If TaxRate is applicable on two lines, this attribute represents the total of the two lines for which this rate is applied. This is different from the Line.Amount , which represents the final tax amount after the tax has been applied. Default value is null",
+                  "type": [
+                    "number",
+                    "null"
+                  ]
+                },
+                "TaxInclusiveAmount": {
+                  "title": "TaxInclusiveAmount",
+                  "description": "This is the total amount, including tax.",
+                  "type": "number"
+                },
+                "OverrideDeltaAmount": {
+                  "title": "OverrideDeltaAmount",
+                  "description": "The difference between the actual tax and the overridden amount supplied by the user.",
+                  "type": "number"
+                },
+                "TaxPercent": {
+                  "title": "TaxPercent",
+                  "description": "Numerical expression of the sales tax percent. For example, use \"8.5\" not \"0.085\".",
+                  "type": "number"
+                },
+                "TaxRateRef": {
+                  "title": "TaxRateRef",
+                  "description": "Reference to a TaxRate to apply to the entire transaction. Query the TaxRate name list resource to determine the appropriate TaxRage object for this reference. Use TaxRate.Id and TaxRate.Name from that object for TaxRateRef.value and TaxRateRef.name, respectively.",
+                  "$ref": "#/definitions/ReferenceType"
+                }
+              },
+              "required": [
+                "TaxRateRef"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "DetailType",
+            "TaxLineDetail"
+          ]
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "tags": [
+    "Quickbooks",
+    "Online",
+    "Fulfillment",
+    "Get"
+  ],
+  "audit": {}
+}
