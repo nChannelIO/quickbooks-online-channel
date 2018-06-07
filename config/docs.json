@@ -11,7 +11,7 @@
     },
     "channelSettingsValues": {
       "protocol": "https",
-      "api_uri": "sandbox-quickbooks.api.intuit.com/v3",
+      "api_uri": "quickbooks.api.intuit.com/v3",
       "minor_version": 12
     }
   },
@@ -28,7 +28,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -87,7 +87,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -114,7 +114,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -228,7 +228,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -252,7 +252,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -276,7 +276,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -376,7 +376,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [],
           "channelProfile": {
@@ -388,7 +388,7 @@
           "payload": {
             "doc": {}
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [],
           "channelProfile": {
@@ -407,7 +407,7 @@
               "remoteIDs": ["3"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -476,7 +476,7 @@
               "remoteIDs": ["3"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -504,7 +504,7 @@
               "pageSize": 2
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -615,7 +615,7 @@
               "remoteIDs": ["3"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -637,7 +637,7 @@
               "remoteIDs": ["3"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -659,7 +659,7 @@
               "remoteIDs": ["3"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -686,7 +686,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -804,7 +804,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -922,7 +922,7 @@
               "pageSize": 2
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1130,7 +1130,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1153,7 +1153,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1176,7 +1176,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1204,7 +1204,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1321,7 +1321,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1348,7 +1348,7 @@
               "pageSize": 2
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1555,7 +1555,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1577,7 +1577,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1599,7 +1599,7 @@
               "remoteIDs": ["17"]
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1630,7 +1630,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1702,7 +1702,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1728,7 +1728,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1754,7 +1754,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1800,7 +1800,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1876,7 +1876,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1917,7 +1917,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -1958,7 +1958,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2004,7 +2004,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2080,7 +2080,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2121,7 +2121,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2162,7 +2162,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2208,7 +2208,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2284,7 +2284,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2325,7 +2325,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2366,7 +2366,7 @@
               }
             }
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2409,7 +2409,7 @@
             "billingCustomerRemoteID": "1",
             "billingAddressRemoteID": "49"
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2545,7 +2545,7 @@
             "billingCustomerRemoteID": "1",
             "billingAddressRemoteID": "49"
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2583,7 +2583,7 @@
             "billingCustomerRemoteID": "1",
             "billingAddressRemoteID": "49"
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2621,7 +2621,7 @@
             "billingCustomerRemoteID": "1",
             "billingAddressRemoteID": "49"
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2665,7 +2665,7 @@
             },
             "customerRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2784,7 +2784,7 @@
             },
             "customerRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2823,7 +2823,7 @@
             },
             "customerRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2862,7 +2862,7 @@
             },
             "customerRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -2909,7 +2909,7 @@
             },
             "productRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3028,7 +3028,7 @@
             },
             "productRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3070,7 +3070,7 @@
             },
             "productRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3112,7 +3112,7 @@
             },
             "productRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3159,7 +3159,7 @@
             },
             "productPricingRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3278,7 +3278,7 @@
             },
             "productPricingRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3320,7 +3320,7 @@
             },
             "productPricingRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3362,7 +3362,7 @@
             },
             "productPricingRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3409,7 +3409,7 @@
             },
             "productQuantityRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3528,7 +3528,7 @@
             },
             "productQuantityRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3570,7 +3570,7 @@
             },
             "productQuantityRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3612,7 +3612,7 @@
             },
             "productQuantityRemoteID": 4
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3654,7 +3654,7 @@
             },
             "salesOrderRemoteID": "148"
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3835,7 +3835,7 @@
             },
             "salesOrderRemoteID": "148"
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3872,7 +3872,7 @@
             },
             "salesOrderRemoteID": "148"
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
@@ -3909,7 +3909,7 @@
             },
             "salesOrderRemoteID": "148"
           },
-          "baseUri": "https://sandbox-quickbooks.api.intuit.com/v3",
+          "baseUri": "https://quickbooks.api.intuit.com/v3",
           "defaultHeaders": {},
           "links": [
             {
