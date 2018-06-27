@@ -175,16 +175,7 @@
           "customerBusinessReferences": [
             "PrimaryEmailAddr.Address"
           ]
-        },
-        "peers": [
-          {
-            "name": "lineItem",
-            "location": "Line",
-            "remoteID": "Id",
-            "businessReferences": ["$filter(Line, function($v) {$v.DetailType = 'SalesItemLineDetail' and $v.SalesItemLineDetail.ItemRef.name != 'Shipping' and $v.SalesItemLineDetail.ItemRef.name != null}).SalesItemLineDetail.ItemRef.name"]
-          }
-        ],
-        "refreshNouns": ["PRODUCT"]
+        }
       }
     },
     {
@@ -415,12 +406,6 @@
             "location": "Item",
             "remoteID": "Id",
             "businessReferences": ["Sku"]
-          },
-          {
-            "name": "lineItem",
-            "location": "Item",
-            "remoteID": "Id",
-            "businessReferences": ["Sku"]
           }
         ]
       }
@@ -575,12 +560,6 @@
             "location": "Item",
             "remoteID": "Id",
             "businessReferences": ["Sku"]
-          },
-          {
-            "name": "lineItem",
-            "location": "Item",
-            "remoteID": "Id",
-            "businessReferences": ["Sku"]
           }
         ]
       }
@@ -651,12 +630,6 @@
           },
           {
             "name": "PRODUCTQUANTITY",
-            "location": "Item",
-            "remoteID": "Id",
-            "businessReferences": ["Sku"]
-          },
-          {
-            "name": "lineItem",
             "location": "Item",
             "remoteID": "Id",
             "businessReferences": ["Sku"]
