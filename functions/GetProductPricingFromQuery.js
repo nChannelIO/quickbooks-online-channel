@@ -63,12 +63,12 @@ let GetProductPricingFromQuery = function (
   } else if (!payload.doc) {
     invalid = true;
     invalidMsg = "payload.doc was not provided";
-  } else if (!payload.doc.remoteIDs && !payload.doc.searchFields && !payload.doc.modifiedDateRange) {
+  } else if (!payload.doc.remoteIDs && !payload.doc.searchFields && !payload.doc.modifiedDateRange && !payload.doc.createdDateRange) {
     invalid = true;
-    invalidMsg = "either payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange must be provided"
-  } else if (payload.doc.remoteIDs && (payload.doc.searchFields || payload.doc.modifiedDateRange)) {
+    invalidMsg = "either payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange or payload.doc.createdDateRange must be provided"
+  } else if (payload.doc.remoteIDs && (payload.doc.searchFields || payload.doc.modifiedDateRange || payload.doc.createdDateRange)) {
     invalid = true;
-    invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange may be provided"
+    invalidMsg = "only one of payload.doc.remoteIDs or payload.doc.searchFields or payload.doc.modifiedDateRange or payload.doc.createdDateRange may be provided"
   } else if (payload.doc.remoteIDs && (!Array.isArray(payload.doc.remoteIDs) || payload.doc.remoteIDs.length === 0)) {
     invalid = true;
     invalidMsg = "payload.doc.remoteIDs must be an Array with at least 1 remoteID"
@@ -89,6 +89,12 @@ let GetProductPricingFromQuery = function (
   } else if (payload.doc.modifiedDateRange && payload.doc.modifiedDateRange.startDateGMT && payload.doc.modifiedDateRange.endDateGMT && (payload.doc.modifiedDateRange.startDateGMT > payload.doc.modifiedDateRange.endDateGMT)) {
     invalid = true;
     invalidMsg = "startDateGMT must have a date before endDateGMT";
+  } else if (payload.doc.createdDateRange && !(payload.doc.createdDateRange.startDateGMT || payload.doc.createdDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "at least one of payload.doc.createdDateRange.startDateGMT or payload.doc.createdDateRange.endDateGMT must be provided"
+  } else if (payload.doc.createdDateRange && payload.doc.createdDateRange.startDateGMT && payload.doc.createdDateRange.endDateGMT && (payload.doc.createdDateRange.startDateGMT > payload.doc.createdDateRange.endDateGMT)) {
+    invalid = true;
+    invalidMsg = "createdDateRange startDateGMT must have a date before endDateGMT";
   }
 
   //If callback is not a function
@@ -158,6 +164,16 @@ let GetProductPricingFromQuery = function (
       }
       if (payload.doc.modifiedDateRange.endDateGMT) {
         filterParams.push("MetaData.LastUpdatedTime <= '" + payload.doc.modifiedDateRange.endDateGMT + "'");
+      }
+    } else if (payload.doc.createdDateRange){
+      /*
+       Add created date ranges to the query
+       */
+      if (payload.doc.createdDateRange.startDateGMT) {
+          filterParams.push("MetaData.CreateTime >= '" + payload.doc.createdDateRange.startDateGMT + "'");
+      }
+      if (payload.doc.createdDateRange.endDateGMT) {
+          filterParams.push("MetaData.CreateTime <= '" + payload.doc.createdDateRange.endDateGMT + "'");
       }
     }
 
