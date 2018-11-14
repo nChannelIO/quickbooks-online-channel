@@ -83,7 +83,8 @@
             "doPutCustomerAddressesFlag",
             "doPutCustomerContactsFlag",
             "doExtractShippingAddressFromSalesOrderFlag",
-            "doExtractBillingAddressFromSalesOrderFlag"
+            "doExtractBillingAddressFromSalesOrderFlag",
+            "doPutCustomerFlag"
           ],
           "properties": {
             "canInsertOrderFlag": {
@@ -157,6 +158,10 @@
             "doExtractBillingAddressFromSalesOrderFlag": {
               "type": "boolean",
               "title": "PUT Sales Order, doExtractBillingAddressFromSalesOrderFlag"
+            },
+            "doPutCustomerFlag": {
+              "type": "boolean",
+              "title": "PUT Sales Order, doPutCustomerFlag"
             }
           },
           "type": "object"
